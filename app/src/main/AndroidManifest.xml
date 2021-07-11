@@ -40,6 +40,7 @@
                 android:resource="@xml/filepath_data" />
         </provider> <!-- 配置FileProvider -->
         <activity android:name=".ui.MainMiddleOutActivity"/>
+        <activity android:name=".ui.CitySelectActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
