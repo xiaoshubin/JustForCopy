@@ -13,12 +13,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.smallcake.smallutils.custom.NoScrollViewPager
 import com.smallcake.temp.MyApplication
 import com.smallcake.temp.R
-import com.smallcake.temp.fragment.HomeFragment
-import com.smallcake.temp.fragment.ListFragment
-import com.smallcake.temp.fragment.MineFragment
-import com.smallcake.temp.fragment.PageFragment
+import com.smallcake.temp.fragment.*
 
 /**
  * Date: 2020/8/17
@@ -32,30 +30,37 @@ BottomNavUtils.setListener(BottomNavListener {when(it){
 2 -> showToast("选中了我的")
 } })
  */
-object BottomNavUtils {
+object BottomNavUtils2 {
     private val tabSelectedImgs = intArrayOf(
         R.mipmap.icon_selected_tab1,
         R.mipmap.icon_selected_tab2,
-        R.mipmap.icon_selected_tab3
+        R.mipmap.icon_selected_tab3,
+        R.mipmap.icon_selected_tab4,
+        R.mipmap.icon_selected_tab5
     )
     private val tabUnselectedImgs = intArrayOf(
         R.mipmap.icon_unselected_tab1,
         R.mipmap.icon_unselected_tab2,
-        R.mipmap.icon_unselected_tab3
+        R.mipmap.icon_selected_tab3,
+        R.mipmap.icon_unselected_tab4,
+        R.mipmap.icon_unselected_tab5
     )
-    private val tabNames = arrayOf("页面", "列表", "我的")
-    private val textColorNormal = ContextCompat.getColor(MyApplication.instance, R.color.gray)
-    private val textColorSelect = ContextCompat.getColor(MyApplication.instance, R.color.black)
+    private val tabNames = arrayOf("首页", "服务", "门禁","讯聊","我的")
+    private val textColorNormal = ContextCompat.getColor(MyApplication.instance, R.color.text_gray)
+    private val textColorSelect = ContextCompat.getColor(MyApplication.instance, R.color.text_red)
     private var listener : ((Int)->Unit)?=null
     fun tabBindViewPager(
         activity: AppCompatActivity,
         tabLayout: LinearLayout,
-        viewPager: ViewPager
+        viewPager: NoScrollViewPager,
+        layoutCenter: LinearLayout
     ) {
         val fragments =
             arrayOf<Fragment>(
-                PageFragment(),
-                ListFragment(),
+                HomeFragment(),
+                HomeFragment(),
+                HomeFragment(),
+                HomeFragment(),
                 MineFragment()
             )
         viewPager.adapter = object : FragmentStatePagerAdapter(activity.supportFragmentManager, 0) {
@@ -72,26 +77,30 @@ object BottomNavUtils {
             }
         }
         viewPager.offscreenPageLimit = tabNames.size
-        initTabBindViewPager(tabLayout, viewPager)
+        initTabBindViewPager(tabLayout, viewPager,layoutCenter)
     }
 
     private fun initTabBindViewPager(
         tabLayout: LinearLayout,
-        viewPager: ViewPager
+        viewPager: NoScrollViewPager,
+        layoutCenter: LinearLayout
 
     ) {
         val childCount = tabLayout.childCount
         for (i in 0 until childCount) {
             val childAt = tabLayout.getChildAt(i) as LinearLayout
             childAt.setOnClickListener {
-                toDefaultTab(i, tabLayout, viewPager)
+                toDefaultTab(i, tabLayout, viewPager,layoutCenter)
             }
+        }
+        layoutCenter.setOnClickListener{
+            toDefaultTab(2, tabLayout, viewPager,layoutCenter)
         }
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {}
             override fun onPageScrolled(position: Int,positionOffset: Float,positionOffsetPixels: Int) {}
             override fun onPageSelected(position: Int) {
-                toDefaultTab(position, tabLayout)
+                toDefaultTab(position, tabLayout,layoutCenter=layoutCenter)
                 listener?.invoke(position)
             }
         })
@@ -107,7 +116,8 @@ object BottomNavUtils {
     private fun toDefaultTab(
         selectPosition: Int,
         tabLayout: LinearLayout,
-        viewPager: ViewPager? = null
+        viewPager: NoScrollViewPager? = null,
+        layoutCenter: LinearLayout
     ) {
         //1.还原所有Tab为默认状态
         for (i in 0 until tabLayout.childCount) {
@@ -123,16 +133,28 @@ object BottomNavUtils {
             val tvTab = childAt.getChildAt(1) as TextView
             tvTab.setTextColor(textColorNormal)
         }
+        //中间还原成默认
+        (layoutCenter.getChildAt(0) as ImageView).setImageResource(tabUnselectedImgs[2])
+        (layoutCenter.getChildAt(1) as TextView).setTextColor(textColorNormal)
+
         //2.选中项加入白色背景和替换为选中图片
         val childAt = tabLayout.getChildAt(selectPosition) as LinearLayout
         when (val view = childAt.getChildAt(0)) {
             is ImageView -> view.setImageResource(tabSelectedImgs[selectPosition])
             is RelativeLayout -> (view.getChildAt(0) as ImageView).setImageResource(tabSelectedImgs[selectPosition])
         }
+        if (selectPosition==2){
+            tabSelectAnim(layoutCenter)
+            (layoutCenter.getChildAt(0) as ImageView).setImageResource(tabSelectedImgs[2])
+            //选中字体变黑色
+            (layoutCenter.getChildAt(1) as TextView).setTextColor(textColorSelect)
+        }else{
+            tabSelectAnim(childAt)
+            //选中字体变黑色
+            (childAt.getChildAt(1) as TextView).setTextColor(textColorSelect)
+        }
 
-        tabSelectAnim(childAt)
-        //选中字体变黑色
-        (childAt.getChildAt(1) as TextView).setTextColor(textColorSelect)
+
         //3.联动ViewPager
         viewPager?.currentItem = selectPosition
     }
