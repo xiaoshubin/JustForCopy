@@ -4,9 +4,11 @@
     package="com.smallcake.temp">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+
 
     <application
         android:name=".MyApplication"
@@ -39,6 +41,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepath_data" />
         </provider> <!-- 配置FileProvider -->
+        <activity android:name=".map.LocationMapActivity"/>
         <activity android:name=".ui.MainMiddleOutActivity"/>
         <activity android:name=".ui.CitySelectActivity"/>
         <activity android:name=".MainActivity">
@@ -48,6 +51,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 高德地图【开始】 -->
+        <service android:name="com.amap.api.location.APSService" />
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="937f5f48be1d2b39c1af407482e59ac5" />
+        <!-- 高德地图【结束】 -->
     </application>
 
 </manifest>

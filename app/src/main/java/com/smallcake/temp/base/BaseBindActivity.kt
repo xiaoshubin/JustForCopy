@@ -3,6 +3,7 @@ package com.smallcake.temp.base
 import android.graphics.Color
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
 import com.dylanc.viewbinding.inflateBindingWithGeneric
 import com.smallcake.smallutils.ResourceUtils
@@ -20,6 +21,7 @@ abstract class BaseBindActivity<VB:ViewBinding>: BaseActivity() {
         setContentView(bind.root)
         //导航栏设置
         val bar = NavigationBar(this)
+        bar.titleView.setTextColor(ContextCompat.getColor(this,R.color.titleColor))
         bar.setBackgroundColor(Color.WHITE,true)
         bar.backImageView?.setImageResource(R.mipmap.ic_back)
         bar.backImageView?.setOnClickListener{finish()}

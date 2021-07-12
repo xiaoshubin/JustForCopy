@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:padding="12dp">
+
+
+
+
+        <EditText
+            android:layout_marginRight="12dp"
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gray_round66_bg"
+            android:cursorVisible="true"
+            android:drawableLeft="@mipmap/ic_search_gray"
+            android:drawablePadding="@dimen/dp_11"
+            android:hint="搜索"
+            android:maxLength="30"
+            android:minHeight="@dimen/dp_33"
+            android:paddingLeft="@dimen/dp_23"
+            android:singleLine="true"
+            android:textColor="@color/titleColor"
+            android:textCursorDrawable="@null"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toStartOf="@id/btn_search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.smallcake.smallutils.text.ShapeTextButton
+            android:id="@+id/btn_search"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="@dimen/dp_33"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="搜索"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="@id/et_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_search"
+            app:stb_radius="6dp"
+            app:stb_solidColor="@color/text_red" />
+
+        <ImageView
+            android:layout_marginRight="8dp"
+            android:id="@+id/iv_delete"
+            android:layout_width="@dimen/dp_17"
+            android:layout_height="@dimen/dp_17"
+            android:src="@mipmap/ic_text_delete"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/et_search"
+            app:layout_constraintEnd_toEndOf="@+id/et_search"
+            app:layout_constraintTop_toTopOf="@id/et_search"
+            tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

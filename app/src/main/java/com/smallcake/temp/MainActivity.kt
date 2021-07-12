@@ -21,7 +21,9 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+/**
+ * @see com.smallcake.temp.fragment.PageFragment
+ */
 class MainActivity : BaseBindActivity<ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {

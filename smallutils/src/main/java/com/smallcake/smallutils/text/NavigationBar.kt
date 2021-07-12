@@ -71,7 +71,7 @@ class NavigationBar(var context: Context) {
     /**
      * 标题控件
      */
-     var titleView: TextView? = null
+     lateinit var titleView: TextView
     /**
      * 图片菜单控件
      */
@@ -79,7 +79,7 @@ class NavigationBar(var context: Context) {
     /**
      * 文字菜单图片
      */
-     var menuTextView: TextView? = null
+      lateinit var menuTextView: TextView
     /**
      * 布局参数
      */

@@ -21,7 +21,7 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
     defaultConfig {
-        applicationId "com.smallcake.temp"
+        applicationId "com.smallcake.justforcopy"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -141,6 +141,14 @@ dependencies {
 //    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 //    //漂亮的Toast
 //    implementation 'com.github.GrenderG:Toasty:1.5.0'
+
+
+    //高德定位功能
+    implementation 'com.amap.api:location:3.3.0'
+    //高德地图
+    implementation 'com.amap.api:3dmap:5.0.0'
+    //高德检索
+    implementation 'com.amap.api:search:5.0.0'
 
 
 }
