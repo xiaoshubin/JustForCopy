@@ -14,6 +14,7 @@ import com.smallcake.temp.databinding.FragmentRecyclerviewBinding
 import com.smallcake.temp.map.LocationMapActivity
 import com.smallcake.temp.ui.CitySelectActivity
 import com.smallcake.temp.ui.MainMiddleOutActivity
+import com.smallcake.temp.ui.ReportRepairActivity
 
 class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
     private val mAdapter = PageBeanAdapter()
@@ -26,7 +27,8 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
         val list = listOf(
             PageBean("中间凸起导航栏",MainMiddleOutActivity::class.java,"导航"),
             PageBean("城市选择", CitySelectActivity::class.java,"城市选择，字母选择定位"),
-            PageBean("地图点击选择位置", LocationMapActivity::class.java,"定位，点击选择位置，高德地图")
+            PageBean("地图点击选择位置", LocationMapActivity::class.java,"定位，点击选择位置，高德地图"),
+            PageBean("反馈", ReportRepairActivity::class.java,"图片选择，反馈，报事报修"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
