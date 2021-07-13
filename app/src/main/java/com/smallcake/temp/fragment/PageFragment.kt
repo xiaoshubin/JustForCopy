@@ -1,15 +1,12 @@
 package com.smallcake.temp.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.smallcake.temp.adapter.PageBeanAdapter
 import com.smallcake.temp.base.BaseBindFragment
 import com.smallcake.temp.bean.PageBean
-import com.smallcake.temp.databinding.FragmentHomeBinding
 import com.smallcake.temp.databinding.FragmentRecyclerviewBinding
 import com.smallcake.temp.map.LocationMapActivity
 import com.smallcake.temp.ui.CitySelectActivity

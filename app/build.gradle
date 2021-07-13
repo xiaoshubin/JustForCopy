@@ -152,6 +152,8 @@ dependencies {
 
     // 图片浏览组件
     implementation 'com.susion:image-viewer:1.0.1'
+    //评分控件
+    implementation 'com.github.ome450901:SimpleRatingBar:1.5.0'
 
 
 }

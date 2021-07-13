@@ -9,7 +9,7 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bind.textView.text = "列表"
+
     }
 
 
