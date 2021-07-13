@@ -15,29 +15,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_scale_rating_bar_desc"
                 android:text="评分控件"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <com.willy.ratingbar.ScaleRatingBar
-                android:id="@+id/simpleRatingBar2"
+                android:id="@+id/scale_rating_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView6"
-                app:srb_clearRatingEnabled="true"
-                app:srb_clickable="true"
                 app:srb_drawableEmpty="@mipmap/star_empty_big"
                 app:srb_drawableFilled="@mipmap/star_filled_big"
-                app:srb_isIndicator="true"
-                app:srb_minimumStars="1"
+                app:srb_minimumStars="0"
                 app:srb_numStars="5"
                 app:srb_rating="2"
-                app:srb_scrollable="false"
+                app:srb_clearRatingEnabled="true"
+                app:srb_isIndicator="false"
+                app:srb_clickable="true"
+                app:srb_scrollable="true"
                 app:srb_starHeight="24dp"
-                app:srb_starPadding="4dp"
                 app:srb_starWidth="24dp"
-                app:srb_stepSize="1" />
+                app:srb_starPadding="4dp"
+                app:srb_stepSize="0.1" />
         </LinearLayout>
 
 
