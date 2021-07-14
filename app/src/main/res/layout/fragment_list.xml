@@ -60,12 +60,39 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
             <TextView
+                android:layout_marginLeft="24dp"
                 android:text="CheckBox按钮在右侧，\n且样式使用RadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <me.xfans.lib.voicewaveview.VoiceWaveView
+                android:background="@drawable/pot_red"
+                android:id="@+id/line_voice"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                app:lineColor="@color/white"
+                app:waveMode="left_right" />
+            <com.smallcake.temp.weight.NotTouchScrollView
+                android:id="@+id/map_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:paddingLeft="12dp"
+                    android:id="@+id/audioRecordBtn"
+                    android:text="按住说话"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"/>
+            </com.smallcake.temp.weight.NotTouchScrollView>
+        </LinearLayout>
 
 
 
