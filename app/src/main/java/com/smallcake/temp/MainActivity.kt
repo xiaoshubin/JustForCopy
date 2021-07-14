@@ -22,7 +22,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * @see com.smallcake.temp.fragment.PageFragment
+ * @see com.smallcake.temp.fragment.PageFragment 页面
+ * @see com.smallcake.temp.fragment.ListFragment 控件
  */
 class MainActivity : BaseBindActivity<ActivityMainBinding>() {
 

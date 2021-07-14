@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!--右侧字母导航控件-->
     <declare-styleable name="IndexBar">
         <attr name="normalColor" format="color"/>
         <attr name="selecColor" format="color"/>
         <attr name="indexSize" format="dimension"/>
     </declare-styleable>
+
+
 
 </resources>

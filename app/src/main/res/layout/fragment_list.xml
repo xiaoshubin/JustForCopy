@@ -14,11 +14,6 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tv_scale_rating_bar_desc"
-                android:text="评分控件"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
             <com.willy.ratingbar.ScaleRatingBar
                 android:id="@+id/scale_rating_bar"
                 android:layout_width="wrap_content"
@@ -39,6 +34,36 @@
                 app:srb_starWidth="24dp"
                 app:srb_starPadding="4dp"
                 app:srb_stepSize="0.1" />
+            <TextView
+                android:id="@+id/tv_scale_rating_bar_desc"
+                android:text="评分控件"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:drawablePadding="32dp"
+                android:button="@null"
+                android:drawableRight="?android:attr/listChoiceIndicatorSingle"
+                android:checked="true"
+                android:textColor="@color/text_red"
+                android:theme="@style/MyCheckBox"
+                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¥：3000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:text="CheckBox按钮在右侧，\n且样式使用RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
         </LinearLayout>
 
 

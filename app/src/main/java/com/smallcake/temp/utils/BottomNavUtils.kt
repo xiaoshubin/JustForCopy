@@ -43,7 +43,7 @@ object BottomNavUtils {
         R.mipmap.icon_unselected_tab2,
         R.mipmap.icon_unselected_tab3
     )
-    private val tabNames = arrayOf("页面", "列表", "我的")
+    private val tabNames = arrayOf("页面", "控件", "我的")
     private val textColorNormal = ContextCompat.getColor(MyApplication.instance, R.color.gray)
     private val textColorSelect = ContextCompat.getColor(MyApplication.instance, R.color.black)
     private var listener : ((Int)->Unit)?=null

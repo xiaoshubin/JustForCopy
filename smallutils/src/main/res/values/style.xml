@@ -5,4 +5,5 @@
         <attr name="horizontalSpace" format="dimension|reference"/>
         <attr name="vertivalSpace" format="dimension|reference"/>
     </declare-styleable>
+
 </resources>
