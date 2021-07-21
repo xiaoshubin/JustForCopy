@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
+        <View style="@style/h_line"/>
         <LinearLayout
             android:gravity="center"
             android:layout_width="match_parent"
@@ -66,7 +67,7 @@
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
-
+        <View style="@style/h_line"/>
         <LinearLayout
             android:gravity="center"
             android:orientation="horizontal"
@@ -93,7 +94,18 @@
                     android:layout_height="wrap_content"/>
             </com.smallcake.temp.weight.NotTouchScrollView>
         </LinearLayout>
-
+        <View style="@style/h_line"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_ymdhm"
+                android:padding="8dp"
+                android:text="年月日时分选择器"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
 
     </LinearLayout>

@@ -159,6 +159,25 @@ object TimeUtils {
         calendar.set(Calendar.SECOND, calendar.get(Calendar.SECOND) + (day * 60 * 60 * 24)) //秒
         return (calendar.time.time/1000L).toInt()
     }
+    /**
+     * 将时间戳转化成Calendar对象(获取时间详情)
+     *
+     * @param time 时间戳
+     * @return calendar对象
+     */
+    fun getTimeCalender(time: Long): Calendar {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = time
+        /**
+         * val year = calendar.get(Calendar.YEAR);
+         * val month = calendar.get(Calendar.MONTH);
+         * val day = calendar.get(Calendar.DAY_OF_MONTH);
+         * val hours = calendar.get(Calendar.HOUR_OF_DAY);
+         * val minute = calendar.get(Calendar.MINUTE);
+         * val seconds = calendar.get(Calendar.SECOND);
+         */
+        return calendar
+    }
 
 
 }
