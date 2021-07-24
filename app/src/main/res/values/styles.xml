@@ -7,6 +7,9 @@
         <attr name="indexSize" format="dimension"/>
     </declare-styleable>
 
-
+    <style name="dialog_date" parent="Base.Theme.AppCompat.Light.Dialog.FixedSize">
+        <!--设置header部分显示的颜色-->
+        <item name="colorAccent">@color/text_red</item>
+    </style>
 
 </resources>
