@@ -59,30 +59,7 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
             addBody(48)
             addBody(32)
         }
-        //原生下拉控件Spinner
-        val spinnerDatas = getSpinnerDatas()
-        val spinnerAdapter = SimpleAdapter(activity, spinnerDatas,R.layout._xpopup_adapter_text,
-            arrayOf("img","tv"),
-            intArrayOf(R.id.iv_image,R.id.tv_text)
-        )
-        //下拉框遮挡住了Spinner的显示框,设置android:overlapAnchor=”false”
-        bind.spinner1.adapter = spinnerAdapter
-        bind.spinner1.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val item = spinnerDatas[position]
-                showToast(item.get("tv").toString())
 
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-
-        }
 
     }
     private fun getSpinnerDatas():ArrayList<Map<String,Any>>{
@@ -131,6 +108,14 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
                 bind.tvHm.text = "${h}时${m}分"
 
             }
+        }
+        //Spinner的显示框
+        bind.spinner1.setOnSpinnerItemSelectedListener<String>{
+                oldIndex, oldItem, newIndex, newText ->
+            showToast("选中了$newText")
+        }
+        bind.spinner1.setOnSpinnerDismissListener {
+            bind.spinner1.arrowDrawable = context?.getDrawable(R.drawable.ic_arrow_down)
         }
     }
 

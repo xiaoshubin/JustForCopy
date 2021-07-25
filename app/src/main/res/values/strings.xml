@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">为Copy而生</string>
+    <string-array name="months">
+        <item>3个月</item>
+        <item>4个月</item>
+        <item>5个月</item>
+        <item>6个月</item>
+    </string-array>
 </resources>

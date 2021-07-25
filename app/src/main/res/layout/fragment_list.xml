@@ -123,15 +123,74 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:background="@mipmap/ic_logo"
-            android:foregroundTintMode="screen"
-            android:spinnerMode="dropdown"
-            android:overlapAnchor="false"
+        <com.skydoves.powerspinner.PowerSpinnerView
             android:id="@+id/spinner1"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center"
+            android:hint="选择月份"
+            android:padding="10dp"
+            android:textColor="@color/titleColor"
+            android:textColorHint="@color/text_gray"
+            android:textSize="14.5sp"
+            app:spinner_arrow_animate_duration="300"
+            app:spinner_arrow_animate="true"
+            app:spinner_arrow_drawable="@mipmap/ic_txt_arrow_down"
+            app:spinner_arrow_tint="@color/text_gray"
+            app:spinner_arrow_gravity="end"
+            app:spinner_arrow_padding="8dp"
+            app:spinner_divider_color="@color/text_gray"
+            app:spinner_divider_show="true"
+            app:spinner_divider_size="0.4dp"
+            app:spinner_item_array="@array/months"
+            app:spinner_popup_animation="dropdown"
+            app:spinner_popup_background="@color/white"
+            app:spinner_popup_elevation="14dp" />
+        <com.skydoves.powerspinner.PowerSpinnerView
+            android:id="@+id/spinner2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center"
+            android:hint="选择月份"
+            android:padding="10dp"
+            android:textColor="@color/titleColor"
+            android:textColorHint="@color/text_gray"
+            android:textSize="14.5sp"
+            app:spinner_arrow_tint="@color/text_gray"
+            app:spinner_arrow_gravity="end"
+            app:spinner_arrow_padding="8dp"
+            app:spinner_divider_color="@color/text_gray"
+            app:spinner_divider_show="true"
+            app:spinner_divider_size="0.4dp"
+            app:spinner_item_array="@array/months"
+            app:spinner_popup_animation="dropdown"
+            app:spinner_popup_background="@color/white"
+            app:spinner_popup_elevation="14dp" />
+        <com.skydoves.powerspinner.PowerSpinnerView
+            android:id="@+id/spinner3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center"
+            android:hint="选择月份"
+            android:padding="10dp"
+            android:textColor="@color/titleColor"
+            android:textColorHint="@color/text_gray"
+            android:textSize="14.5sp"
+            app:spinner_arrow_gravity="end"
+            app:spinner_arrow_padding="8dp"
+            app:spinner_divider_color="@color/text_gray"
+            app:spinner_divider_show="true"
+            app:spinner_divider_size="0.4dp"
+            app:spinner_item_array="@array/months"
+            app:spinner_popup_animation="dropdown"
+            app:spinner_popup_background="@color/white"
+            app:spinner_popup_elevation="14dp" />
+
     </LinearLayout>
+        <View style="@style/h_line"/>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
