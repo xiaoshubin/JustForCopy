@@ -9,11 +9,7 @@ import android.os.Bundle
 import android.os.Message
 import android.view.MotionEvent
 import android.view.View
-import android.widget.AdapterView
-import android.widget.SimpleAdapter
-import android.widget.Spinner
 import com.bigkoo.pickerview.builder.TimePickerBuilder
-import com.smallcake.smallutils.Screen
 import com.smallcake.smallutils.SpannableStringUtils
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.temp.R
@@ -22,8 +18,6 @@ import com.smallcake.temp.databinding.FragmentListBinding
 import com.smallcake.temp.utils.showToast
 import com.willy.ratingbar.BaseRatingBar
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class ListFragment: BaseBindFragment<FragmentListBinding>() {
 
@@ -33,9 +27,7 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
         onEvent()
 
     }
-    fun text() {
-        val res = intArrayOf(1, 2, 3)
-    }
+
     private fun initView() {
         //声音波纹控件
         bind.lineVoice.apply {
@@ -62,18 +54,6 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
 
 
     }
-    private fun getSpinnerDatas():ArrayList<Map<String,Any>>{
-        val data = ArrayList<Map<String,Any>>()
-        val map = HashMap<String,Any>()
-        map["img"] = R.mipmap.icon_selected_tab1
-        map["tv"] = "死神"
-        data.add(map)
-        val map2 = HashMap<String,Any>()
-        map2["img"] = R.mipmap.icon_selected_tab2
-        map2["tv"] = "海贼王"
-        data.add(map2)
-        return data
-    }
 
     @SuppressLint("ClickableViewAccessibility", "SetTextI18n")
     private fun onEvent() {
@@ -85,11 +65,11 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
         bind.audioRecordBtn.setOnTouchListener{ v, event->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 bind.lineVoice.start()
-
             } else if (event.action == MotionEvent.ACTION_CANCEL|| event.action == MotionEvent.ACTION_UP) {
                 bind.lineVoice.stop()
                 bind.lineVoice.clearAnimation()
             } else if (event.action == MotionEvent.ACTION_MOVE) {
+                //用于取消发送语音
 
             }
             false
@@ -114,9 +94,7 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
                 oldIndex, oldItem, newIndex, newText ->
             showToast("选中了$newText")
         }
-        bind.spinner1.setOnSpinnerDismissListener {
-            bind.spinner1.arrowDrawable = context?.getDrawable(R.drawable.ic_arrow_down)
-        }
+
     }
 
     /**
@@ -180,7 +158,6 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
 
     /**
      * 显示时分
-     * @param activity Context?
      * @param listener Function4<DatePicker?, Int, Int, Int, Unit>
      */
     fun showHM( listener: (Int, Int) -> Unit) {
