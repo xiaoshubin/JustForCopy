@@ -42,6 +42,7 @@ import java.util.*
  **/
 object LocationUtils {
     private const val TAG = "LocationUtils"
+
     /**
      * 获取定位Location信息
      * @param activity 上下文
@@ -60,6 +61,27 @@ object LocationUtils {
                 .setPositiveButton("去开启") { dialog, which -> openLocationSet(activity) }
                 .setNegativeButton("取消", null)
                 .show()
+        }
+    }
+
+    /**
+     * 是否打开Gps
+     */
+    fun isOpenGps(activity: Activity):Boolean {
+        //1.获取定位服务
+        val locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        //2.获取当前位置信息中
+        val gpsIsOpen = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) //GPS定位是否打开
+        return if (gpsIsOpen) {
+            true
+        } else {
+            AlertDialog.Builder(activity)
+                .setTitle("GPS服务")
+                .setMessage("请打开GPS！")
+                .setPositiveButton("去开启") { dialog, which -> openLocationSet(activity) }
+                .setNegativeButton("取消", null)
+                .show()
+            false
         }
     }
 
@@ -133,7 +155,6 @@ object LocationUtils {
                     }
                 }
                 override fun onDenied(permissions: MutableList<String>?, never: Boolean) {
-                    super.onDenied(permissions, never)
                     if (never) {
                         // 如果是被永久拒绝就跳转到应用权限系统设置页面
                         XXPermissions.startPermissionActivity(activity, permissions)

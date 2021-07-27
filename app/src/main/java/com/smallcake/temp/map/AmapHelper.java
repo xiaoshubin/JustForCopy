@@ -210,6 +210,28 @@ public class AmapHelper {
     }
 
     /**
+     * 打开高德地图导航功能
+     *  默认以自己位置为起点
+     * @param context
+     * @param destinationLat  终点纬度
+     * @param destinationLng  终点经度
+     * @param destinationName 终点名称 必填
+     */
+    public static void startNavigation(Context context, double destinationLat, double destinationLng, String destinationName) {
+        String uriString = null;
+        StringBuilder builder = new StringBuilder("amapuri://route/plan?sourceApplication=maxuslife");
+        builder.append("&dlat=").append(destinationLat)
+                .append("&dlon=").append(destinationLng)
+                .append("&dname=").append(destinationName)
+                .append("&dev=0")
+                .append("&t=0");
+        uriString = builder.toString();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setPackage("com.autonavi.minimap");
+        intent.setData(Uri.parse(uriString));
+        context.startActivity(intent);
+    }
+    /**
      * 添加View Mark
      *
      * @param map    地图

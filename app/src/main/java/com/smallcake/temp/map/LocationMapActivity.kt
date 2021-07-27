@@ -1,11 +1,8 @@
 package com.smallcake.temp.map
 
-import android.content.Context
 import android.content.Intent
-import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.amap.api.maps.AMap
 import com.amap.api.maps.model.LatLng
@@ -32,25 +29,46 @@ import com.smallcake.temp.utils.showToast
 
 /**
  * 定位当前位置显示
- * 1.权限申请
-1.1在AndroidManifest.xml中配置
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-1.2 代码中申请
-XXPermissions.with(activity)
-    .permission(listOf(Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION))
-        .request{ _, all->
-        if (all) {
-            //执行定位相关操作
-        }
-}
 
-  2.AndroidManifest.xml中配置高德服务和key,(替换自己的key)
+1.【高德sdk引入】
+
+    //高德定位功能
+    implementation 'com.amap.api:location:3.3.0'
+    //高德地图
+    implementation 'com.amap.api:3dmap:5.0.0'
+    //高德检索
+    implementation 'com.amap.api:search:5.0.0'
+
+
+
+2.【高德sdk密钥配置】
+
+    <!--AndroidManifest.xml中配置高德服务和key,(替换自己的key)-->
     <service android:name="com.amap.api.location.APSService" />
     <meta-data
     android:name="com.amap.api.v2.apikey"
-    android:value="937f5f48be1d2b39c1af407482e59ac5" />
- 3.打开gps和网络
+    android:value="替换自己的key" />
+
+
+
+3.权限申请和gps开启
+
+    3.1在AndroidManifest.xml中配置
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    3.2 代码中申请
+    XXPermissions.with(activity)
+        .permission(listOf(Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION))
+            .request{ _, all->
+            if (all) {
+                //执行定位相关操作
+            }
+    }
+    3.3.打开gps和网络
+    val gpsIsOpen = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) //GPS定位是否打开
+    未打开提示去打开
+
+
  *
  */
 class LocationMapActivity : BaseBindActivity<ActivityLocationMapBinding>() {
