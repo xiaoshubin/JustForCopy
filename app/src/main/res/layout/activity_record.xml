@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:padding="16dp"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.RecordActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:paddingLeft="12dp"
+        android:background="@drawable/gray_round6_bg"
+        android:drawableLeft="@mipmap/ic_mic"
+        android:id="@+id/audioRecordBtn"
+        android:text="按住说话"
+        android:layout_width="120dp"
+        android:layout_height="32dp"/>
+    <com.smallcake.smallutils.text.ShapeTextButton
+        android:layout_marginTop="16dp"
+        android:textColor="@color/white"
+        tools:visibility="visible"
+        android:visibility="gone"
+        android:id="@+id/btn_voice_play"
+        android:gravity="left"
+        android:paddingRight="16dp"
+        android:paddingLeft="1dp"
+        android:drawableRight="@drawable/picture_icon_audio"
+        android:layout_alignParentRight="true"
+        android:layout_width="120dp"
+        android:layout_height="32dp"
+        android:text="0''"
+        app:stb_radius="60dp"
+        app:stb_solidColor="@color/text_blue" />
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/layout_recording"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:background="@drawable/recording_bg"
+        android:visibility="gone"
+        tools:visibility="visible">
+    <me.xfans.lib.voicewaveview.VoiceWaveView
+        android:id="@+id/line_voice"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        app:lineColor="@color/white"
+        app:waveMode="left_right" />
+    </FrameLayout>
+</FrameLayout>

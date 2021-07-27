@@ -3,6 +3,7 @@
 
     <color name="text_red">#FC5050</color>
     <color name="text_gray">#999999</color>
+    <color name="text_blue">#729FFF</color>
     <color name="titleColor">#333333</color>
 
     <color name="purple_200">#FFBB86FC</color>
