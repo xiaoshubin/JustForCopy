@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_marginTop="12dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/white_round6_bg"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/gray_round6_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_marginLeft="16dp"
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="空调漏水空调漏水空调漏水空调漏水"
+        android:textColor="#ff333333"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_time"
+        app:layout_constraintStart_toEndOf="@+id/iv"
+        app:layout_constraintTop_toTopOf="@+id/iv" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2020-5-23 11:23:12"
+        android:textColor="#ff999999"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv" />
+
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_marginTop="4dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="所属区域   2栋3楼1010"
+        android:textColor="#ff666666"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:layout_marginTop="4dp"
+        android:id="@+id/tv_submitter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="提交人      陈大胖   18500003651"
+        android:textColor="#ff666666"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_address" />
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="描 述       2栋3楼301号用空调维修"
+        android:textColor="#ff666666"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_submitter" />
+
+    <com.smallcake.smallutils.text.ShapeTextButton
+        android:layout_marginRight="16dp"
+        android:id="@+id/btn_dispose"
+        android:layout_width="@dimen/dp_70"
+        android:layout_height="@dimen/dp_30"
+        android:text="处理"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_appoint"
+        app:layout_constraintEnd_toStartOf="@+id/btn_appoint"
+        app:layout_constraintTop_toTopOf="@+id/btn_appoint"
+        app:stb_radius="6dp"
+        app:stb_solidColor="@color/text_blue" />
+
+    <com.smallcake.smallutils.text.ShapeTextButton
+        android:layout_marginTop="16dp"
+        android:id="@+id/btn_appoint"
+        android:layout_width="@dimen/dp_70"
+        android:layout_height="@dimen/dp_30"
+        android:text="指派"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_desc"
+        app:stb_radius="6dp"
+        app:stb_solidColor="@color/text_red" />
+</androidx.constraintlayout.widget.ConstraintLayout>

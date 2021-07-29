@@ -21,7 +21,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
-        <activity android:name=".ui.RecordActivity"></activity>
+        <activity android:name=".ui.MainFragmentsActivity"/>
+        <activity android:name=".ui.RecordActivity"/>
         <activity android:name=".TestActivity" />
 
         <meta-data

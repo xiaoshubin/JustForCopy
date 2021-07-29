@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.smallcake.temp.R
+import com.yx.jiading.property.bean.TestBean
 
 /**
  * 对BaseQuickAdapter设置占位视图
@@ -26,4 +27,22 @@ fun BaseQuickAdapter<*,*>.setSpaceRes(@LayoutRes resource:Int?=null): View {
     val view = LayoutInflater.from(this.context).inflate(resource?:R.layout.empty_view, null)
     setEmptyView(view)
     return view
+}
+
+object AdapterUtils {
+    fun setEmptyView(mAdapter: BaseQuickAdapter<*,*>){
+        mAdapter.setEmptyView(LayoutInflater.from(mAdapter.context).inflate(R.layout.empty_view,null))
+    }
+
+    fun createTestDatas(num:Int=10):ArrayList<TestBean>{
+        val list = ArrayList<TestBean>()
+        for(index in 0..num)list.add(TestBean())
+        return  list
+    }
+    fun intoTestDatas(mAdapter: BaseQuickAdapter<TestBean,*>,num:Int=10){
+        val list = ArrayList<TestBean>()
+        for(index in 0..num)list.add(TestBean())
+        mAdapter.setList(list)
+    }
+
 }
