@@ -3,7 +3,9 @@ package com.smallcake.temp.fragment
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.LinearLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +27,8 @@ import com.yx.jiading.utils.sizeNull
  *遗留问题：
  * 当已经向上滑动了RecyclerView中内容，然后缓慢向下滑动，
  * RecyclerView中内容没有先滑动下来，而是先滑动了顶部AppBar部分的内容
+ * 解决：通过监听RecyclerView列表的滑动距离：mmRvScrollY==0 说明滑动到顶部
+ * 同时满足AppBar到顶部，列表到顶部，才触发下拉刷新事件
  */
 class HomeTabRecyclerFragment : BaseBindFragment<FragmentHomeTabRecyclerviewBinding>() {
 
@@ -76,7 +80,7 @@ class HomeTabRecyclerFragment : BaseBindFragment<FragmentHomeTabRecyclerviewBind
         }, 300)
 
     }
-
+    var mmRvScrollY = 0 // 列表滑动距离
     private fun onEvent() {
         bind.refreshLayout.setOnRefreshListener {
             page = 1
@@ -84,23 +88,31 @@ class HomeTabRecyclerFragment : BaseBindFragment<FragmentHomeTabRecyclerviewBind
         }
         //解决SwipeRefreshLayout嵌套AppBarLayout下拉刷新冲突
         bind.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            bind.refreshLayout.isEnabled = verticalOffset >= 0
+            bind.refreshLayout.isEnabled = (verticalOffset >= 0&&mmRvScrollY==0)
 
         })
         //发现折叠+切换Fragment偶尔出现AppBarLayout卡住，无法滑动问题，只有ViewPager的RecyclerView部分可以滑动，后面解决如下
-//        bind.appbar.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener{
-//            override fun onPreDraw(): Boolean {
-//                val params  = bind.appbar.layoutParams as CoordinatorLayout.LayoutParams
-//                val behavior = params.behavior as AppBarLayout.Behavior
-//                behavior.setDragCallback(object :AppBarLayout.Behavior.DragCallback(){
-//                    override fun canDrag(appBarLayout: AppBarLayout): Boolean {
-//                        return true
-//                    }
-//
-//                })
-//                return true
-//            }
-//        })
+        bind.appbar.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener{
+            override fun onPreDraw(): Boolean {
+                val params  = bind.appbar.layoutParams as CoordinatorLayout.LayoutParams
+                val behavior = params.behavior as AppBarLayout.Behavior
+                behavior.setDragCallback(object :AppBarLayout.Behavior.DragCallback(){
+                    override fun canDrag(appBarLayout: AppBarLayout): Boolean {
+                        return true
+                    }
+
+                })
+                return true
+            }
+        })
+
+        //滑动距离监听
+        bind.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                mmRvScrollY += dy
+            }
+        })
 
 
     }
