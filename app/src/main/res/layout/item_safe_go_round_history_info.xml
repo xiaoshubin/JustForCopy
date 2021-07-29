@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/white_round6_bg"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:id="@+id/tv_time"
+        android:padding="16dp"
+        android:background="@drawable/white_round6_bg"
+        android:drawableRight="@mipmap/ic_txt_arrow_down"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2020-5-23"
+        android:textColor="#ff333333"
+        android:textSize="15sp"
+        />
+    <View style="@style/h_line"/>
+
+    <LinearLayout
+        android:id="@+id/layout_desc_img"
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="巡检结果     政常"
+            android:textColor="#ff333333"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="描述           一切正常一切正常一切正常一切正常常"
+            android:textColor="@color/titleColor"
+            android:textSize="13sp" />
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="巡更时间      2020-5-23 12:00:21    "
+            android:textColor="@color/titleColor"
+            android:textSize="13sp" />
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginRight="16dp"
+            android:layout_width="58dp"
+            android:layout_height="wrap_content"
+            android:text="图片"
+            android:textColor="#ff333333"
+            android:textSize="13sp"
+            />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:background="@drawable/gray_round6_bg"
+                android:id="@+id/iv1"
+                android:layout_width="66dp"
+                android:layout_height="66dp"/>
+            <ImageView
+                android:background="@drawable/gray_round6_bg"
+                android:layout_marginLeft="16dp"
+                android:id="@+id/iv2"
+                android:layout_width="66dp"
+                android:layout_height="66dp"/>
+            <ImageView
+                android:background="@drawable/gray_round6_bg"
+                android:layout_marginLeft="16dp"
+                android:id="@+id/iv3"
+                android:layout_width="66dp"
+                android:layout_height="66dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>
