@@ -9,62 +9,73 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
-import com.draggable.library.extension.ImageViewerHelper
 import com.smallcake.temp.R
 import java.io.File
 
 /**
- * 添加图片
- * @author Abel
+ * 添加图片适配器
+ * 布局文件
+ * @see R.layout.grid_item_image
  */
-class GridImageAdapter(private val maxCount: Int? = -1) :
-    RecyclerView.Adapter<GridImageAdapter.ViewHolder>() {
+class GridImageAdapter(private val maxCount: Int? = -1) : RecyclerView.Adapter<GridImageAdapter.ViewHolder>() {
+    data class Bean(
+        val path: String,//图片路径
+        val deleteVisibility: Boolean//删除按钮是否显示
+    )
 
-    fun setOnInsertImageListener(onInsertImageListener: OnInsertImageListener) {
-        this.onInsertImageListener = onInsertImageListener
+    private val dataList = mutableListOf<Bean>()
+    private var isImageSizeMeet = false//实收是图片数量
+    private var addImgListener: (()->Unit)? = null//插入了图片事件
+    private var onClickImageListener: ((View, Int)->Unit)? = null//点击item
+    //外部获取当前的数据集，用来判定还能添加的图片张数
+    fun getDataList(): MutableList<Bean> = dataList
+    private fun isInsertItem() = maxCount != -1//是否是添加子项的操作
+
+    interface OnDeleteListener {
+        /**
+         * 删除item
+         * @param view     itemView
+         * @param position 下标
+         */
+        fun onDelete(view: View, position: Int)
     }
 
-    fun setOnClickImageListener(onClickImageListener: OnClickImageListener) {
+    /**
+     * 添加图片事件
+     */
+    fun setOnAddImgListener(addImgListener: ()->Unit) {
+        this.addImgListener = addImgListener
+    }
+    /**
+     * 点击图片
+     */
+    fun setOnClickImageListener(onClickImageListener: (View, Int)->Unit) {
         this.onClickImageListener = onClickImageListener
     }
+    /**
+     * 点击已经显示的图片
+     */
+    fun setUpOnClickImageDefault(view: View, position: Int) {
+        onClickImageListener?.invoke(view, position)
 
+    }
+    //添加单张图片
     fun insertImage(path: String, deleteVisibility: Boolean = true) {
-//        dataList.add(0,Bean(path, deleteVisibility))
         dataList.add(Bean(path, deleteVisibility))
         if (maxCount == -1) {
             notifyDataSetChanged()
         } else {
             isImageSizeMeet = dataList.size == maxCount
             notifyDataSetChanged()
-//            if (isImageSizeMeet) {
-//                notifyDataSetChanged()
-//            } else {
-//                notifyItemInserted(0)
-//            }
         }
     }
-
+    //添加多张张图片
     fun insertImages(paths: List<String>, deleteVisibility: Boolean = true) {
         dataList.clear()
-        paths.forEach {
-            dataList.add(Bean(it, deleteVisibility))
-        }
-        isImageSizeMeet = if (maxCount != -1)
-            dataList.size == maxCount
-        else
-            true
-
+        paths.forEach {dataList.add(Bean(it, deleteVisibility))}
+        isImageSizeMeet = if (maxCount != -1)dataList.size == maxCount else true
         notifyDataSetChanged()
     }
-
-    fun getDataList(): MutableList<Bean> = dataList
-
-    private var onInsertImageListener: OnInsertImageListener? = null
-    private var onClickImageListener: OnClickImageListener? = null
-
-    private val dataList = mutableListOf<Bean>()
-
-    private var isImageSizeMeet = false
 
     private val mOnDeleteListener = object : OnDeleteListener {
         override fun onDelete(view: View, position: Int) {
@@ -79,10 +90,9 @@ class GridImageAdapter(private val maxCount: Int? = -1) :
         }
     }
 
-    private fun isInsertItem() = maxCount != -1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(ViewHolder.getView(parent))
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(ViewHolder.getView(parent))
 
     override fun getItemCount(): Int = if (isInsertItem()) {
         if (isImageSizeMeet) {
@@ -94,23 +104,7 @@ class GridImageAdapter(private val maxCount: Int? = -1) :
         dataList.size
     }
 
-    private fun setUpOnClickImageDefault(view: View, position: Int) {
-        onClickImageListener?.onClick(view, position)
 
-        val paths = mutableListOf<String>()
-        getDataList().forEach {
-            if (it.path.isNotEmpty()) {
-                paths.add(it.path)
-            }
-        }
-
-        ImageViewerHelper.showImages(
-            view.context,
-            paths,
-            position,
-            true
-        )
-    }
 
     private fun getItemBean(position: Int): Bean = dataList[position]
 
@@ -135,7 +129,7 @@ class GridImageAdapter(private val maxCount: Int? = -1) :
                     holder.emptyValue()
                     holder.setOnDeleteListener(null)
                     holder.itemView.setOnClickListener {
-                        onInsertImageListener?.onInsertImage()
+                        addImgListener?.invoke()
                     }
                 }
             }
@@ -152,11 +146,7 @@ class GridImageAdapter(private val maxCount: Int? = -1) :
 
         companion object {
             fun getView(viewGroup: ViewGroup): View =
-                LayoutInflater.from(viewGroup.context).inflate(
-                    R.layout.grid_item_image,
-                    viewGroup,
-                    false
-                )
+                LayoutInflater.from(viewGroup.context).inflate(R.layout.grid_item_image,viewGroup,false)
         }
 
         fun setOnDeleteListener(onDeleteListener: OnDeleteListener?) {
@@ -168,13 +158,11 @@ class GridImageAdapter(private val maxCount: Int? = -1) :
         private var onDeleteListener: OnDeleteListener? = null
 
         private val imageView: AppCompatImageView by lazy {
-            itemView.findViewById<AppCompatImageView>(
-                R.id.iv_grid_item_image
-            )
+            itemView.findViewById(R.id.iv_grid_item_image)
         }
 
         private val deleteView: View by lazy {
-            itemView.findViewById<View>(R.id.btn_grid_list_image_delete)
+            itemView.findViewById(R.id.btn_grid_list_image_delete)
         }
 
         fun setValue(bean: Bean) {
@@ -183,7 +171,6 @@ class GridImageAdapter(private val maxCount: Int? = -1) :
                 imageView.load(File(bean.path)){
                     transformations(RoundedCornersTransformation(6f))
                 }
-
                 deleteView.visibility = if (bean.deleteVisibility) View.VISIBLE else View.GONE
                 itemView.setBackgroundColor(Color.TRANSPARENT)
             } else {
@@ -198,41 +185,8 @@ class GridImageAdapter(private val maxCount: Int? = -1) :
         fun emptyValue() {
             imageView.visibility = View.GONE
             deleteView.visibility = View.GONE
-            itemView.setBackgroundColor(
-                ContextCompat.getColor(
-                    itemView.context,
-                    R.color.white
-                )
-            )
+            itemView.setBackgroundColor(Color.WHITE)
         }
     }
 
-    data class Bean(
-        val path: String,
-        val deleteVisibility: Boolean
-    )
-
-    interface OnInsertImageListener {
-        fun onInsertImage()
-    }
-
-    interface OnDeleteListener {
-        /**
-         * 删除item
-         *
-         * @param view     itemView
-         * @param position 下标
-         */
-        fun onDelete(view: View, position: Int)
-    }
-
-    interface OnClickImageListener {
-        /**
-         * 点击item
-         *
-         * @param view     itemView
-         * @param position 下标
-         */
-        fun onClick(view: View, position: Int)
-    }
 }

@@ -19,12 +19,12 @@ class AutoNewLineLayout @JvmOverloads constructor(
     /**
      * 两个子控件之间的横向间隙
      */
-    protected var horizontalSpace = 0f
+     var horizontalSpace = 0f
 
     /**
      * 两个子控件之间的垂直间隙
      */
-    protected var vertivalSpace = 0f
+     var vertivalSpace = 0f
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val widthSpecMode = MeasureSpec.getMode(widthMeasureSpec)
