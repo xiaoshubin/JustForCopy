@@ -37,12 +37,12 @@ object TabUtils {
                 return  tabs.sizeNull()
             }
 
-            override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
+            override fun getTitleView(context: Context, index: Int): IPagerTitleView {
                 val tv = ColorTransitionPagerTitleView(context)
                 tv.apply {
                     textSize = 16f
                     normalColor = Color.GRAY
-                    selectedColor = Color.BLACK
+                    selectedColor = ContextCompat.getColor(context,R.color.text_blue)
                     text = tabs[index]
                     setOnClickListener {
                         helper.handlePageSelected(index)
@@ -88,7 +88,7 @@ object TabUtils {
                 val tv = SelectBigPagerTitleView(context)
                 tv.apply {
                     normalColor = Color.GRAY
-                    selectedColor = Color.BLACK
+                    selectedColor = ContextCompat.getColor(context,R.color.text_blue)
                     text = tabs[index]
                     setOnClickListener {
                         helper.handlePageSelected(index)
