@@ -112,11 +112,9 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
         val picker = TimePickerBuilder(requireContext()) { date, _ ->
             val showStr = TimeUtils.timeToStr((date.time/1000).toInt(),"yyyy-MM-dd HH:mm")
             bind.tvYmdhm.text = showStr
-
         }.setType(showTypes)
             .setupDefault()
             .build()
-
         picker.setTitleText("时间选择")
         picker.show(true)
     }
