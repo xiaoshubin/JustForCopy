@@ -1,10 +1,8 @@
 package com.smallcake.temp.ui
 
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.smallutils.text.NavigationBar
-import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityReportRepairBinding
 import com.smallcake.temp.utils.*
