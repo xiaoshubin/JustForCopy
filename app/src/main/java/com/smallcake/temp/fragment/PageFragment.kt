@@ -26,6 +26,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("地图点击选择位置", LocationMapActivity::class.java,"定位，点击选择位置，高德地图"),
             PageBean("反馈", ReportRepairActivity::class.java,"图片选择，反馈，报事报修"),
             PageBean("录音", RecordActivity::class.java,"录音音频"),
+            PageBean("签到日历", SignListActivity::class.java,"签到日历"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
