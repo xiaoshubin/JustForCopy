@@ -1,5 +1,7 @@
 package com.smallcake.smallutils
 
+import android.content.Intent
+import android.net.Uri
 import android.webkit.WebView
 
 /**
@@ -23,7 +25,19 @@ class WebUtils {
      * 加载文本内容
      * 图片自适应
      */
-    fun WebView.loadContentAutoImg(content: String?){
-        this.loadDataWithBaseURL(null,autoImg(content)?: "", "text/html", "utf-8",null)
+    fun loadContentAutoImg(webView: WebView, content: String?){
+        webView.loadDataWithBaseURL(null, autoImg(content) ?: "", "text/html", "utf-8", null)
+    }
+
+    /**
+     * 跳外部浏览器
+     * @param url String
+     */
+    fun goWebExt(url:String){
+        val intent = Intent()
+        intent.action = Intent.ACTION_VIEW
+        intent.data = Uri.parse(url)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        SmallUtils.context?.startActivity(intent)
     }
 }

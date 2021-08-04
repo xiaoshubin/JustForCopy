@@ -46,6 +46,7 @@
                 android:resource="@xml/filepath_data" />
         </provider>
 
+        <activity android:name=".ui.SignListActivity" />
         <activity android:name=".ui.ReportRepairActivity" />
         <activity android:name=".map.LocationMapActivity" />
         <activity android:name=".ui.MainMiddleOutActivity" />

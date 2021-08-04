@@ -43,7 +43,7 @@ class HomeTabRecyclerFragment : BaseBindFragment<FragmentHomeTabRecyclerviewBind
 
     private fun initView() {
         initViewPager(getData(), 2, 5)
-        TabUtils.createTabs(bind.tabLayout, listOf("待处理", "待审批")) {
+        TabUtils.createSelectBigTabs(bind.tabLayout, listOf("待处理", "待审批")) {
 
         }
         bind.recyclerView.apply {

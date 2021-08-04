@@ -162,5 +162,7 @@ dependencies {
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
     //下拉控件Spinner
     implementation "com.github.skydoves:powerspinner:1.1.8"
+    //日历控件
+    implementation 'com.haibin:calendarview:3.7.1'
 
 }

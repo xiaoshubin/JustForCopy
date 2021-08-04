@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    android:id="@+id/scroll_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".main.SignInActivity">
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="16dp"
+       android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/white_round6_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_month_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="7月汇总"
+            android:textColor="#ff333333"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_pj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11.5"
+            android:textColor="#ff333333"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_cd"
+            app:layout_constraintEnd_toEndOf="@+id/textView5"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
+            app:layout_constraintTop_toTopOf="@+id/tv_cd" />
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:id="@+id/tv_cd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textColor="#ff333333"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_month_desc" />
+
+        <TextView
+            android:id="@+id/tv_zt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:textColor="#ff333333"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_cd"
+            app:layout_constraintEnd_toEndOf="@+id/textView6"
+            app:layout_constraintStart_toStartOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="@+id/tv_cd" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="迟到(次)"
+            android:textColor="#ff333333"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_cd" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="平均工时(小时)"
+            android:textColor="#ff333333"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pj" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="早退(次)"
+            android:textColor="#ff333333"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_zt" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:gravity="center_horizontal"
+
+        android:background="@drawable/white_round6_bg"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:padding="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="每日记录"
+                android:textColor="@color/titleColor"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:id="@+id/tv_month"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(1月)"
+                android:textColor="@color/text_gray"
+                android:textSize="14sp"
+                />
+
+        </LinearLayout>
+        <com.haibin.calendarview.CalendarLayout
+            android:id="@+id/calendar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:default_status="expand"
+            app:calendar_show_mode="both_month_week_view"
+            app:calendar_content_view_id="@+id/scroll_view">
+        <com.haibin.calendarview.CalendarView
+            android:id="@+id/calendar_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            app:month_view_show_mode="mode_only_current"
+            app:current_month_text_color="#333333"
+            app:current_month_lunar_text_color="#CFCFCF"
+            app:min_year="2020"
+            app:max_year="2021"
+            app:week_start_with="mon"
+            app:other_month_text_color="#e1e1e1"
+            app:other_month_lunar_text_color="#e1e1e1"
+            app:scheme_text="假"
+            app:scheme_text_color="#3C78FF"
+            app:scheme_theme_color="#128c4b"
+            app:selected_lunar_text_color="#ffffff"
+            app:month_view="com.smallcake.temp.weight.MeiZuMonthView"
+            app:week_view="com.smallcake.temp.weight.MeizuWeekView"
+            app:selected_text_color="#ffffff"
+            app:selected_theme_color="#3C78FF"
+            app:week_background="#fff"
+            app:week_text_color="@color/text_gray"
+            app:year_view_day_text_color="#333333"
+            app:year_view_day_text_size="8sp"
+            app:year_view_month_text_color="#ff0000"
+            app:year_view_month_text_size="14sp"
+            app:day_text_size="14sp"
+            app:year_view_scheme_color="#f17706"/>
+        </com.haibin.calendarview.CalendarLayout>
+        <LinearLayout
+            android:id="@+id/layout_expand"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:background="#ECECEC"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"/>
+            <ImageView
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:src="@drawable/picture_icon_wechat_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <View
+                android:background="#ECECEC"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_rule"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="规则：固定上下班  技术研发部 08:30-18:30"
+            android:textColor="#ff999999"
+            android:textSize="13sp"
+            />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="180dp">
+
+            <View
+                android:id="@+id/view_pot1"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/pot_gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/tv_am"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上班 08:29"
+                android:textColor="#ff333333"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/view_pot1"
+                app:layout_constraintStart_toEndOf="@+id/view_pot1"
+                app:layout_constraintTop_toTopOf="@+id/view_pot1" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:drawablePadding="4dp"
+                android:drawableLeft="@mipmap/ic_location_red"
+                android:id="@+id/tv_am_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="重庆市江北区新世纪百货"
+                android:textColor="#ff999999"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_am"
+                app:layout_constraintTop_toBottomOf="@+id/tv_am" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="2dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="4dp"
+                android:background="#EEEEEE"
+                app:layout_constraintEnd_toEndOf="@+id/view_pot1"
+                app:layout_constraintStart_toStartOf="@+id/view_pot1"
+                app:layout_constraintTop_toBottomOf="@+id/view_pot1" />
+
+            <View
+                android:layout_marginTop="4dp"
+                android:id="@+id/view_pot2"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/pot_gray"
+                app:layout_constraintEnd_toEndOf="@+id/view2"
+                app:layout_constraintStart_toStartOf="@+id/view2"
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+            <TextView
+                android:id="@+id/tv_pm"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 下班 18:00"
+                android:textColor="#ff333333"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/view_pot2"
+                app:layout_constraintStart_toEndOf="@+id/view_pot2"
+                app:layout_constraintTop_toTopOf="@+id/view_pot2" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:drawablePadding="4dp"
+                android:drawableLeft="@mipmap/ic_location_red"
+                android:id="@+id/tv_pm_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="重庆市江北区新世纪百货"
+                android:textColor="#ff999999"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/tv_pm"
+                app:layout_constraintTop_toBottomOf="@+id/tv_pm" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
+</androidx.core.widget.NestedScrollView>
