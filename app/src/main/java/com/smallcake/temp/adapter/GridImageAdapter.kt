@@ -1,4 +1,4 @@
-package com.yx.jiading.adapter
+package com.smallcake.temp.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -24,7 +24,7 @@ class GridImageAdapter(private val maxCount: Int? = -1) : RecyclerView.Adapter<G
     )
 
     private val dataList = mutableListOf<Bean>()
-    private var isImageSizeMeet = false//实收是图片数量
+    var isImageSizeMeet = false//是否选择满了图片：选择的图片==最大限制图片数量
     private var addImgListener: (()->Unit)? = null//插入了图片事件
     private var onClickImageListener: ((View, Int)->Unit)? = null//点击item
     //外部获取当前的数据集，用来判定还能添加的图片张数

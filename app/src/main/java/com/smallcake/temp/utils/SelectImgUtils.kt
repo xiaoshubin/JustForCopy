@@ -11,7 +11,7 @@ import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.yx.jiading.adapter.GridImageAdapter
+import com.smallcake.temp.adapter.GridImageAdapter
 
 /**
  * Date:2021/7/14 13:38
@@ -27,6 +27,7 @@ object SelectImgUtils {
     fun bindRecyclerView(activity:AppCompatActivity,recyclerView: RecyclerView,cb:(MutableList<GridImageAdapter.Bean>)->Unit){
         selectListener = cb
         mInsertImageAdapter.getDataList().clear()
+        mInsertImageAdapter.isImageSizeMeet = false
         mInsertImageAdapter.setOnAddImgListener{
                 checkPermission(activity)
         }
