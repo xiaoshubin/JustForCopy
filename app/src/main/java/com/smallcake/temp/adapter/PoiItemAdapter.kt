@@ -22,7 +22,6 @@ class PoiItemAdapter(private val latLngCurrent:LatLng): BaseQuickAdapter<PoiItem
         val city = item.cityName
         val address = item.adName
         val itemStr = item.toString()
-        ldd(item.toString())
 
         holder.setText(R.id.tv_title,"$province$city$address$itemStr")
 

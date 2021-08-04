@@ -64,7 +64,7 @@ class GridImageAdapter(private val maxCount: Int? = -1) :
 
     private val dataList = mutableListOf<Bean>()
 
-    private var isImageSizeMeet = false
+    var isImageSizeMeet = false//是否已经选择满了图片
 
     private val mOnDeleteListener = object : OnDeleteListener {
         override fun onDelete(view: View, position: Int) {

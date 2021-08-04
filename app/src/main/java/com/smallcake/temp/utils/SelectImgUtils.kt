@@ -27,6 +27,7 @@ object SelectImgUtils {
     fun bindRecyclerView(activity:AppCompatActivity,recyclerView: RecyclerView,cb:(MutableList<GridImageAdapter.Bean>)->Unit){
         selectListener = cb
         mInsertImageAdapter.getDataList().clear()
+        mInsertImageAdapter.isImageSizeMeet=false
         mInsertImageAdapter.setOnInsertImageListener(object :
             GridImageAdapter.OnInsertImageListener {
             override fun onInsertImage() {

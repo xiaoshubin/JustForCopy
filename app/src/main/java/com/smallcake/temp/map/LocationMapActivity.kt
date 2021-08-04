@@ -56,6 +56,7 @@ import com.smallcake.temp.utils.showToast
     3.1在AndroidManifest.xml中配置
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     3.2 代码中申请
     XXPermissions.with(activity)
         .permission(listOf(Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION))
@@ -68,6 +69,17 @@ import com.smallcake.temp.utils.showToast
     val gpsIsOpen = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) //GPS定位是否打开
     未打开提示去打开
 
+
+高德地图黑屏：神奇的bug
+最开始以为是kotlin的问题，用了java写页面，问题依旧，最后发现三个条件导致页面黑屏，a.文本数据设置中包含了特殊字符：()或· b.使用了高德地图mapView.onCreate(savedInstanceState)，c.红米k30手机（目前测试其他手机正常）
+- 单独使用地图，没有问题（说明高德没有）
+- 单独对文本设置包含了特殊字符的文本没有问题（说明可以设置特殊字符的文本：重庆市渝中区菜袁路渝中区旭庆·江湾国际花都(菜袁路西)）
+- 不使用红米手机K30,设置了地图也设置了包含了特殊字符的文本也没问题
+最终结论：手机有问题
+
+解决方案一：去掉特殊文本中的特殊字符：重庆市渝中区菜袁路渝中区旭庆江湾国际花都菜袁路西（不合理，显示的内容缺少）
+解决方案二：不使用红米手机（测试不干）
+解决方案三：猜想黑屏是渲染导致，那么可以延迟处理其中一方，地图因为要跟随onCreate的创建而绑定，没法弄，于是考虑延迟300豪秒来设置特殊文本到文本控件中
 
  *
  */
@@ -93,6 +105,11 @@ class LocationMapActivity : BaseBindActivity<ActivityLocationMapBinding>() {
 
 
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        bind.mapView.onSaveInstanceState(outState)
     }
 
     private fun initView() {
