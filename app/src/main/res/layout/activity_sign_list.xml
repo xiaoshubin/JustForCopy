@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView
+    android:background="#F8F8F8"
     android:id="@+id/scroll_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -153,6 +154,7 @@
             app:calendar_show_mode="both_month_week_view"
             app:calendar_content_view_id="@+id/scroll_view">
         <com.haibin.calendarview.CalendarView
+            app:select_mode="single_mode"
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -197,7 +199,7 @@
             <ImageView
                 android:layout_marginRight="16dp"
                 android:layout_marginLeft="16dp"
-                android:src="@drawable/picture_icon_wechat_up"
+                android:src="@mipmap/ic_arrow_up_candle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <View

@@ -7,10 +7,12 @@ import android.graphics.Paint
 import android.text.TextUtils
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.MonthView
+import com.smallcake.temp.utils.L
 
 /**
  * Date: 2020/8/21
  * author: SmallCake
+ * 月视图
  */
 class MeiZuMonthView(context: Context) : MonthView(context) {
     /**
@@ -39,7 +41,8 @@ class MeiZuMonthView(context: Context) : MonthView(context) {
      */
     override fun onDrawSelected(canvas: Canvas,calendar: Calendar,x: Int,y: Int,hasScheme: Boolean): Boolean {
         mSelectedPaint.color = Color.parseColor("#43CFB6")
-        canvas.drawCircle((x + mItemWidth / 2).toFloat(),(y + mItemHeight / 2).toFloat(),(mItemHeight / 2).toFloat(),mSelectedPaint)
+        val circleSize = mItemWidth.coerceAtMost(mItemHeight)
+        canvas.drawCircle((x + mItemWidth / 2).toFloat(),(y + mItemHeight / 2).toFloat(),(circleSize / 2).toFloat(),mSelectedPaint)
         return true
     }
 

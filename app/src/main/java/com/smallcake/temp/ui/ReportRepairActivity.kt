@@ -3,10 +3,10 @@ package com.smallcake.temp.ui
 import android.os.Bundle
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.smallutils.text.NavigationBar
+import com.smallcake.temp.adapter.GridImageAdapter
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityReportRepairBinding
 import com.smallcake.temp.utils.*
-import com.yx.jiading.adapter.GridImageAdapter
 import com.yx.jiading.utils.sizeNull
 
 /**

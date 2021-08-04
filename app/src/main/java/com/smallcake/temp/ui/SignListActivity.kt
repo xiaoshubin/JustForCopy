@@ -14,6 +14,9 @@ import java.util.*
  *
  * 日历采用CalendarView
  * 文档：https://github.com/huanghaibin-dev/CalendarView/blob/master/QUESTION_ZH.md
+ * 1.切换月份后，不选中每个月的第一天
+ * app:select_mode="single_mode"
+ *
  */
 class SignListActivity : BaseBindActivity<ActivitySignListBinding>() {
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
@@ -39,7 +42,8 @@ class SignListActivity : BaseBindActivity<ActivitySignListBinding>() {
         updateMonth(mMonth)
         //范围控制，查询最近一年的日历
         bind.calendarView.setRange(mYear - 1, mMonth, mDay, mYear, mMonth, mDay)
-        bind.calendarView.setDefaultMonthViewSelectDay()
+        //默认滚动到当前日期
+        bind.calendarView.scrollToCurrent()
     }
 
     private fun onEvent() {
