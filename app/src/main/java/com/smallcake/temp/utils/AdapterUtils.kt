@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.smallcake.temp.R
-import com.yx.jiading.property.bean.TestBean
+import com.smallcake.temp.bean.TestBean
 
 /**
  * 对BaseQuickAdapter设置占位视图

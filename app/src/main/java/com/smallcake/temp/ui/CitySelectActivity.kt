@@ -98,7 +98,7 @@ class CitySelectActivity : BaseBindActivity<ActivityCitySelectBinding>() {
 
     private fun onEvent() {
         bind.ivBack.setOnClickListener{finish()}
-        EditTextUtils.setOnSearch(bind.etSearch){
+        EditTextUtils.setOnSearch(this,bind.etSearch){
             if (it.isNullOrEmpty()){
                 showToast("请输入搜索城市中文名称")
                 return@setOnSearch
