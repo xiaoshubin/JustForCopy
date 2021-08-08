@@ -83,6 +83,8 @@ object AppUtils {
     }
 
     /**
+     * 获取SHA1命令
+     * keytool -keystore 秘钥路径 -list -v
      * 获取应用的的key hashes 例如FaceBook接入SDK就需要
      *
      * 也可以通过命令获取
