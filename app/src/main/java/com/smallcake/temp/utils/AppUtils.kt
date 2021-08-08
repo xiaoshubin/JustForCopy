@@ -10,9 +10,12 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.core.content.FileProvider
 import com.smallcake.temp.MyApplication
 import java.io.File
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 object AppUtils {
     //获取应用包名
@@ -77,6 +80,38 @@ object AppUtils {
             if (runningApp.pid==pid)return runningApp.processName
         }
         return null
+    }
+
+    /**
+     * 获取应用的的key hashes 例如FaceBook接入SDK就需要
+     *
+     * 也可以通过命令获取
+     * sh D:\keyHash.sh 别名 别名密码  签名文件jks
+     * 其中sh为git中bin的命令
+     * keyHash.sh为我们自己创建的一个可运行命令
+    RELEASE_KEY_ALIAS=$1
+    RELEASE_KEY_PASSWARD=$2
+    RELEASE_KEY_PATH=$3
+    keytool -exportcert -alias $RELEASE_KEY_ALIAS -storepass $RELEASE_KEY_PASSWARD -keystore $RELEASE_KEY_PATH | openssl sha1 -binary | openssl base64
+     *
+     *
+     */
+    private fun getKeyHashValue(context: Context) {
+        try {
+            val info = context.packageManager.getPackageInfo(
+                getAppPackageName(),
+                PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                val md = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                Log.d("KeyHash:", android.util.Base64.encodeToString(md.digest(), android.util.Base64.DEFAULT))
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.d("KeyHash:",e.toString())
+        } catch (e: NoSuchAlgorithmException) {
+            Log.d("KeyHash:", e.toString())
+        }
+
     }
 
 }
