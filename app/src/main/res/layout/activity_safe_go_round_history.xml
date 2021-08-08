@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".main.SafeGoRoundActivity">
+    <TextView
+        android:padding="24dp"
+        android:background="@color/white"
+        android:drawablePadding="16dp"
+        android:drawableLeft="@mipmap/ic_location_red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="巡更点名称巡更点名称巡更点名称"
+        android:textColor="#ff333333"
+        android:textSize="15sp"
+        />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_margin="12dp"
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+</LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -4,7 +4,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.smallcake.temp.R
-import com.yx.jiading.property.bean.TestBean
+import com.smallcake.temp.bean.TestBean
 
 /**
  * Date:2021/7/29 8:40
