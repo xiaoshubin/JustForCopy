@@ -164,5 +164,7 @@ dependencies {
     implementation "com.github.skydoves:powerspinner:1.1.8"
     //日历控件
     implementation 'com.haibin:calendarview:3.7.1'
+    //Google登录
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
 
 }
