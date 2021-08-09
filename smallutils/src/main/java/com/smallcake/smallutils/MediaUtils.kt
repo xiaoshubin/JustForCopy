@@ -20,6 +20,7 @@ object MediaUtils{
     /**
      * 播放res/raw资源下的mp3音频文件
      * 例如：MediaUtils.playMp3("zltx.mp3",R.raw::class.java)
+     * 坑：如果需要在息屏状态下播放语音文件，需要申明MediaPlayer为全部变量，而不是局部变量
      */
     fun playMp3(name: String, cls: Class<*>) {
         val resId: Int = ResourceUtils.findResId(name.replace(".mp3", ""), cls)
