@@ -29,6 +29,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("签到日历", SignListActivity::class.java,"签到日历"),
             PageBean("收缩列表", SafeGoRoundHistoryInfoActivity::class.java,"收缩列表"),
             PageBean("登录", LoginActivity::class.java,"三方登录"),
+            PageBean("文本", TextViewActivity::class.java,"伸缩文本"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->

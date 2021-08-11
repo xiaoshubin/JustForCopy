@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.TextViewActivity">
+    <com.smallcake.temp.weight.CollapsibleTextView
+        android:text="雷军用实际行动证明：一个不会蹭热度的程序员不会是一个好的CEO。
+程序员在大家刻板的印象里就是格子衫、油腻、头发稀疏的形象，然而事实并非如此。绝大多数的程序员都很聪明，更有一些程序员已经成了精，不仅编程厉害，营销方面也是不输任何营销大师，最典型的代表就是雷军。"
+        android:id="@+id/normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        app:collapsedLines="3"
+        app:collapsedText="全文"
+        app:expandedText="收起"
+        app:suffixColor="#27CAF3"
+        app:suffixTrigger="true"
+    />
+    <View style="@style/h_line"/>
+    <TextView
+        android:gravity="center"
+        android:textSize="30sp"
+        android:id="@+id/tv_autosize"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeMaxTextSize="80sp"
+        android:text="大小"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            style="@style/Widget.Design.FloatingActionButton"
+            android:gravity="center"
+            android:id="@+id/tv_add"
+            android:text="添加文字"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:layout_marginLeft="32dp"
+            style="@style/Widget.Design.FloatingActionButton"
+            android:id="@+id/tv_reset"
+            android:text="还原文字"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
