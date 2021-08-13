@@ -5,8 +5,11 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.lxj.xpopup.XPopup
 import com.smallcake.smallutils.DpPxUtils
+import com.smallcake.smallutils.Screen
 import com.smallcake.smallutils.ShapeCreator
+import com.smallcake.temp.pop.NetDebugPop
 import com.smallcake.temp.utils.ldd
 import com.smallcake.temp.utils.showToast
 
@@ -14,7 +17,7 @@ import com.smallcake.temp.utils.showToast
  * 网络数据监控调试器
  */
 class HttpDebug(mContext: Context, parent: ViewGroup) {
-    var isDebug:Boolean = !BuildConfig.DEBUG//是否开启了调试模式
+    var isDebug:Boolean = BuildConfig.DEBUG//是否开启了调试模式
     init {
         if (isDebug){
             val httpDebugText = LayoutInflater.from(mContext).inflate(R.layout.http_debug_text, parent, true)
@@ -37,8 +40,10 @@ class HttpDebug(mContext: Context, parent: ViewGroup) {
             layoutParams.topMargin = dp16
             tv.layoutParams = layoutParams
             tv.setOnClickListener{
-                showToast("开发模式弹框~！")
-                ldd("开发模式弹框~！")
+                XPopup.Builder(mContext)
+                    .popupHeight(Screen.height-Screen.statusHeight)
+                    .asCustom(NetDebugPop(mContext))
+                    .show()
             }
         }
 

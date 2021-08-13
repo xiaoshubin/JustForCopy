@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="#ffffff"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View android:layout_width="match_parent" android:layout_height="0.5dp" android:background="#000000"/>
+    <TextView
+        android:layout_marginTop="8dp"
+        android:textSize="12sp"
+        android:textColor="#4990E2"
+        android:text="请求url"
+        android:id="@+id/tv_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_marginTop="8dp"
+        android:textSize="12sp"
+        android:textColor="#ff00ff"
+        android:text="请求参数"
+        android:id="@+id/tv_params"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_marginTop="8dp"
+        android:textSize="8sp"
+        android:textColor="#000000"
+        android:text="返回体"
+        android:id="@+id/tv_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/text_blue"
+        android:background="@drawable/gray_round6_bg"
+        android:gravity="center"
+        android:id="@+id/tv_copy"
+        android:layout_gravity="right"
+        android:textSize="10sp"
+        android:text="复制"
+        android:layout_width="60dp"
+        android:layout_height="30dp"/>
+</LinearLayout>

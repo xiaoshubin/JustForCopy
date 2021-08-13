@@ -18,7 +18,7 @@ import java.util.*
  */
 object MMKVUtils {
     //You should Call MMKV.initialize() first.
-    private val mmkv: MMKV = MMKV.mmkvWithID("small_data")!!
+     val mmkv: MMKV = MMKV.mmkvWithID("small_data")!!
 
     /**
      * desc:保存对象

@@ -2,6 +2,7 @@ package com.smallcake.temp.http
 
 import android.util.Log
 import com.smallcake.temp.BuildConfig
+import com.smallcake.temp.pop.saveNetLog
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -33,8 +34,12 @@ class HttpLogInterceptor : Interceptor {
             val responseBody = response.peekBody(1024*1024)
             val contentLength = responseBody.contentLength()
             val bodySize = if (contentLength != -1L) "$contentLength-byte" else "unknown-length"
-            if (BuildConfig.DEBUG)Log.d("SmallOkHttp>>>",
-                    "【${request.method}】${response.code} ${response.message} 接收响应 ${response.request.url}(${tookMs}ms)\n${response.headers}\n${formatJson(responseBody.string())}\n\nEND HTTP ($bodySize body)")
+            if (BuildConfig.DEBUG){
+                val jsonBody = formatJson(responseBody.string())
+                Log.d("SmallOkHttp>>>",
+                    "【${request.method}】${response.code} ${response.message} 接收响应 ${response.request.url}(${tookMs}ms)\n${response.headers}\n${jsonBody}\n\nEND HTTP ($bodySize body)")
+                saveNetLog(response, request, tookMs, jsonBody,bodySize)
+            }
 
         return response
     }

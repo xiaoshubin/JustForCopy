@@ -68,6 +68,8 @@ object TimeUtils {
      */
     val currentTime: Int
         get() = (System.currentTimeMillis() / 1000).toInt()
+    val currentTimeYmdhms: String
+        get() = timeToStr((System.currentTimeMillis() / 1000).toInt(),YYYY_MM_DD_H24_MM_SS)
 
     /**
      * 获取当前系统的时间戳(13位) 毫秒级
