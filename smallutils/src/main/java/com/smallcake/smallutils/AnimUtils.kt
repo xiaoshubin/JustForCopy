@@ -95,4 +95,23 @@ object AnimUtils {
         animator.start()
         return animator
     }
+    /**
+     * 翻转180
+     * @param view View
+     * @return ObjectAnimator
+     */
+    fun rotateAnimX0To180(view: View): ObjectAnimator {
+        val animator = ObjectAnimator.ofFloat(view, "rotationX", 0f, 180f)
+        animator.interpolator = OvershootInterpolator()
+        animator.duration = 800
+        animator.start()
+        return animator
+    }
+    fun rotateAnimX180To0(view: View): ObjectAnimator {
+        val animator = ObjectAnimator.ofFloat(view, "rotationX", 180f, 0f)
+        animator.interpolator = OvershootInterpolator()
+        animator.duration = 800
+        animator.start()
+        return animator
+    }
 }
