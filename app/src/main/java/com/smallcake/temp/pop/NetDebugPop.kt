@@ -27,6 +27,20 @@ import java.nio.charset.Charset
  * Desc:
  * @see R.layout.pop_net_debug  弹框布局
  * @see R.layout.item_net_debug 列表布局
+ * 0.基类Activity中使用悬浮按钮来开启网络日志弹框
+/日志悬浮按钮
+if (BuildConfig.DEBUG)EasyFloat.with(this)
+    .setLayout(R.layout.debug_text,invokeView = {
+        it.findViewById<View>(R.id.btn_debug).setOnClickListener{
+            XPopup.Builder(this@BaseBindActivity)
+            .popupHeight(Screen.height- Screen.statusHeight)
+            .asCustom(NetDebugPop(this@BaseBindActivity))
+            .show()
+    }
+    })
+.setGravity(Gravity.END or Gravity.CENTER_VERTICAL, 0, 0)
+.setSidePattern(SidePattern.RESULT_SIDE)
+.show()
  * 1.在网络拦截器中保存网络访问数据
  * @see  saveNetLog(response, request, tookMs, jsonBody,bodySize)
  * 2.在调试按钮中点击后出发弹框
@@ -56,7 +70,6 @@ class NetDebugPop(context: Context):BottomPopupView(context) {
             adapter = mAdapter
         }
         val netLogList: NetLogList = MMKVUtils.mmkv.decodeParcelable("netLogList", NetLogList::class.java)?: NetLogList(arrayListOf())
-        mAdapter.setSpaceView()
         mAdapter.setList(netLogList.list)
 
         mAdapter.setOnItemClickListener{adapter, view, position ->

@@ -3,7 +3,9 @@ package com.smallcake.temp.fragment
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.smallcake.temp.R
 import com.smallcake.temp.adapter.PageBeanAdapter
 import com.smallcake.temp.base.BaseBindFragment
 import com.smallcake.temp.bean.PageBean
@@ -16,7 +18,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bind.recyclerView.apply {
-            layoutManager  = GridLayoutManager(context,3)
+            layoutManager  = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
             adapter = mAdapter
         }
         val list = listOf(
