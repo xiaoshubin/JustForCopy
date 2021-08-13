@@ -184,6 +184,7 @@ class HomeTabRecyclerFragment : BaseBindFragment<FragmentHomeTabRecyclerviewBind
             MainTabItem(R.mipmap.ic_logo, "投诉建议"),
             MainTabItem(R.mipmap.ic_logo, "信息查询"),
             MainTabItem(R.mipmap.ic_logo, "更多"),
+            MainTabItem(R.mipmap.ic_logo, "更少"),
         )
     }
 }
