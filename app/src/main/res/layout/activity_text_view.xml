@@ -7,19 +7,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.TextViewActivity">
-    <com.smallcake.temp.weight.CollapsibleTextView
+
+
+    <com.smallcake.temp.weight.ExpandTextView
         android:text="雷军用实际行动证明：一个不会蹭热度的程序员不会是一个好的CEO。
 程序员在大家刻板的印象里就是格子衫、油腻、头发稀疏的形象，然而事实并非如此。绝大多数的程序员都很聪明，更有一些程序员已经成了精，不仅编程厉害，营销方面也是不输任何营销大师，最典型的代表就是雷军。"
-        android:id="@+id/normal"
-        android:layout_width="wrap_content"
+        android:id="@+id/expand_text_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        app:collapsedLines="3"
-        app:collapsedText="全文"
-        app:expandedText="收起"
-        app:suffixColor="#27CAF3"
-        app:suffixTrigger="true"
-    />
+        android:lineSpacingMultiplier="1.2"
+        android:textColor="#000000"
+        android:textSize="15sp"/>
     <View style="@style/h_line"/>
     <TextView
         android:gravity="center"
