@@ -197,7 +197,7 @@ class ExpandTextView : AppCompatTextView {
         }
         // 重新计算高度
         var lineHeight = 0f
-        for (i in 0 .. lineCount) {
+        for (i in 0 .. if (expandState)lineCount else lineCount-1) {
             lineHeight += (paint.fontMetrics.bottom - paint.fontMetrics.top) * lineSpacingMultiplier
         }
         lineHeight += paddingTop + paddingBottom
