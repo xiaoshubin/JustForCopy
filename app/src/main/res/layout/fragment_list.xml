@@ -191,6 +191,33 @@
 
     </LinearLayout>
         <View style="@style/h_line"/>
+        <TextView
+            android:text="年龄区间：20-28"
+            android:id="@+id/tv_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.jaygoo.widget.RangeSeekBar
+            android:layout_margin="16dp"
+            android:layout_marginTop="8dp"
+            app:rsb_indicator_arrow_size="4dp"
+            app:rsb_indicator_radius="2dp"
+            app:rsb_indicator_width="40dp"
+            app:rsb_indicator_height="30dp"
+            app:rsb_indicator_show_mode="alwaysShow"
+            android:id="@+id/sb_range_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:rsb_gravity="bottom"
+            app:rsb_mode="range"
+            app:rsb_min="18"
+            app:rsb_max="100"
+            app:rsb_thumb_width="20dp"
+            app:rsb_thumb_height="20dp"
+            app:rsb_progress_height="2dp"
+            app:rsb_progress_radius="2dp"
+            app:rsb_thumb_drawable="@drawable/thumb_gradient"
+            app:rsb_progress_drawable="@drawable/progress"
+            />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

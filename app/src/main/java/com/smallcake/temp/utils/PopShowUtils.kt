@@ -1,21 +1,72 @@
 package com.smallcake.temp.utils
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.graphics.Color
+import android.os.Message
 import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.smallcake.smallutils.AnimUtils
+import com.smallcake.smallutils.SpannableStringUtils
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.temp.R
-import com.smallcake.temp.fragment.setupDefault
 import com.smallcake.temp.weight.XImageLoader
 import java.util.*
 
 object PopShowUtils {
+    /**
+     * 原生显示时分
+     * @param listener Function4<DatePicker?, Int, Int, Int, Unit>
+     */
+    fun showHM(context: Context,listener: (Int, Int) -> Unit) {
+        val ca = Calendar.getInstance()
+        val mHour = ca[Calendar.HOUR]
+        val mMinute = ca[Calendar.MINUTE]
+        TimePickerDialog(context,0,
+            { _, hourOfDay, minute ->
+                listener.invoke(hourOfDay, minute)
+            },mHour,mMinute,true).show()
+    }
+    /**
+     * 原生年月日选择器
+     */
+    fun showYMD(context: Context, listener: (Int,Int,Int)->Unit) {
+        val ca = Calendar.getInstance()
+        val caMax = Calendar.getInstance()
+        val mYear = ca[Calendar.YEAR]
+        val mMonth = ca[Calendar.MONTH]
+        val mDay = ca[Calendar.DAY_OF_MONTH]
+        val datePickerDialog = DatePickerDialog(context, R.style.dialog_date,
+            { view, year, month, dayOfMonth -> listener.invoke(year,month,dayOfMonth)},
+            mYear, mMonth, mDay)
+        val msg = Message()
+        msg.what = DialogInterface.BUTTON_POSITIVE
+        val confirmText = SpannableStringUtils.getBuilder("确定").setForegroundColor(Color.RED).create()
+        datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE,confirmText) { dialog, which ->
+            listener.invoke(
+                datePickerDialog.datePicker.year,
+                datePickerDialog.datePicker.month,
+                datePickerDialog.datePicker.dayOfMonth
+            )
+        }
+        val cancleText = SpannableStringUtils.getBuilder("取消").setForegroundColor(Color.RED).create()
+        datePickerDialog.setButton(DialogInterface.BUTTON_NEGATIVE,cancleText) { dialog, which ->
+
+        }
+        val datePicker = datePickerDialog.datePicker
+        //范围控制,最大能选两年前的月份
+        caMax.add(Calendar.YEAR, 1)
+        datePicker.minDate = ca.timeInMillis //最小为当前
+        datePicker.maxDate = caMax.timeInMillis //最大时间为当前年月
+        //范围控制
+        datePickerDialog.show()
+    }
     /**
      * 第三方年月日时分秒选择器
      */
@@ -96,4 +147,33 @@ object PopShowUtils {
             .isShowSaveButton(false)
             .show()
     }
+}
+
+/**
+ * 范围设定 ：从当前时间 到 一年后的当前时间
+ */
+fun TimePickerBuilder.setupDefault(): TimePickerBuilder {
+    val currentCalendar = TimeUtils.getTimeCalender(System.currentTimeMillis())
+    val currentYear = currentCalendar.get(Calendar.YEAR)
+    val currentMonth = currentCalendar.get(Calendar.MONTH)
+    val currentDay = currentCalendar.get(Calendar.DAY_OF_MONTH)
+    val startDate: Calendar = Calendar.getInstance()
+    startDate.set(currentYear, currentMonth, currentDay)
+    val endDate: Calendar = Calendar.getInstance()
+    endDate.set(currentYear + 1, currentMonth, currentMonth)
+    return setCancelText("取消")
+        .setSubmitText("确定")
+        .setCancelColor(Color.parseColor("#666666"))
+        .setSubmitColor(Color.parseColor("#D5462B"))
+        .setTitleColor(Color.parseColor("#999999"))
+        .setTitleSize(18)
+        .setContentTextSize(18)
+        .setSubCalSize(18)
+        .isCyclic(false)
+        .setLineSpacingMultiplier(1.8F)
+        .setOutSideCancelable(true)
+        .isDialog(false)
+        .setItemVisibleCount(5)
+        .setRangDate(startDate, endDate)
+        .setDate(currentCalendar)
 }
