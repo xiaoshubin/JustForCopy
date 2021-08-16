@@ -115,15 +115,8 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
                 val max = Math.max(a,b)
                 bind.tvAge.text = "年龄区间：$min - $max"
             }
-
-            override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
-
-            }
-
-            override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
-
-            }
-
+            override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {}
+            override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {}
         })
 
     }

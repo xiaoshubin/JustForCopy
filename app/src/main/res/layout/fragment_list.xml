@@ -218,6 +218,10 @@
             app:rsb_thumb_drawable="@drawable/thumb_gradient"
             app:rsb_progress_drawable="@drawable/progress"
             />
+        <View style="@style/h_line"/>
+        <com.smallcake.temp.weight.LuckPan
+            android:layout_width="match_parent"
+            android:layout_height="240dp"/>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
