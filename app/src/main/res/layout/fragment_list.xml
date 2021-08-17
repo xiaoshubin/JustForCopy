@@ -221,7 +221,7 @@
         <View style="@style/h_line"/>
         <com.smallcake.temp.weight.LuckPan
             android:layout_width="match_parent"
-            android:layout_height="240dp"/>
+            android:layout_height="300dp"/>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
