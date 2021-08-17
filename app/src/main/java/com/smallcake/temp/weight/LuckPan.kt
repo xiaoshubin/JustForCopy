@@ -1,69 +1,69 @@
 package com.smallcake.temp.weight
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.core.view.GestureDetectorCompat
+import android.view.animation.AnticipateInterpolator
+import android.view.animation.DecelerateInterpolator
 import androidx.core.view.ViewCompat
-import androidx.core.widget.ScrollerCompat
 import com.smallcake.smallutils.DpPxUtils
-import com.smallcake.smallutils.Screen
 import com.smallcake.temp.utils.L
-import kotlin.math.sqrt
+import com.smallcake.temp.utils.showToast
+import kotlin.math.roundToInt
 
-
+/**
+ * 抽奖大转盘
+ * https://github.com/Nipuream/LuckPan/blob/master/app/src/main/java/com/hr/nipuream/luckpan/view/RotatePan.java
+ * https://blog.csdn.net/YanghuiNipurean/article/details/52251107
+ * http://inloop.github.io/interpolator/
+ */
 open class LuckPan: View {
 
-    private val lampNum = 36//灯泡个数
-    private val lampSize = 10f//灯泡半径
-    private val lampMargin = 8f//灯泡距离边框距离
-    private val lampPadding = 16f//灯泡距离抽奖区块距离
-    private val lampSpace = lampSize*2+lampMargin+lampPadding//灯泡位置占用
 
-    private val bg2Size = 8f//第二层背景宽度
+    private val panNum       = 6               //奖盘数量
+    private var initAngle    = -60f            //初始化开始绘制角度（-60指向最后一块的中心位置，如果每块的角度为60）
+    private val panRadius    = 360f / panNum   //圆盘根据盘数量平分后的角度（60）
+    private val turnTime     = 5000L           //旋转一圈所需要的时间
+    private var panSize      = 200             //抽奖盘的大小，默认200
+    private var turnNum      = 6               //旋转的圈数                     注意：不能小于2圈
+    private var luckPosition = 5               //中奖的位置(3代表转动到第四个盘)  注意：不能大于panNum-1
 
+    private val lampNum      = 36                                   //灯泡个数
+    private val lampSize     = 10f                                  //灯泡半径
+    private val lampMargin   = 8f                                   //灯泡距离边框距离
+    private val lampPadding  = 16f                                  //灯泡距离抽奖区块距离
+    private val lampSpace    = lampSize*2+lampMargin+lampPadding    //灯泡位置占用
 
-    private val paintBg = Paint(Paint.ANTI_ALIAS_FLAG)//背景大圆盘
-    private val paintBg2 = Paint(Paint.ANTI_ALIAS_FLAG)//背景大圆盘2
-    private val paintLamp = Paint(Paint.ANTI_ALIAS_FLAG)//背景大圆盘的灯泡（黄白灯）
-    private val paintArc = Paint(Paint.ANTI_ALIAS_FLAG)//奖品区块
-    private val panNum = 6
-     var InitAngle  = -30f//初始化开始绘制角度
-    private var verPanRadius  = 0f
-    private var diffRadius  = 0f
-
-    private var mDetector: GestureDetectorCompat? = null//手势触摸
-     val scroller: ScrollerCompat? = null//滚动
-
-    //旋转一圈所需要的时间
-    private val ONE_WHEEL_TIME: Long = 500
-    val FLING_VELOCITY_DOWNSCALE = 4
+    private val bg2Size      = 8f                                   //第二层背景宽度
 
 
-    constructor(context: Context?):super(context){}
-    constructor(context: Context?,attrs: AttributeSet?):super(context,attrs){}
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context,attrs,defStyleAttr) {}
+    private val paintBg = Paint(Paint.ANTI_ALIAS_FLAG)        //背景大圆盘（黄色）
+    private val paintBg2 = Paint(Paint.ANTI_ALIAS_FLAG)       //背景大圆盘2（橙色）
+    private val paintLamp = Paint(Paint.ANTI_ALIAS_FLAG)      //背景大圆盘灯泡（黄白灯）
+    private val paintArc = Paint(Paint.ANTI_ALIAS_FLAG)       //奖品区块（红白色）
+    private val paintText = Paint(Paint.ANTI_ALIAS_FLAG)      //奖品区块文字（黄色）
+
+
+
+
+    constructor(context: Context?):super(context){init()}
+    constructor(context: Context?,attrs: AttributeSet?):super(context,attrs){init()}
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context,attrs,defStyleAttr) {init()}
 
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        initView()
-
+        initSize()
     }
 
-
-    private fun initView() {
-        mDetector = GestureDetectorCompat(context, RotatePanGestureListener(this))
-
-        verPanRadius = 360f / panNum
-        diffRadius = verPanRadius /2f
-
-
+    private fun init(){
         paintBg.apply {
             color = Color.parseColor("#FFBE04")
         }
@@ -77,10 +77,16 @@ open class LuckPan: View {
         paintArc.apply {
             color = Color.parseColor("#ffffff")
         }
-
+        paintText.apply {
+            color = Color.parseColor("#FFBE04")
+            textSize = DpPxUtils.dp2pxFloat(14f)
+            isFakeBoldText = true
+        }
         isClickable = true
+    }
 
-
+    private fun initSize() {
+        panSize = width.coerceAtMost(height)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -132,12 +138,24 @@ open class LuckPan: View {
         val left = width/2f-height/2f+lampSpace
         val right = width/2f+height/2f-lampSpace
         val rectF = RectF(left,top, right,bottom)
-        var angle: Float = if (panNum % 4 == 0) InitAngle else InitAngle - diffRadius
+        var angle: Float = initAngle
         for (i in 0 until panNum) {
-            paintArc.color = Color.parseColor(if (i%2==0)"#ffffff" else "#F53030")
-            canvas.drawArc(rectF, angle, verPanRadius, true, paintArc)
-            angle += verPanRadius
+            paintArc.color = Color.parseColor(if (i%2==0)"#F53030" else "#ffffff")
+            canvas.drawArc(rectF, angle, panRadius, true, paintArc)
+            drawText(angle,"${ (i+1)}等奖",canvas,rectF)
+            angle += panRadius
         }
+
+    }
+    private  fun drawText(startAngle: Float,string: String, mCanvas: Canvas,mRange: RectF) {
+        val path = Path()
+        path.addArc(mRange, startAngle, panRadius)
+        val textWidth = paintText.measureText(string)
+        //圆弧的水平偏移
+        val hOffset = (panSize * Math.PI / panNum / 2 - textWidth / 2).toFloat()
+        //圆弧的垂直偏移
+        val vOffset = (panSize / 2 / 6).toFloat()
+        mCanvas.drawTextOnPath(string, path, hOffset, vOffset, paintText)
     }
 
     /**
@@ -183,136 +201,49 @@ open class LuckPan: View {
 
     }
 
-
-
-
-
-    open fun setRotate(rotation: Int) {
-        var rotation = rotation
-        rotation = (rotation % 360 + 360) % 360
-        InitAngle = rotation.toFloat()
-        ViewCompat.postInvalidateOnAnimation(this)
-    }
     /**
      * 开始转动
      * @param pos 如果 pos = -1 则随机，如果指定某个值，则转到某个指定区域
      */
-      fun startRotate(pos: Int) {
-
-        //Rotate lap.
-        var lap = (Math.random() * 12).toInt() + 4
-
-        //Rotate angle.
-        var angle = 0
-        if (pos < 0) {
-            angle = (Math.random() * 360).toInt()
-        } else {
-            val initPos: Int = queryPosition()
-            if (pos > initPos) {
-                angle = ((pos - initPos) * verPanRadius).toInt()
-                lap -= 1
-                angle = 360 - angle
-            } else if (pos < initPos) {
-                angle = ((initPos - pos) * verPanRadius).toInt()
-            } else {
-                //nothing to do.
+      fun startRotate() {
+        initAngle=0f
+        val randomJd = (Math.random() * (panRadius-5)).toInt() + 3
+        val angle = luckPosition*panRadius//中奖区域需要转动的角度
+        val pointDiffRotate: Int = (270-panRadius).roundToInt()+randomJd-angle.toInt()//开始位置和指针位置的偏移角度
+        val desRotate: Int = turnNum * 360+pointDiffRotate
+        val animtor = ValueAnimator.ofInt(initAngle.toInt(), desRotate)
+        animtor.apply {
+            interpolator = DecelerateInterpolator(1.1f)
+            duration = turnTime
+            addUpdateListener { animation ->
+                val updateValue = animation.animatedValue as Int
+                initAngle = ((updateValue % 360 + 360) % 360).toFloat()
+                ViewCompat.postInvalidateOnAnimation(this@LuckPan)
             }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
+                    val str="恭喜获得第${(luckPosition+1)}块扇形内的奖品"
+                    showToast(str)
+                }
+            })
+            start()
         }
 
-        //All of the rotate angle.
-        val increaseDegree = lap * 360 + angle
-        val time: Long = (lap + angle / 360) * ONE_WHEEL_TIME
-        var DesRotate = (increaseDegree + InitAngle).toInt()
-
-        //为了每次都能旋转到转盘的中间位置
-        val offRotate = (DesRotate % 360 % verPanRadius).toInt()
-        DesRotate -= offRotate
-        DesRotate += diffRadius.toInt()
-        val animtor = ValueAnimator.ofInt(InitAngle.toInt(), DesRotate)
-        animtor.interpolator = AccelerateDecelerateInterpolator()
-        animtor.duration = time
-        animtor.addUpdateListener { animation ->
-            val updateValue = animation.animatedValue as Int
-            InitAngle = ((updateValue % 360 + 360) % 360).toFloat()
-            ViewCompat.postInvalidateOnAnimation(this)
-        }
-//        animtor.addListener(object : AnimatorListenerAdapter() {
-//            override fun onAnimationEnd(animation: Animator?) {
-//                super.onAnimationEnd(animation)
-//                if ((parent as LuckPanLayout).getAnimationEndListener() != null) {
-//                    (parent as LuckPanLayout).setStartBtnEnable(true)
-//                    (parent as LuckPanLayout).setDelayTime(LuckPanLayout.DEFAULT_TIME_PERIOD)
-//                    (parent as LuckPanLayout).getAnimationEndListener()
-//                        .endAnimation(queryPosition())
-//                }
-//            }
-//        })
-        animtor.start()
-    }
-     fun queryPosition(): Int {
-        InitAngle = (InitAngle % 360 + 360) % 360
-        var pos = (InitAngle / verPanRadius).toInt()
-        if (panNum == 4) pos++
-        return calcumAngle(pos)
-    }
-     fun calcumAngle(pos: Int): Int {
-        var pos = pos
-        pos = if (pos >= 0 && pos <= panNum / 2) {
-            panNum / 2 - pos
-        } else {
-            panNum - pos + panNum / 2
-        }
-        return pos
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        val consume: Boolean = mDetector?.onTouchEvent(event)?:false
-        if (consume) {
-            parent.parent.requestDisallowInterceptTouchEvent(true)
-            return true
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        val cx = width/2f
+        val cy = height/2f
+        val radius = width.coerceAtMost(height) /6f
+        val rectF = RectF(cx - radius/2,cy-radius/2,cx + radius/2,cy+radius/2)
+        when(event.action){
+            MotionEvent.ACTION_DOWN -> {
+                if (rectF.contains(event.x,event.y))startRotate()
+            }
         }
         return super.onTouchEvent(event)
     }
 
-}
-class RotatePanGestureListener(private val luckPan: LuckPan) : SimpleOnGestureListener() {
-    override fun onDown(e: MotionEvent): Boolean {
-        return super.onDown(e)
-    }
-
-    override fun onDoubleTap(e: MotionEvent): Boolean {
-        return false
-    }
-
-    override fun onScroll(e1: MotionEvent,e2: MotionEvent,distanceX: Float,distanceY: Float): Boolean {
-        L.e("onScroll x:$distanceX y:$distanceY")
-        val centerX: Float = (luckPan.left + luckPan.right) * 0.5f
-        val centerY: Float = (luckPan.top + luckPan.bottom) * 0.5f
-        val scrollTheta: Float = vectorToScalarScroll(distanceX, distanceY, e2.x - centerX, e2.y -centerY)
-        val rotate = (luckPan.InitAngle -scrollTheta.toInt() / luckPan.FLING_VELOCITY_DOWNSCALE).toInt()
-        luckPan.setRotate(rotate)
-        return true
-    }
-    //Touch了滑动一点距离后，up时触发。
-    override fun onFling(e1: MotionEvent,e2: MotionEvent,velocityX: Float,velocityY: Float): Boolean {
-        L.e("onFling x:$velocityX y:$velocityY")
-        val centerX: Float = (luckPan.left + luckPan.right) * 0.5f
-        val centerY: Float = (luckPan.top + luckPan.bottom) * 0.5f
-        val scrollTheta: Float = vectorToScalarScroll(velocityX, velocityY, e2.x - centerX, e2.y -centerY)
-        luckPan.scroller?.abortAnimation()
-        luckPan.scroller?.fling(
-            0, luckPan.InitAngle.toInt(), 0, scrollTheta.toInt() / luckPan.FLING_VELOCITY_DOWNSCALE,
-            0, 0, Int.MIN_VALUE, Int.MAX_VALUE
-        )
-        return true
-    }
-
-
-    private fun vectorToScalarScroll(dx: Float, dy: Float, x: Float, y: Float): Float {
-        val l = sqrt((dx * dx + dy * dy).toDouble()).toFloat()
-        val crossX = -y
-        val dot = crossX * dx + x * dy
-        val sign = Math.signum(dot)
-        return l * sign
-    }
 }
