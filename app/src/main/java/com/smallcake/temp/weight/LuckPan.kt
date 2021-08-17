@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat
 import com.smallcake.smallutils.DpPxUtils
 import com.smallcake.temp.utils.L
 import com.smallcake.temp.utils.showToast
+import java.util.logging.Handler
 import kotlin.math.roundToInt
 
 /**
@@ -30,7 +31,7 @@ open class LuckPan: View {
     private val panNum       = 6               //奖盘数量
     private var initAngle    = -60f            //初始化开始绘制角度（-60指向最后一块的中心位置，如果每块的角度为60）
     private val panRadius    = 360f / panNum   //圆盘根据盘数量平分后的角度（60）
-    private val turnTime     = 5000L           //旋转一圈所需要的时间
+    private val turnTime     = 3000L           //旋转一圈所需要的时间
     private var panSize      = 200             //抽奖盘的大小，默认200
     private var turnNum      = 6               //旋转的圈数                     注意：不能小于2圈
     private var luckPosition = 5               //中奖的位置(3代表转动到第四个盘)  注意：不能大于panNum-1
@@ -40,6 +41,7 @@ open class LuckPan: View {
     private val lampMargin   = 8f                                   //灯泡距离边框距离
     private val lampPadding  = 16f                                  //灯泡距离抽奖区块距离
     private val lampSpace    = lampSize*2+lampMargin+lampPadding    //灯泡位置占用
+    private val lampRatate   = 360f/lampNum                         //灯泡之间的角度
 
     private val bg2Size      = 8f                                   //第二层背景宽度
 
@@ -49,6 +51,12 @@ open class LuckPan: View {
     private val paintLamp = Paint(Paint.ANTI_ALIAS_FLAG)      //背景大圆盘灯泡（黄白灯）
     private val paintArc = Paint(Paint.ANTI_ALIAS_FLAG)       //奖品区块（红白色）
     private val paintText = Paint(Paint.ANTI_ALIAS_FLAG)      //奖品区块文字（黄色）
+
+    private val isOpenLamp = true                            //是否需要打开了霓虹灯交替
+    private var isLight = false                               //灯泡是否点亮
+    private var lightMove = 0                                 //灯泡移动角度
+
+
 
 
 
@@ -83,6 +91,19 @@ open class LuckPan: View {
             isFakeBoldText = true
         }
         isClickable = true
+        //是否开灯
+        if (isOpenLamp)mHandler.sendEmptyMessage(0)
+
+    }
+    private val mHandler = android.os.Handler{
+         isLight=!isLight
+         if (lightMove<lampRatate) {
+            lightMove++
+         }else lightMove=0
+
+         it.target.sendEmptyMessageDelayed(0,300)
+         postInvalidate()
+         false
     }
 
     private fun initSize() {
@@ -119,13 +140,13 @@ open class LuckPan: View {
     private fun drawLamp(canvas: Canvas) {
         val cx = width/2f
         val cy = lampSize+lampMargin
-        val ratate = 360f/lampNum//灯泡之间的角度
+
         //评分的份数
         for (i in 0 until lampNum) {
-            paintLamp.color = Color.parseColor(if (i%2==0)"#ffffff" else "#F53030")
+            paintLamp.color = Color.parseColor(if (isLight)"#ffffff" else "#F53030")
             paintLamp.style = if (i%2==0) Paint.Style.FILL else Paint.Style.STROKE
-            canvas.drawCircle(cx,cy,if (i%2==0) lampSize else lampSize/3*2, paintLamp)
-            canvas.rotate(ratate, width / 2f, height / 2f)
+            canvas.drawCircle(cx,cy,if (isLight) lampSize else lampSize/3*2, paintLamp)
+            canvas.rotate(lampRatate, width / 2f, height / 2f)
         }
     }
 
@@ -189,11 +210,11 @@ open class LuckPan: View {
         val cxS = width/2f
         val cyS =  width.coerceAtMost(height) /2f-radius+8
         val ratate = 360f/lampNum//灯泡之间的角度
-        //评分的份数
+        //平分的份数
         for (i in 0 until lampNum) {
             paintLamp.color = Color.parseColor("#ffffff")
             paintLamp.style = Paint.Style.FILL
-            canvas.drawCircle(cxS,cyS,2f, paintLamp)
+            canvas.drawCircle(cxS,cyS,if (isLight)2f else 1f, paintLamp)
             canvas.rotate(ratate, width / 2f, height / 2f)
         }
         canvas.drawCircle(cx,cy,radius-14,paintLamp)
