@@ -1,11 +1,13 @@
 package com.smallcake.temp.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.smallcake.smallutils.custom.GridItemDecoration
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.R
 import com.smallcake.temp.adapter.SafeGoRoundHistoryInfoAdapter
@@ -37,6 +39,7 @@ class SafeGoRoundHistoryInfoActivity : BaseBindActivity<ActivitySafeGoRoundHisto
     private fun initView() {
         bind.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@SafeGoRoundHistoryInfoActivity)
+            addItemDecoration(GridItemDecoration(1))
             adapter = mAdapter
             recycledViewPool.setMaxRecycledViews(R.id.layout_desc_img,0)
         }

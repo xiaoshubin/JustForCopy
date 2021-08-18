@@ -11,6 +11,7 @@ import com.smallcake.temp.utils.ldd
 /**
  * @see com.smallcake.temp.fragment.PageFragment 页面
  * @see com.smallcake.temp.fragment.ListFragment 控件
+ * @see com.smallcake.temp.fragment.MineFragment 我的
  */
 class MainActivity : BaseBindActivity<ActivityMainBinding>() {
 

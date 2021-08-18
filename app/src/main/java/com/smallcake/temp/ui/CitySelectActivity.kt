@@ -12,6 +12,34 @@ import com.smallcake.temp.databinding.ActivityCitySelectBinding
 import com.smallcake.temp.utils.showToast
 import com.smallcake.temp.weight.IndexBar
 
+/**
+ * 选择城市
+
+推荐使用registerForActivityResult替代onActivityResult
+
+1.启动页面自定义注册器
+private val register = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+    if (activityResult.resultCode == Activity.RESULT_OK) {
+        city = activityResult.data?.getStringExtra("city")?:""
+        if (!TextUtils.isEmpty(city)){
+            bind.tvLocationAddress.text = "当前定位城市：${city}"
+        }
+    }
+}
+
+2.点击按钮启动此注册器
+    bind.tvSwitchCity.setOnClickListener{
+        register.launch(Intent(this,CitySelectActivity::class.java))
+    }
+
+3.在需要选择数据的页面回传数据
+    val intent = Intent()
+    intent.putExtra("city",item.name)
+    setResult(RESULT_OK, intent)
+    finish()
+
+这样在第一步中的回调方法中就能拿到回调的数据
+ */
 class CitySelectActivity : BaseBindActivity<ActivityCitySelectBinding>() {
     private val mAdapter = CitySelectAdapter()
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
