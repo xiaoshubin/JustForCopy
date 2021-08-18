@@ -6,7 +6,7 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import com.smallcake.smallutils.DpPxUtils
+import com.smallcake.smallutils.DpUtils
 import com.smallcake.smallutils.Screen
 import com.smallcake.smallutils.custom.AutoNewLineLayout
 import com.smallcake.temp.R
@@ -30,15 +30,15 @@ object TagSelectUtils {
      fun selectSingleTag(context: Context, autoNewLine: AutoNewLineLayout,list:List<String>,tabNum:Int=4,margins:Int=0, cb:(Int,String)->Unit) {
         val listBtns = ArrayList<CheckBox>()
 
-        val dpMargin = DpPxUtils.dp2px(margins)//layout左右margin
+        val dpMargin = DpUtils.dp2px(margins)//layout左右margin
         val pL = autoNewLine.paddingLeft
         val pR = autoNewLine.paddingRight
         val spaceWidth = autoNewLine.horizontalSpace*(tabNum-1)
         val tabWidth = ((Screen.width-dpMargin- pL-pR-spaceWidth)/tabNum).toInt()
-        val tabHeight = DpPxUtils.dp2px( 33f)
+        val tabHeight = DpUtils.dp2px( 33f)
         val layoutParams = LinearLayout.LayoutParams(tabWidth, tabHeight)
 
-        val dp8 = DpPxUtils.dp2px( 8f).toInt()//checkBox间隙
+        val dp8 = DpUtils.dp2px( 8f).toInt()//checkBox间隙
         list.forEachIndexed {index,tagName->
             val btn = CheckBox(context)
             btn.apply {
@@ -81,13 +81,13 @@ object TagSelectUtils {
         val listBtns = ArrayList<CheckBox>()
         val selectTags = ArrayList<String>()
         val selectTagsPosition = ArrayList<Int>()
-        val dpMargin = DpPxUtils.dp2px(margins)//layout左右margin
-        val dp8 = DpPxUtils.dp2px( 8f)//checkBox左右间距
+        val dpMargin = DpUtils.dp2px(margins)//layout左右margin
+        val dp8 = DpUtils.dp2px( 8f)//checkBox左右间距
         val pL = autoNewLine.paddingLeft
         val pR = autoNewLine.paddingRight
         val spaceWidth = autoNewLine.horizontalSpace*(tabNum-1)
         val tabWidth = ((Screen.width - pL-pR-spaceWidth)/tabNum).toInt()
-        val tabHeight = DpPxUtils.dp2px( 33f)
+        val tabHeight = DpUtils.dp2px( 33f)
         val layoutParams = LinearLayout.LayoutParams(tabWidth, tabHeight)
         list.forEachIndexed {index,tagName->
             val btn = CheckBox(context)

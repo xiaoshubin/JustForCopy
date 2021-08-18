@@ -3,7 +3,7 @@ package com.smallcake.temp.utils
 import android.content.Context
 import android.graphics.Color
 import androidx.core.content.ContextCompat
-import com.smallcake.smallutils.DpPxUtils
+import com.smallcake.smallutils.DpUtils
 import com.smallcake.temp.R
 import com.smallcake.temp.weight.SelectBigPagerTitleView
 import com.yx.jiading.utils.sizeNull
@@ -59,7 +59,7 @@ object TabUtils {
                     yOffset = 30f
                     lineWidth = 60f
                     setColors(ContextCompat.getColor(context, R.color.text_blue))
-                    roundRadius = DpPxUtils.dp2pxFloat(2f)
+                    roundRadius = DpUtils.dp2pxFloat(2f)
                     mode = LinePagerIndicator.MODE_EXACTLY
                 }
 
@@ -105,7 +105,7 @@ object TabUtils {
                     yOffset = 30f
                     lineWidth = 60f
                     setColors(ContextCompat.getColor(context, R.color.text_blue))
-                    roundRadius = DpPxUtils.dp2pxFloat(2f)
+                    roundRadius = DpUtils.dp2pxFloat(2f)
                     mode = LinePagerIndicator.MODE_EXACTLY
                 }
 

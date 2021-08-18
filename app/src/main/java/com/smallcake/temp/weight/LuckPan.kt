@@ -2,7 +2,6 @@ package com.smallcake.temp.weight
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,14 +9,10 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.AnticipateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.core.view.ViewCompat
-import com.smallcake.smallutils.DpPxUtils
-import com.smallcake.temp.utils.L
+import com.smallcake.smallutils.DpUtils
 import com.smallcake.temp.utils.showToast
-import java.util.logging.Handler
 import kotlin.math.roundToInt
 
 /**
@@ -94,7 +89,7 @@ open class LuckPan: View {
         }
         paintText.apply {
             color = Color.parseColor("#FFBE04")
-            textSize = DpPxUtils.dp2pxFloat(14f)
+            textSize = DpUtils.dp2pxFloat(14f)
             letterSpacing = 0.5f
             isFakeBoldText = true
         }

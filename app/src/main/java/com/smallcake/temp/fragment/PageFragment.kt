@@ -1,10 +1,12 @@
 package com.smallcake.temp.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.smallcake.smallutils.custom.GridItemDecoration
 import com.smallcake.temp.R
 import com.smallcake.temp.adapter.PageBeanAdapter
 import com.smallcake.temp.base.BaseBindFragment
@@ -18,7 +20,8 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bind.recyclerView.apply {
-            layoutManager  = StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
+            addItemDecoration(GridItemDecoration(4))
+            layoutManager  = GridLayoutManager(requireContext(),4)
             adapter = mAdapter
         }
         val list = listOf(
