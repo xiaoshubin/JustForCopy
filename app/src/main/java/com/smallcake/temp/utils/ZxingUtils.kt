@@ -10,6 +10,7 @@ import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import kotlinx.coroutines.flow.callbackFlow
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -177,17 +178,28 @@ object ZxingUtils {
 
     /**
      * 开启扫描
+     * 如果希望竖屏扫描，在AndroidManifest.xml中添加
+     <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
+        tools:replace="android:screenOrientation"
+        android:screenOrientation="fullSensor"
+        android:stateNotNeeded="true"
+        android:theme="@style/zxing_CaptureTheme"
+        android:windowSoftInputMode="stateAlwaysHidden"/>
+     接受数据：
+
      */
     fun scanQRCode(context: Activity){
         val integrator =  IntentIntegrator(context)
          integrator.apply {
              setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+             setRequestCode(0x008)
              setPrompt("扫一扫")
              setCameraId(0)
              setBeepEnabled(false)//是否开启哔哔声音
              setBarcodeImageEnabled(false)
              initiateScan()
          }
+
     }
 
     init {

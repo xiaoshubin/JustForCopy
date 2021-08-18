@@ -1,6 +1,10 @@
 package com.smallcake.temp
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import com.google.zxing.client.android.Intents
+import com.google.zxing.integration.android.IntentIntegrator
 import com.smallcake.smallutils.MediaUtils
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.base.BaseBindActivity
@@ -25,6 +29,25 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
 
     private fun initView() {
         BottomNavUtils.tabBindViewPager(this,bind.tabLayout,bind.viewPager)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.e("REQUEST_CODE","requestCode:$requestCode")
+        if ( requestCode == 8) {
+            val result = IntentIntegrator.parseActivityResult(resultCode, data)
+            Log.e("MainActivity", "${result.contents}")
+            if (result.contents == null) {
+                val originalIntent: Int = result.orientation
+                if (originalIntent == null) {
+                    Log.e("MainActivity", "Cancelled scan")
+                } else if (originalIntent.hashCode() == Intents.Scan.MIXED_SCAN) {
+                    Log.e("MainActivity", "Cancelled scan due to missing camera permission")
+                }
+            } else {
+                Log.d("MainActivity", "Scanned")
+            }
+        }
+
     }
 
 
