@@ -22,12 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
-        <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
-            tools:replace="android:screenOrientation"
-            android:screenOrientation="fullSensor"
-            android:stateNotNeeded="true"
-            android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name=".ui.CustomCaptureActivity"/>
         <activity android:name=".ui.TextViewActivity"/>
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.SafeGoRoundHistoryInfoActivity" />

@@ -3,14 +3,16 @@ package com.smallcake.temp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.google.zxing.client.android.Intents
-import com.google.zxing.integration.android.IntentIntegrator
-import com.smallcake.smallutils.MediaUtils
+import android.widget.Toast
+import com.hjq.permissions.XXPermissions.REQUEST_CODE
+import com.luck.picture.lib.tools.ToastUtils
+import com.smallcake.smallutils.ToastUtil
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityMainBinding
 import com.smallcake.temp.utils.BottomNavUtils
-import com.smallcake.temp.utils.ldd
+import com.xuexiang.xqrcode.XQRCode
+
 
 /**
  * @see com.smallcake.temp.fragment.PageFragment 页面
@@ -32,22 +34,31 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e("REQUEST_CODE","requestCode:$requestCode")
-        if ( requestCode == 8) {
-            val result = IntentIntegrator.parseActivityResult(resultCode, data)
-            Log.e("MainActivity", "${result.contents}")
-            if (result.contents == null) {
-                val originalIntent: Int = result.orientation
-                if (originalIntent == null) {
-                    Log.e("MainActivity", "Cancelled scan")
-                } else if (originalIntent.hashCode() == Intents.Scan.MIXED_SCAN) {
-                    Log.e("MainActivity", "Cancelled scan due to missing camera permission")
-                }
-            } else {
-                Log.d("MainActivity", "Scanned")
-            }
+        Log.e("REQUEST_CODE","requestCode:$requestCode"+"resultCode==$resultCode")
+        //处理二维码扫描结果
+        if (requestCode == 1002 && resultCode == RESULT_OK) {
+            //处理扫描结果（在界面上显示）
+            handleScanResult(data);
         }
 
+    }
+
+    /**
+     * 处理二维码扫描结果
+     * @param data
+     */
+    private fun handleScanResult(data: Intent?) {
+        if (data != null) {
+            val bundle = data.extras
+            if (bundle != null) {
+                if (bundle.getInt(XQRCode.RESULT_TYPE) == XQRCode.RESULT_SUCCESS) {
+                    val result = bundle.getString(XQRCode.RESULT_DATA)
+                    ToastUtil.showLong("解析结果:$result")
+                } else if (bundle.getInt(XQRCode.RESULT_TYPE) == XQRCode.RESULT_FAILED) {
+                    ToastUtil.showLong("解析二维码失败")
+                }
+            }
+        }
     }
 
 
