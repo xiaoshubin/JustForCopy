@@ -219,9 +219,16 @@
             app:rsb_progress_drawable="@drawable/progress"
             />
         <View style="@style/h_line"/>
-        <com.smallcake.temp.weight.LuckPan
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:progressDrawable="@drawable/progress_bar_drawable"
+            android:max="100"
+            android:progress="40"
+            android:layout_marginTop="8dp"
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="300dp"/>
+            android:layout_height="10dp" />
+
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
