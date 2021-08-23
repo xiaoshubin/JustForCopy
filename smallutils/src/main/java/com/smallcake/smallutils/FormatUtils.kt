@@ -17,7 +17,7 @@ object FormatUtils {
      * @param sizeBytes long
      * @return 47kb, 4.70M, 1.47GB
      */
-    fun formatSize(context: Context, sizeBytes: Long): String? {
+    fun formatSize(context: Context, sizeBytes: Long): String {
         return formatFileSize(context, sizeBytes)
     }
 
