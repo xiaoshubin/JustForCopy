@@ -344,13 +344,6 @@ object StatusBar {
      * @param alpha    透明值
      * @return
      */
-    /**
-     * 创建等高矩形条
-     *
-     * @param activity 页面
-     * @param color    颜色
-     * @return
-     */
     @JvmOverloads
     fun createSameHeightView(
         activity: AppCompatActivity,

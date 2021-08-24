@@ -210,12 +210,4 @@ object StringUtils {
         return isEmail
     }
 
-    /**
-     * 是否是空
-     */
-    fun isNull(content: String?): Boolean {
-        return content == null || content.isEmpty() || content.toLowerCase(Locale.ROOT) == "null"
-    }
-
-
 }

@@ -13,6 +13,7 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.jaygoo.widget.SeekBar
+import com.smallcake.smallutils.Captcha
 import com.smallcake.smallutils.SpannableStringUtils
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.temp.R
@@ -56,6 +57,8 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
             addBody(48)
             addBody(32)
         }
+        val bitmap = Captcha.getInstance().createBitmap("0527")
+        bind.ivAuthCode.setImageBitmap(bitmap)
 
 
     }

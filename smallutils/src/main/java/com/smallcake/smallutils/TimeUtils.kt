@@ -163,21 +163,18 @@ object TimeUtils {
     }
     /**
      * 将时间戳转化成Calendar对象(获取时间详情)
-     *
+     * val year = calendar.get(Calendar.YEAR)
+     * val month = calendar.get(Calendar.MONTH)
+     * val day = calendar.get(Calendar.DAY_OF_MONTH)
+     * val hours = calendar.get(Calendar.HOUR_OF_DAY)
+     * val minute = calendar.get(Calendar.MINUTE)
+     * val seconds = calendar.get(Calendar.SECOND)
      * @param time 时间戳
      * @return calendar对象
      */
     fun getTimeCalender(time: Long): Calendar {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = time
-        /**
-         * val year = calendar.get(Calendar.YEAR);
-         * val month = calendar.get(Calendar.MONTH);
-         * val day = calendar.get(Calendar.DAY_OF_MONTH);
-         * val hours = calendar.get(Calendar.HOUR_OF_DAY);
-         * val minute = calendar.get(Calendar.MINUTE);
-         * val seconds = calendar.get(Calendar.SECOND);
-         */
         return calendar
     }
 

@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Environment
 import android.util.Log
 import androidx.core.content.FileProvider
+import com.smallcake.smallutils.FileUtils
 import com.smallcake.smallutils.FormatUtils
 import com.smallcake.smallutils.SmallUtils
 import com.smallcake.temp.MyApplication
