@@ -10,8 +10,11 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.util.Log
 import androidx.core.content.FileProvider
+import com.smallcake.smallutils.FormatUtils
+import com.smallcake.smallutils.SmallUtils
 import com.smallcake.temp.MyApplication
 import java.io.File
 import java.security.MessageDigest
@@ -113,7 +116,25 @@ object AppUtils {
         } catch (e: NoSuchAlgorithmException) {
             Log.d("KeyHash:", e.toString())
         }
+    }
+    /**
+     * 获取缓存大小
+     */
+    fun getTotalCacheSize(context: Context): String {
+        var cacheSize: Long = FileUtils.getFileSize(context.cacheDir)
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            val size =  if (context.externalCacheDir==null)0 else FileUtils.getFileSize(context.externalCacheDir!!)
+            cacheSize += size
+        }
+        return FormatUtils.formatSize(context,cacheSize)
+    }
 
+    /**
+     * 清除缓存
+     */
+    fun clearCache(){
+        val am = SmallUtils.context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
+        am!!.clearApplicationUserData()
     }
 
 }
