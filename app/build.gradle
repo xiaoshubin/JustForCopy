@@ -169,6 +169,8 @@ dependencies {
     //zxing二维码生成扫描
     implementation 'com.google.zxing:core:3.3.3'
     implementation 'com.github.xuexiangjys:XQRCode:1.1.0'
+    //https://github.com/getActivity/ShapeView
+    implementation 'com.github.getActivity:ShapeView:5.0'
 
 
 }

@@ -22,8 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
-        <activity android:name=".ui.CustomCaptureActivity"/>
-        <activity android:name=".ui.TextViewActivity"/>
+        <activity android:name=".ui.ShapeViewActivity"></activity>
+        <activity android:name=".ui.CustomCaptureActivity" />
+        <activity android:name=".ui.TextViewActivity" />
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.SafeGoRoundHistoryInfoActivity" />
         <activity android:name=".ui.MainFragmentsActivity" />
