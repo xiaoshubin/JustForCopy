@@ -3,7 +3,7 @@ package com.smallcake.temp.fragment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import com.smallcake.smallutils.text.SystemUtils
+import com.smallcake.smallutils.SystemUtils
 import com.smallcake.temp.base.BaseBindFragment
 import com.smallcake.temp.databinding.FragmentMineBinding
 import com.smallcake.temp.utils.ZxingUtils

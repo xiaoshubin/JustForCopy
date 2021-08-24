@@ -1,9 +1,7 @@
-package com.smallcake.smallutils.text
+package com.smallcake.smallutils
 
 import android.os.Build
 import android.provider.Settings
-import com.smallcake.smallutils.Md5Utils
-import com.smallcake.smallutils.SmallUtils
 
 /**
  * https://www.jianshu.com/p/ca869aa2fd72
