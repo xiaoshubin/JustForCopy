@@ -20,6 +20,22 @@ import java.io.File
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
+/**
+ * 如果获取打包时间到页面中
+
+    1.首先在build.gradle文件的android外面定义获取时间函数
+        static def getBuildTime() {
+            String now = new Date().format("yyyy_MM_dd HH:mm:ss")
+            return "\"${now}\""
+        }
+
+    2.在defaultConfig中定义变量
+        buildConfigField "String", "buildTime", getBuildTime()
+
+    3.使用
+        BuildConfig.buildTime
+
+ */
 object AppUtils {
     //获取应用包名
      fun getAppPackageName(): String = MyApplication.instance.packageName
