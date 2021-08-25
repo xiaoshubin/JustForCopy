@@ -147,6 +147,23 @@ object PopShowUtils {
             .isShowSaveButton(false)
             .show()
     }
+    /**
+     * 显示单张大图,无控件
+     */
+    fun showSingleBigImg(context: Context,url:Any){
+        XPopup.Builder(context)
+            .asImageViewer(null,url,false, R.drawable.gray_round6_bg,R.drawable.gray_round6_bg,R.drawable.gray_round6_bg,false,XImageLoader())
+            .show()
+
+    }
+    /**
+     * 点击显示多张大图,无控件
+     */
+    fun showBigPics(context: Context, currentPosition: Int, list: List<String>){
+        XPopup.Builder(context).asImageViewer(null, currentPosition, list,null, XImageLoader())
+            .isShowSaveButton(false)
+            .show()
+    }
 }
 
 /**

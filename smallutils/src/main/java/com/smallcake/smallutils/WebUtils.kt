@@ -1,8 +1,13 @@
 package com.smallcake.smallutils
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
+import android.webkit.WebViewClient
 
 /**
  * Date:2021/6/12 17:25
@@ -40,4 +45,73 @@ class WebUtils {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         SmallUtils.context?.startActivity(intent)
     }
+
+    /**
+     * 注入js 循环遍历网页中的图片控件并和其交互，点击显示大图
+     * @param context Context
+     * @param webView WebView
+     * @param cb Function2<String, Int, Unit>
+     */
+    fun injectOpenImgJs(context: Context, webView: WebView, cb:(String, Int, List<String>)->Unit){
+        webView.webViewClient = MyWebViewClient()
+        webView.addJavascriptInterface(JavascriptInterface(context,cb), "imagelistner")
+    }
+}
+class MyWebViewClient : WebViewClient() {
+    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+        return super.shouldOverrideUrlLoading(view, url)
+    }
+
+    override fun onPageFinished(webView: WebView, url: String) {
+        webView.settings.javaScriptEnabled = true
+        super.onPageFinished(webView, url)
+        addImageClickListner(webView)
+    }
+
+    private fun addImageClickListner(webView: WebView) {
+        Log.d("WebUtils","addImageClickListner: 注入代码")
+        // 这段js函数的功能就是，遍历所有的img几点，并添加onclick函数，在还是执行的时候调用本地接口传递url过去
+        webView.loadUrl("javascript:(function (){"
+                + "var objs = document.getElementsByTagName(\"img\");"
+                + "var imgs = '';"
+                + "for(var i=0;i<objs.length;i++){"
+                + "objs[i].index = i;"
+                + "imgs += objs[i].src+',';"
+                + "objs[i].onclick=function(){imagelistner.openImage(this.src,this.index,imgs);}  "
+                + "} })()"
+        )
+    }
+
+    override fun onPageStarted(view: WebView, url: String?, favicon: Bitmap?) {
+        view.settings.javaScriptEnabled = true
+        Log.d("WebUtils","addImageClickListner: 开始加载")
+        super.onPageStarted(view, url, favicon)
+    }
+
+    override fun onReceivedError(
+        view: WebView,
+        errorCode: Int,
+        description: String,
+        failingUrl: String
+    ) {
+        super.onReceivedError(view, errorCode, description, failingUrl)
+    }
+}
+// js通信接口
+class JavascriptInterface(val context: Context,val cb: (String, Int,List<String>) -> Unit) {
+    @android.webkit.JavascriptInterface
+    fun openImage(img: String,position:Int,imgs:String) {
+        Log.d("WebUtils","要打开的图片$img 点击了第$position 张图片 imgs:$imgs")
+        val imgStr = imgs.subSequence(0,imgs.length-1)
+        if (imgStr.contains(",")){
+            val imgList = imgStr.split(",")
+            cb.invoke(img,position,imgList)
+        }else{
+            val imgList = listOf(img)
+            cb.invoke(img,position,imgList)
+        }
+
+
+    }
+
 }
