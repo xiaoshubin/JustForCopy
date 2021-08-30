@@ -106,9 +106,10 @@ class NetDebugAdapter:BaseQuickAdapter<NetLog,BaseViewHolder>(R.layout.item_net_
  */
  fun saveNetLog(response: Response, request: Request, tookMs: Long, jsonBody: String, bodySize:String) {
     val netLogList: NetLogList = MMKVUtils.mmkv.decodeParcelable("netLogList", NetLogList::class.java)?: NetLogList(arrayListOf())
+    val subParams = logParams(request)
     val item = NetLog().apply {
         url = response.request.url.toString()
-        params =  logParams(request)
+        params =  if (subParams.length>2000)subParams.substring(0,2000) else subParams
         meth = request.method
         code = response.code.toString()
         msg = response.message
