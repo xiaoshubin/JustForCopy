@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.smallcake.temp.bean.CountDownBean" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        android:paddingTop="16dp"
+        android:paddingRight="12dp">
+
+        <ImageView
+            android:id="@+id/iv_img"
+            android:layout_width="106dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_default_banner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+        <TextView
+            android:id="@+id/tv_address_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="活动地址"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_img" />
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:includeFontPadding="false"
+            tools:text="好城时光中庭大厅内内好城时光中庭大厅内内好城时光中庭大厅内内"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/sp_13"
+            android:singleLine="true"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toStartOf="@id/iv_img"
+            app:layout_constraintBottom_toBottomOf="@id/tv_address_label"
+            app:layout_constraintStart_toEndOf="@id/tv_address_label"
+            app:layout_constraintTop_toTopOf="@id/tv_address_label" />
+
+
+        <TextView
+            android:id="@+id/tv_time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:includeFontPadding="false"
+            android:text="活动时间"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_img"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_address_label" />
+
+
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_time_label"
+            app:layout_constraintEnd_toStartOf="@id/iv_img"
+            app:layout_constraintStart_toEndOf="@id/tv_address_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_time_label"
+            tools:text="2020.06.01  14:00" />
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            tools:text="活动标题活动标题活动标题活动标题"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.smallcake.smallutils.text.ShapeTextButton
+            android:id="@+id/tv_count"
+            android:layout_width="100dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="18dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            tools:text="已报名136 人"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_img"
+            app:stb_radius="7dp"
+            app:stb_solidColor="@color/text_gray" />
+
+        <TextView
+            android:id="@+id/tv_deadline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="11dp"
+            android:includeFontPadding="false"
+            tools:text="截止时间：3天1：10：53"
+            android:textColor="@color/text_gray"
+            app:layout_constraintBottom_toBottomOf="@id/tv_count"
+            app:layout_constraintStart_toEndOf="@id/tv_count"
+            app:layout_constraintTop_toTopOf="@id/tv_count" />
+
+
+        <View
+            style="@style/h_line"
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

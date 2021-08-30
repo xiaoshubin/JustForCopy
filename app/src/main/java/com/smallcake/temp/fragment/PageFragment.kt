@@ -36,6 +36,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("登录", LoginActivity::class.java,"三方登录"),
             PageBean("文本", TextViewActivity::class.java,"伸缩文本"),
             PageBean("ShapeView", ShapeViewActivity::class.java,"ShapeView,ShapeButton,ShapeTextView"),
+            PageBean("倒计时列表", CountDownListActivity::class.java,"倒计时列表"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
