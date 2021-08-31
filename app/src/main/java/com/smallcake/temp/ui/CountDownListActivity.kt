@@ -17,65 +17,51 @@ import com.smallcake.temp.databinding.ActivityCountDownListBinding
  * 倒计时列表
  * 目前存在的问题：
  * 1.刷新数据出现并发异常：java.util.ConcurrentModificationException
+ * 解决：在适配器中设置循环Handler
  * 2.多个倒计时多次滑动卡顿
+ * 解决：在适配器中设置循环Handler，刷新Item子项的文本控件
+ * 3.当倒计时结束时，刷新数据不生效
+ * 解决：当前控件可能处于隐藏状态，对视图进行了判空： CountDownAdapter中的 if (view!=null)来开启倒计时
+ * 应该写在判断外面
  */
 class CountDownListActivity : BaseBindActivity<ActivityCountDownListBinding>() {
 
-    private val mAdapter = CountDownAdapter()
-    private var allList = ArrayList<CountDownBean>()
-    private var page = 1
+    private lateinit var mAdapter:CountDownAdapter
+    private var page=1
 
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.setTitle("倒计时列表")
+        mAdapter = CountDownAdapter {
+            page++
+            loadData()
+        }
         bind.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@CountDownListActivity)
             adapter = mAdapter
         }
-
         loadData()
     }
         private fun loadData() {
+            val list = listOf(
+                CountDownBean(TimeUtils.currentTime-RadomUtils.getInt(1000)),
+                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(20)),
+                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
+                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
+                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
+                CountDownBean(TimeUtils.currentTime-RadomUtils.getInt(1000)),
+                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
+                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
+                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
+                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
+                )
+            if (page==1)mAdapter.setList(list)
+            else mAdapter.addData(list)
 
-            mAdapter.addData(CountDownBean(TimeUtils.currentTime-RadomUtils.getInt(1000)))
-            mAdapter.addData(CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(20)))
-            mAdapter.addData(CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)))
-            mAdapter.addData(CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)))
-            mAdapter.addData(CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)))
-            mAdapter.addData(CountDownBean(TimeUtils.currentTime-RadomUtils.getInt(1000)))
-            mAdapter.addData(CountDownBean(TimeUtils.currentTime-RadomUtils.getInt(1000)))
-            mAdapter.addData(CountDownBean(TimeUtils.currentTime-RadomUtils.getInt(1000)))
-            mAdapter.addData(CountDownBean(TimeUtils.currentTime-RadomUtils.getInt(1000)))
-            mAdapter.addData(CountDownBean(TimeUtils.currentTime-RadomUtils.getInt(1000)))
-            mAdapter.addData(CountDownBean(TimeUtils.currentTime-RadomUtils.getInt(1000)))
-            mAdapter.addData(CountDownBean(TimeUtils.currentTime-RadomUtils.getInt(1000)))
-            allList.clear()
-            mAdapter.data.forEach{
-                allList.add(CountDownBean(it.time))
-            }
-            mHandler.sendEmptyMessageDelayed(0,1000)
         }
-
-    private val mHandler = Handler{
-        allList.forEachIndexed{index,item->
-            //只有当时间大于当前时间才需要倒计时
-            if (item.timeX>0){
-                val timeStr = TimeUtils.timeToDhms(item.timeX)
-                val view = mAdapter.getViewByPosition(index, R.id.tv_deadline)
-                if (view!=null)(view as TextView?)?.text ="截止时间：$timeStr"
-                it.target.sendEmptyMessageDelayed(0,1000)
-            }
-            if (item.timeX==0){
-                it.target.removeMessages(0)
-                page=1
-                loadData()
-            }
-        }
-
-        false
-    }
 
     override fun onDestroy() {
         super.onDestroy()
-        mHandler.removeMessages(0)
+        mAdapter.destoryTimer()
     }
+
 }
