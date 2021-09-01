@@ -38,13 +38,14 @@ val httpModule = module {
     okHttpClientBuilder.addInterceptor(HttpLogInterceptor())//日志打印拦截器
 
 
-    //公共头部拦截器
+    //公共头部拦截器：注意token的值也许要加Bearer
 
     okHttpClientBuilder.addInterceptor(Interceptor{
     val request: Request = it.request()
         .newBuilder()
         .addHeader("Content-Type", "application/json;charset=UTF-8")
-//        .addHeader("token", SpUtil.getToken()?:"")
+//        .addHeader("token", UserUtils.token)
+//        .addHeader("Authorization", "Bearer "+UserUtils.token)
         .build()
         it.proceed(request)
     })

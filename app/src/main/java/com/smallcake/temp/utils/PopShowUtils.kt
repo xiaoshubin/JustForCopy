@@ -95,6 +95,9 @@ object PopShowUtils {
      * @param array Array<String> 数据集合
      * @param iv ImageView 用于右侧箭头的翻转动画
      * @param cb Function1<Int, Unit> 回调，只关心位置信息从而确定要传的值
+     * 例如：
+     * val list = arrayOfNulls<String>(180)
+     * for (index in 120..300)list[index] = "${index}cm"
      */
     fun showBottomList(
         title: String = "",
