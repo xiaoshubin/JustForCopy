@@ -111,7 +111,6 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
             override fun onRangeChanged(rangeSeekBar: RangeSeekBar, leftValue: Float, rightValue: Float, isFromUser: Boolean) {
                 changeSeekBarThumb(rangeSeekBar.leftSeekBar, leftValue)
                 changeSeekBarThumb(rangeSeekBar.rightSeekBar, rightValue)
-                L.e("leftValue：$leftValue  rightValue:$rightValue")
                 val a = leftValue.toInt()
                 val b = rightValue.toInt()
                 val min = Math.min(a,b)

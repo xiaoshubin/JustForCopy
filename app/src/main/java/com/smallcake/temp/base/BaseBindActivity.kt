@@ -35,7 +35,7 @@ abstract class BaseBindActivity<VB:ViewBinding>: BaseActivity() {
             .setLayout(R.layout.debug_text,invokeView = {
                 it.findViewById<View>(R.id.btn_debug).setOnClickListener{
                     XPopup.Builder(this@BaseBindActivity)
-                        .popupHeight(Screen.height- Screen.statusHeight-Screen.navigationBarHeight)
+                        .popupHeight(Screen.height- Screen.statusHeight-(if (Screen.isShowNavBar(this@BaseBindActivity))Screen.navigationBarHeight else 0 ))
                         .asCustom(NetDebugPop(this@BaseBindActivity))
                         .show()
                 }

@@ -3,14 +3,13 @@ package com.smallcake.temp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
-import com.hjq.permissions.XXPermissions.REQUEST_CODE
-import com.luck.picture.lib.tools.ToastUtils
+import com.smallcake.smallutils.Screen
 import com.smallcake.smallutils.ToastUtil
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityMainBinding
 import com.smallcake.temp.utils.BottomNavUtils
+import com.smallcake.temp.utils.L
 import com.xuexiang.xqrcode.XQRCode
 
 
@@ -38,7 +37,7 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
         //处理二维码扫描结果
         if (requestCode == 1002 && resultCode == RESULT_OK) {
             //处理扫描结果（在界面上显示）
-            handleScanResult(data);
+            handleScanResult(data)
         }
 
     }
