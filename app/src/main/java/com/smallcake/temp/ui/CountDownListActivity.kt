@@ -12,6 +12,7 @@ import com.smallcake.temp.adapter.CountDownAdapter
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.bean.CountDownBean
 import com.smallcake.temp.databinding.ActivityCountDownListBinding
+import com.yx.jiading.utils.sizeNull
 
 /**
  * 倒计时列表
@@ -26,36 +27,52 @@ import com.smallcake.temp.databinding.ActivityCountDownListBinding
  */
 class CountDownListActivity : BaseBindActivity<ActivityCountDownListBinding>() {
 
-    private lateinit var mAdapter:CountDownAdapter
+    private val mAdapter=CountDownAdapter()
     private var page=1
 
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.setTitle("倒计时列表")
-        mAdapter = CountDownAdapter {
+
+        bind.recyclerView.apply{
+            layoutManager = LinearLayoutManager(this@CountDownListActivity)
+            adapter = mAdapter
+        }
+        mAdapter.loadMoreModule.setOnLoadMoreListener{
             page++
             loadData()
         }
-        bind.recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@CountDownListActivity)
-            adapter = mAdapter
+        mAdapter.setOnTimeOverListener {
+            page=1
+            loadData()
+        }
+
+
+        bind.refreshLayout.setOnRefreshListener{
+            page=1
+            loadData()
         }
         loadData()
     }
         private fun loadData() {
-            val list = listOf(
-                CountDownBean(TimeUtils.currentTime-RadomUtils.getInt(1000)),
-                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(20)),
-                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
-                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
-                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
-                CountDownBean(TimeUtils.currentTime-RadomUtils.getInt(1000)),
-                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
-                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
-                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
-                CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(1000)),
-                )
-            if (page==1)mAdapter.setList(list)
-            else mAdapter.addData(list)
+            bind.refreshLayout.isRefreshing = true
+            Handler().postDelayed({
+                val dataSize = RadomUtils.getInt(10)
+                val list = ArrayList<CountDownBean>()
+                for (index in 0..dataSize){
+                    list.add(CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(100)))
+                }
+                if (page==1){
+                    mAdapter.setList(list)
+                    mAdapter.loadMoreModule.loadMoreComplete()
+                }else{
+                    if (list.sizeNull()>0){
+                        mAdapter.addData(list)
+                        mAdapter.loadMoreModule.loadMoreComplete()
+                    }else mAdapter.loadMoreModule.loadMoreEnd()
+                }
+                bind.refreshLayout.isRefreshing = false
+            },300)
+
 
         }
 
