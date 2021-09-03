@@ -24,6 +24,8 @@ import com.yx.jiading.utils.sizeNull
  * 3.当倒计时结束时，刷新数据不生效
  * 解决：当前控件可能处于隐藏状态，对视图进行了判空： CountDownAdapter中的 if (view!=null)来开启倒计时
  * 应该写在判断外面
+ * 4.刷新数据，当条目减少时闪退
+ * 解决：在适配器中刷新数据时，重新设置标志位
  */
 class CountDownListActivity : BaseBindActivity<ActivityCountDownListBinding>() {
 
@@ -59,7 +61,7 @@ class CountDownListActivity : BaseBindActivity<ActivityCountDownListBinding>() {
                 val dataSize = RadomUtils.getInt(10)
                 val list = ArrayList<CountDownBean>()
                 for (index in 0..dataSize){
-                    list.add(CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(100)))
+                    list.add(CountDownBean(TimeUtils.currentTime+RadomUtils.getInt(30,100)))
                 }
                 if (page==1){
                     mAdapter.setList(list)
