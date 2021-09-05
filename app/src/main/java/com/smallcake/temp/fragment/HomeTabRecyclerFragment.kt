@@ -21,7 +21,7 @@ import com.smallcake.temp.utils.AdapterUtils
 import com.smallcake.temp.utils.TabUtils
 import com.smallcake.temp.utils.setSpaceView
 import com.yx.jiading.property.adapter.*
-import com.yx.jiading.utils.sizeNull
+import com.smallcake.temp.utils.sizeNull
 
 /**
  *遗留问题：

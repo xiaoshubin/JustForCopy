@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import com.smallcake.smallutils.DpUtils
 import com.smallcake.temp.R
 import com.smallcake.temp.weight.SelectBigPagerTitleView
-import com.yx.jiading.utils.sizeNull
 import net.lucode.hackware.magicindicator.FragmentContainerHelper
 import net.lucode.hackware.magicindicator.MagicIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator

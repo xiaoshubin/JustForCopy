@@ -7,7 +7,7 @@ import com.smallcake.temp.adapter.GridImageAdapter
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityReportRepairBinding
 import com.smallcake.temp.utils.*
-import com.yx.jiading.utils.sizeNull
+import com.smallcake.temp.utils.sizeNull
 
 /**
  * 问题反馈模板页面

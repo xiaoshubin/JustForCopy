@@ -1,6 +1,5 @@
 package com.smallcake.temp.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
@@ -17,7 +16,7 @@ import com.smallcake.temp.databinding.ActivitySafeGoRoundHistoryBinding
 import com.smallcake.temp.utils.AdapterUtils
 import com.smallcake.temp.utils.setSpaceView
 import com.yx.jiading.property.adapter.*
-import com.yx.jiading.utils.sizeNull
+import com.smallcake.temp.utils.sizeNull
 
 class SafeGoRoundHistoryInfoActivity : BaseBindActivity<ActivitySafeGoRoundHistoryBinding>() {
     private val mAdapter = SafeGoRoundHistoryInfoAdapter()

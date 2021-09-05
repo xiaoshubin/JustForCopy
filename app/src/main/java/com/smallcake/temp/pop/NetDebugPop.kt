@@ -13,8 +13,7 @@ import com.smallcake.smallutils.ClipboardUtils
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.temp.R
 import com.smallcake.temp.utils.MMKVUtils
-import com.smallcake.temp.utils.setSpaceView
-import com.yx.jiading.utils.sizeNull
+import com.smallcake.temp.utils.sizeNull
 import kotlinx.parcelize.Parcelize
 import okhttp3.Request
 import okhttp3.Response
@@ -89,7 +88,7 @@ class NetDebugPop(context: Context):BottomPopupView(context) {
 
 class NetDebugAdapter:BaseQuickAdapter<NetLog,BaseViewHolder>(R.layout.item_net_debug){
     override fun convert(holder: BaseViewHolder, item: NetLog) {
-        holder.setText(R.id.tv_url,"【${item.meth}】${item.code} ${item.msg} ${item.size}\n${item.url}(${item.requestTime})")
+        holder.setText(R.id.tv_url,"【${item.meth}】${item.code} ${item.msg} ${item.size}(${item.requestTime})\n${item.url}")
             .setText(R.id.tv_params,if (TextUtils.isEmpty(item.params))"无参" else item.params)
             .setText(R.id.tv_body,item.body)
     }

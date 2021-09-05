@@ -2,17 +2,15 @@ package com.smallcake.temp.ui
 
 import android.os.Bundle
 import android.os.Handler
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.smallcake.smallutils.RadomUtils
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.smallutils.text.NavigationBar
-import com.smallcake.temp.R
 import com.smallcake.temp.adapter.CountDownAdapter
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.bean.CountDownBean
 import com.smallcake.temp.databinding.ActivityCountDownListBinding
-import com.yx.jiading.utils.sizeNull
+import com.smallcake.temp.utils.sizeNull
 
 /**
  * 倒计时列表

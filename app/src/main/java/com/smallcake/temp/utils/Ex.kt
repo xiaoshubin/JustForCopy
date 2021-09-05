@@ -1,6 +1,11 @@
-package com.yx.jiading.utils
+package com.smallcake.temp.utils
 
+import android.os.Build
 import android.view.View
+import coil.ImageLoader
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import com.smallcake.smallutils.SmallUtils
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -36,3 +41,11 @@ fun String.toRbForm():RequestBody{
 fun List<*>?.sizeNull():Int{
     return this?.size ?: 0
 }
+//coil支持gif图片的加载
+val gifImageLoader = ImageLoader.Builder(SmallUtils.context!!).componentRegistry {
+    if (Build.VERSION.SDK_INT >= 28) {
+        add(ImageDecoderDecoder(SmallUtils.context!!))
+    } else {
+        add(GifDecoder())
+    }
+}.build()
