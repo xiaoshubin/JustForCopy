@@ -37,6 +37,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("文本", TextViewActivity::class.java,"伸缩文本"),
             PageBean("ShapeView", ShapeViewActivity::class.java,"ShapeView,ShapeButton,ShapeTextView"),
             PageBean("倒计时列表", CountDownListActivity::class.java,"倒计时列表"),
+            PageBean("下载", DownloadDataActivity::class.java,"下载apk"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->

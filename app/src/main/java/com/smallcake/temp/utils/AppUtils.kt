@@ -13,6 +13,10 @@ import android.os.Build
 import android.os.Environment
 import android.util.Log
 import androidx.core.content.FileProvider
+import com.hjq.permissions.OnPermissionCallback
+import com.hjq.permissions.Permission
+import com.hjq.permissions.XXPermissions
+import com.lxj.xpopup.util.XPermission
 import com.smallcake.smallutils.FileUtils
 import com.smallcake.smallutils.FormatUtils
 import com.smallcake.smallutils.SmallUtils
@@ -69,18 +73,59 @@ object AppUtils {
     }
 
     /**
-     * 安装APK
+     * 是否开启安装未知应用权限
+     * 8.0以上需要检测是否开启，
+     * 8.0以下默认开启了
+     */
+    private fun isOpenInstallPackages():Boolean{
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            SmallUtils.context?.packageManager?.canRequestPackageInstalls()?:false
+        }else true
+    }
+
+    /**
+     * 安装APK前的权限判断
      * @param activity Activity
      * @param downloadApk String 下载apk后的手机上的文件地址
+     * 需要安装未知应用权限：
+     * <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
      */
     fun installApk(activity: Activity, downloadApk: String) {
+        if (!isOpenInstallPackages()){
+            XXPermissions.with(activity)
+                .permission(listOf(Permission.REQUEST_INSTALL_PACKAGES))
+                .request(object :OnPermissionCallback{
+                    override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
+                        if (all) openInstallApk(downloadApk, activity)
+                    }
+                    override fun onDenied(permissions: MutableList<String>?, never: Boolean) {
+                       if (never){//被永久拒绝，再次申请打开权限设置页面
+                           XXPermissions.startPermissionActivity(activity,permissions)
+                       }
+                    }
+                })
+            return
+        }
+        openInstallApk(downloadApk, activity)
+    }
+
+    /**
+     * 权限申请通过后，打开安装器开始安装APK
+     * @param activity Activity
+     * @param downloadApk String 下载apk后的手机上的文件地址
+     * 注意：出现解析软件包时出现问题，要检测一下我们的路径是否正确，也许路径和apk之间少了/
+     * 例如：/storage/emulated/0/Android/data/com.smallcake.justforcopy/cacheqq.apk
+     * 但正确路径应该是：/storage/emulated/0/Android/data/com.smallcake.justforcopy/cache/qq.apk
+     *
+     */
+    private fun openInstallApk(downloadApk: String, activity: Activity) {
         val intent = Intent(Intent.ACTION_VIEW)
         val file = File(downloadApk)
-//        ldd("安装路径==$downloadApk")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val apkUri = FileProvider.getUriForFile(activity,"${getAppPackageName()}.fileprovider",file)
+        //        ldd("安装路径==$downloadApk")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//7.0以上需要FileProvider来获取文件地址
+            val apkUri = FileProvider.getUriForFile(activity, "${getAppPackageName()}.fileprovider", file)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)//添加此处 是临时对文件的授权 必须加上此句
             intent.setDataAndType(apkUri, "application/vnd.android.package-archive")
         } else {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -89,6 +134,8 @@ object AppUtils {
         }
         activity.startActivity(intent)
     }
+
+
 
     /**
      * 获取进程名称

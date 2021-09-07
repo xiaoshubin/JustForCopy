@@ -15,6 +15,13 @@ import java.io.File
  **/
 object SdUtils {
     /**
+     * 获取app包文件路径:不需要存储权限
+     * @return /storage/emulated/0/Android/data/com.smallcake.justforcopy/cache/
+     */
+    fun getAppCachePath(): String {
+        return SmallUtils.context?.externalCacheDir?.path+ File.separator
+    }
+    /**
      * sd卡获取根目录路径
      * @return /storage/emulated/0/
      */
