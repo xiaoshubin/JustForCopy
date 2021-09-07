@@ -3,6 +3,7 @@ package com.smallcake.temp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import com.smallcake.smallutils.Base64Utils
 import com.smallcake.smallutils.Screen
 import com.smallcake.smallutils.ToastUtil
 import com.smallcake.smallutils.text.NavigationBar
@@ -26,7 +27,15 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
         onEvent()
     }
 
-    private fun onEvent() {}
+    private fun onEvent() {
+        val key = "1111wwww2222uuuu"
+        val str = "yx888888"
+
+        val encryptStr = Base64Utils.encryptAES(key,str)
+        val decryptStr = Base64Utils.decryptAES(key,encryptStr)
+        L.e("加密：$encryptStr  解密：$decryptStr")
+
+    }
 
     private fun initView() {
         BottomNavUtils.tabBindViewPager(this,bind.tabLayout,bind.viewPager)

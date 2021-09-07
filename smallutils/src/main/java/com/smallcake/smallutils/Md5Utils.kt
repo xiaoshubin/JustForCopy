@@ -27,15 +27,15 @@ object Md5Utils {
     /**
      * md5加密算法
      *
-     * @param originString
+     * @param encryptStr
      * @return 32位大写
      */
-    fun md5(originString: String): String {
+    fun md5(encryptStr: String): String {
         try {
             // 创建具有指定算法名称的信息摘要
             val md = MessageDigest.getInstance("MD5")
             // 获取二进制
-            val bytes = originString.toByteArray()
+            val bytes = encryptStr.toByteArray()
             // 执行加密并获得加密的结果,结果为byte字节数组
             val results = md.digest(bytes)
             // 将得到的字节数组变成字符串返回
@@ -45,6 +45,14 @@ object Md5Utils {
             ex.printStackTrace()
         }
         return ""
+    }
+    /**
+     * md5加密算法
+     * @param encryptStr
+     * @return 16位大写
+     */
+    fun encrypt16(encryptStr: String): String {
+        return md5(encryptStr).substring(8, 24)
     }
 
     /**
