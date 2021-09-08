@@ -77,10 +77,8 @@ object AppUtils {
      * 8.0以上需要检测是否开启，
      * 8.0以下默认开启了
      */
-    private fun isOpenInstallPackages():Boolean{
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            SmallUtils.context?.packageManager?.canRequestPackageInstalls()?:false
-        }else true
+    private fun isOpenInstallPackages(activity: Activity):Boolean{
+        return XXPermissions.isGrantedPermission(activity,Permission.REQUEST_INSTALL_PACKAGES)
     }
 
     /**
@@ -91,7 +89,7 @@ object AppUtils {
      * <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
      */
     fun installApk(activity: Activity, downloadApk: String) {
-        if (!isOpenInstallPackages()){
+        if (!isOpenInstallPackages(activity)){
             XXPermissions.with(activity)
                 .permission(listOf(Permission.REQUEST_INSTALL_PACKAGES))
                 .request(object :OnPermissionCallback{
