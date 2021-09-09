@@ -1,6 +1,5 @@
 package com.smallcake.temp.ui
 
-import android.R.attr.path
 import android.app.ProgressDialog
 import android.os.Bundle
 import com.smallcake.smallutils.FormatUtils
@@ -54,7 +53,7 @@ class DownloadDataActivity : BaseBindActivity<ActivityDownloadDataBinding>() {
                     val finish = progressInfo?.isFinish?:false
                     if (!finish) {
                         val speed = progressInfo?.speed?:0
-                        val speedStr = FormatUtils.formatSize(this@DownloadDataActivity,speed)
+                        val speedStr = FormatUtils.formatSize(speed)
                         progressDialog.setMessage("下载速度($speedStr/s)")
                     } else {
                         progressDialog.setMessage("下载完成！")

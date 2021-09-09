@@ -11,6 +11,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.text.TextUtils
 import android.util.Log
 import androidx.core.content.FileProvider
 import com.hjq.permissions.OnPermissionCallback
@@ -182,21 +183,66 @@ object AppUtils {
     /**
      * 获取缓存大小
      */
-    fun getTotalCacheSize(context: Context): String {
-        var cacheSize: Long = FileUtils.getFileSize(context.cacheDir)
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            val size =  if (context.externalCacheDir==null)0 else FileUtils.getFileSize(context.externalCacheDir!!)
-            cacheSize += size
+    fun getCacheSize():String{
+        val size = getFolderSize(SmallUtils.context!!.cacheDir)
+        return FormatUtils.formatSize(size)
+    }
+
+    private fun getFolderSize(file: File): Long {
+        var size: Long = 0
+        try {
+            val fileList = file.listFiles()
+            for (i in fileList.indices) {
+                // 如果下面还有文件
+                size = if (fileList[i].isDirectory) {
+                    size + getFolderSize(fileList[i])
+                } else {
+                    size + fileList[i].length()
+                }
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
         }
-        return FormatUtils.formatSize(context,cacheSize)
+        return size
     }
 
     /**
      * 清除缓存
      */
-    fun clearCache(){
-        val am = SmallUtils.context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
-        am!!.clearApplicationUserData()
+    fun clearCache() {
+        val directory = SmallUtils.context?.cacheDir?.path
+        deleteFolderFile(directory,false)
+    }
+
+    /**
+     * 删除指定目录下文件及目录
+     * @param deleteThisPath
+     * @param filepath
+     * @return
+     */
+    private fun deleteFolderFile(filePath: String?, deleteThisPath: Boolean) {
+        if (!TextUtils.isEmpty(filePath)) {
+            try {
+                val file = File(filePath)
+                if (file.isDirectory) { // 如果下面还有文件
+                    val files = file.listFiles()
+                    for (i in files.indices) {
+                        deleteFolderFile(files[i].absolutePath, true)
+                    }
+                }
+                if (deleteThisPath) {
+                    if (!file.isDirectory) { // 如果是文件，删除
+                        file.delete()
+                    } else { // 目录
+                        if (file.listFiles().isEmpty()) { // 目录下没有文件或者目录，删除
+                            file.delete()
+                        }
+                    }
+                }
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
 }
