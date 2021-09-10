@@ -8,6 +8,8 @@ import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 /**
  * Date:2021/6/12 17:25
@@ -15,6 +17,7 @@ import android.webkit.WebViewClient
  * Desc: WebView工具类
  **/
 class WebUtils {
+    private val TAG = "WebUtils"
     /**
      * 图片自适应屏幕宽度
      * @return String
@@ -55,6 +58,33 @@ class WebUtils {
     fun injectOpenImgJs(context: Context, webView: WebView, cb:(String, Int, List<String>)->Unit){
         webView.webViewClient = MyWebViewClient()
         webView.addJavascriptInterface(JavascriptInterface(context,cb), "imagelistner")
+    }
+    /**
+     * 截取富文本中的图片链接
+     * @param content
+     * @return
+     */
+    fun getImgUrlsFromHtml(content: String): Array<String?>? {
+        val imageSrcList: MutableList<String?> = ArrayList()
+        val p: Pattern = Pattern.compile(
+            "<img\\b[^>]*\\bsrc\\b\\s*=\\s*('|\")?([^'\"\n\r\\f>]+(\\.jpg|\\.bmp|\\.eps|\\.gif|\\.mif|\\.miff|\\.png|\\.tif|\\.tiff|\\.svg|\\.wmf|\\.jpe|\\.jpeg|\\.dib|\\.ico|\\.tga|\\.cut|\\.pic|\\b)\\b)[^>]*>",
+            Pattern.CASE_INSENSITIVE
+        )
+        val m: Matcher = p.matcher(content)
+        var quote: String? = null
+        var src: String? = null
+        while (m.find()) {
+            quote = m.group(1)
+            src =
+                if (quote == null || quote.trim { it <= ' ' }.isEmpty()) m.group(2).split("//s+")
+                    .get(0) else m.group(2)
+            imageSrcList.add(src)
+        }
+        if (imageSrcList == null || imageSrcList.size == 0) {
+            Log.w(TAG, "资讯中未匹配到图片链接")
+            return null
+        }
+        return imageSrcList.toTypedArray()
     }
 }
 class MyWebViewClient : WebViewClient() {
