@@ -189,31 +189,18 @@ object SelectImgUtils {
  * 图片选择适配器
  */
 private class ImgSelectAdapter(lineImgNum: Int) : BaseQuickAdapter<ImgSelectBean, BaseViewHolder>(R.layout.item_img_selecter) {
-    private val dp8 = DpUtils.dp2px(8f)
-    private val spaceWidth = dp8 * (lineImgNum+1)
+    private val spaceWidth = DpUtils.dp2px(16f)//RecyclerView左右margin的总和
     private val layoutParams = LinearLayoutCompat.LayoutParams(
-        (Screen.width - spaceWidth) / 3,
-        (Screen.width - spaceWidth) / 3
+        (Screen.width - spaceWidth) / lineImgNum,
+        (Screen.width - spaceWidth) / lineImgNum
     )
-    private val layoutParams2 = LinearLayoutCompat.LayoutParams(
-        (Screen.width - spaceWidth) / 3,
-        (Screen.width - spaceWidth) / 3
-    )
-    init {
-        layoutParams.setMargins(dp8,0,0,0)
-        layoutParams2.setMargins(0,0,dp8,0)
-    }
 
     override fun convert(holder: BaseViewHolder, item: ImgSelectBean) {
         val isAdd = item.isAdd
         //布局动态换算
         val layoutSelect = holder.getView<FrameLayout>(R.id.layout_select)
-        layoutSelect.layoutParams = if ((holder.layoutPosition)%3==0) {
-            if (isAdd) layoutParams2 else layoutParams
-        }else {layoutParams2}
-
+        layoutSelect.layoutParams =layoutParams
         //根据是否是添加图片来显示和隐藏图片，添加图片，删除按钮
-
         val addImgIv = holder.getView<ImageFilterView>(R.id.iv_add)
         val iv = holder.getView<ImageFilterView>(R.id.iv_show)
         val ivDel = holder.getView<ImageFilterView>(R.id.iv_del)
