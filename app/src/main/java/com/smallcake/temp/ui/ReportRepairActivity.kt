@@ -3,7 +3,6 @@ package com.smallcake.temp.ui
 import android.os.Bundle
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.smallutils.text.NavigationBar
-import com.smallcake.temp.adapter.GridImageAdapter
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityReportRepairBinding
 import com.smallcake.temp.utils.*
@@ -14,9 +13,10 @@ import com.smallcake.temp.utils.sizeNull
  * @property imgs MutableList<Bean>? 要上传的图片集合
  * @see GridImageAdapter 图片选择适配器
  * @see TagSelectUtils 单选多选工具类
+ *
  */
 class ReportRepairActivity : BaseBindActivity<ActivityReportRepairBinding>() {
-    private var imgs: MutableList<GridImageAdapter.Bean>?=null
+    private var imgs: MutableList<ImgSelectBean>?=null
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.setTitle("报事报修")
         initView()
@@ -65,7 +65,7 @@ class ReportRepairActivity : BaseBindActivity<ActivityReportRepairBinding>() {
 
     }
     private fun initImg() {
-        SelectImgUtils.bindRecyclerView(this,bind.recyclerView){
+        SelectImgUtils.bindRecyclerView(this,bind.recyclerView,9){
             imgs = it
         }
 

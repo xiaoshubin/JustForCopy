@@ -26,9 +26,7 @@ import com.smallcake.temp.R;
 
 /**
  * 这个类是用于选择图片框架要传一个图片加载引擎，必传项
- * @author：luck
- * @date：2019-11-13 17:02
- * @describe：Glide加载引擎
+
  */
 public class GlideEngine implements ImageEngine {
 

@@ -127,7 +127,6 @@
             />
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:padding="12dp"
         android:id="@+id/recycler_view"
         android:background="@color/white"
         android:layout_width="match_parent"

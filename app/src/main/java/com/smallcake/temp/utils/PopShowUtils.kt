@@ -125,7 +125,7 @@ object PopShowUtils {
     /**
      * 点击显示单张大图
      */
-    fun showBigPic(iv: ImageView, url: String){
+    fun showBigPic(iv: ImageView, url: Any){
         XPopup.Builder(iv.context)
             .asImageViewer(iv, url, XImageLoader())
             .isShowSaveButton(false)
@@ -152,8 +152,9 @@ object PopShowUtils {
     }
     /**
      * 显示单张大图,无控件
+     * 用于在WebView点击图片查看大图
      */
-    fun showSingleBigImg(context: Context,url:Any){
+    fun showBigPic(context: Context,url:Any){
         XPopup.Builder(context)
             .asImageViewer(null,url,false, R.drawable.gray_round6_bg,R.drawable.gray_round6_bg,R.drawable.gray_round6_bg,false,XImageLoader())
             .show()

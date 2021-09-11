@@ -1,9 +1,16 @@
 package com.smallcake.temp.utils
 
 import android.text.TextUtils
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
@@ -11,107 +18,217 @@ import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.smallcake.temp.adapter.GridImageAdapter
+import com.smallcake.smallutils.DpUtils
+import com.smallcake.smallutils.Screen
+import com.smallcake.temp.R
+import java.io.File
 
 /**
  * Date:2021/7/14 13:38
  * Author:SmallCake
- * Desc:
+ * Desc:用于选择多张图片
+ * 1.可删除选择的图片
+ * 2.限制最大图片选择数量
+ * 3.点击已选图片查看大图
  **/
 object SelectImgUtils {
+    private var lineImgNum = 3 //单排排列的图片个数
+    private var imgMaxCount = 9 //图片最大上传数量
+    private var selectListener: ((MutableList<ImgSelectBean>?) -> Unit)? = null//选择图片后的结果
 
-    private const val imageMaxCount = 3 //图片最大上传数量
-    private val mInsertImageAdapter = GridImageAdapter(imageMaxCount)//插入图片适配器
-    private var selectListener:((MutableList<GridImageAdapter.Bean>)->Unit)?=null
-
-    fun bindRecyclerView(activity:AppCompatActivity,recyclerView: RecyclerView,cb:(MutableList<GridImageAdapter.Bean>)->Unit){
+    /**
+     * 绑定一个RecyclerView用于显示图片选择
+     * @param activity AppCompatActivity
+     * @param recyclerView RecyclerView
+     * @param maxCount Int 图片数量，默认九张
+     * @param cb Function1<MutableList<ImgSelectBean>?, Unit>
+     */
+    fun bindRecyclerView(
+        activity: AppCompatActivity,
+        recyclerView: RecyclerView,
+        maxCount: Int = 9,
+        cb: (MutableList<ImgSelectBean>?) -> Unit
+    ) {
         selectListener = cb
-        mInsertImageAdapter.getDataList().clear()
-        mInsertImageAdapter.isImageSizeMeet = false
-        mInsertImageAdapter.setOnAddImgListener{
-                checkPermission(activity)
-        }
+        imgMaxCount = maxCount
+        //清理数据，避免重复显示
+        val mAdapter = ImgSelectAdapter(lineImgNum)
+        mAdapter.addData(ImgSelectBean(isAdd = true))
+
         recyclerView.apply {
-            layoutManager = GridLayoutManager(activity,3)
-            adapter = mInsertImageAdapter
+            layoutManager = GridLayoutManager(activity, lineImgNum)
+            adapter = mAdapter
         }
+
+        mAdapter.apply {
+            addChildClickViewIds(R.id.iv_add, R.id.iv_show, R.id.iv_del)
+            setOnItemChildClickListener { adapter, view, position ->
+                val item = adapter.getItem(position) as ImgSelectBean
+                when (view.id) {
+                    R.id.iv_add -> checkPermission(activity, mAdapter)
+                    R.id.iv_show -> PopShowUtils.showBigPic(view as ImageView, File(item.path))
+                    R.id.iv_del -> {
+                        removeAt(position)
+                        if (!haveAddImg(mAdapter)) mAdapter.addData(ImgSelectBean(isAdd = true))
+                    }
+                }
+
+            }
+
+        }
+
     }
-    private fun checkPermission(activity:AppCompatActivity) {
-        if (XXPermissions.isGrantedPermission(activity, Permission.MANAGE_EXTERNAL_STORAGE)) {
-            getPhoto(activity)
+
+    /**
+     * 是否已经有了添加图片
+     * @return Boolean
+     */
+    private fun haveAddImg(mAdapter: ImgSelectAdapter): Boolean {
+        val list = mAdapter.data.filter { it.isAdd }
+        return list.sizeNull() > 0
+    }
+
+    /**
+     * 权限检测，要拍照和选择图片需要用到
+     * @param activity AppCompatActivity
+     */
+    private fun checkPermission(activity: AppCompatActivity, mAdapter: ImgSelectAdapter) {
+        val permissions = arrayOf(Permission.MANAGE_EXTERNAL_STORAGE, Permission.CAMERA)
+        if (XXPermissions.isGrantedPermission(activity, permissions)) {
+            getPhoto(activity, mAdapter)
         } else {
             XXPermissions.with(activity)
-                .permission(Permission.MANAGE_EXTERNAL_STORAGE)
+                .permission(permissions)
                 .request(object : OnPermissionCallback {
                     override fun onGranted(permissions: MutableList<String>, all: Boolean) {
-                        if (all) getPhoto(activity)
-                        else L.e("获取部分权限成功,但部分权限未正常授予")
+                        if (all) {
+                            getPhoto(activity, mAdapter)
+                        } else {
+                            L.e("获取部分权限成功,但部分权限未正常授予")
+                        }
                     }
+
                     override fun onDenied(permissions: MutableList<String>, never: Boolean) {
                         if (never) {
                             // 如果是被永久拒绝就跳转到应用权限系统设置页面
-                            XXPermissions.startPermissionActivity(activity,permissions)
+                            XXPermissions.startPermissionActivity(activity, permissions)
                         } else {
                             L.e("获取权限失败")
                         }
                     }
+
                 })
         }
     }
 
-    fun getPhoto(activity:AppCompatActivity) {
+    /**
+     * 根据适配器选择图片数量，确定还能选择的图片数量
+     * @param activity AppCompatActivity
+     */
+    private fun getPhoto(activity: AppCompatActivity, mAdapter: ImgSelectAdapter) {
         PictureSelector.create(activity)
-            .openGallery(PictureMimeType.ofImage()) //全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
-            .imageEngine(GlideEngine.createGlideEngine())// 外部传入图片加载引擎，必传项
-            .isWeChatStyle(true) // 是否开启微信图片选择风格
-            .maxSelectNum(imageMaxCount - mInsertImageAdapter.getDataList().size) // 最大图片选择数量
-            .imageSpanCount(3) // 每行显示个数
-            .isReturnEmpty(false) // 未选择数据时点击按钮是否可以返回
-            .compressQuality(80) // 图片压缩后输出质量 0~ 100
-            .cutOutQuality(90) // 裁剪输出质量 默认100
-            .minimumCompressSize(100) // 小于多少kb的图片不压缩
-            //.isAndroidQTransform(true)// 是否需要处理Android Q 拷贝至应用沙盒的操作，只针对compress(false); && .isEnableCrop(false);不压缩不裁剪有效,默认处理
-            .isCompress(true) // 是否压缩
-            .isEnableCrop(false) // 是否裁剪
-            .isZoomAnim(true) // 图片列表点击 缩放效果 默认true
-            .synOrAsy(false) //同步true或异步false 压缩 默认同步
-            .isPreviewImage(false) // 是否可预览图片
+            .openGallery(PictureMimeType.ofImage())
+            .imageEngine(GlideEngine.createGlideEngine())
+            .isWeChatStyle(true)
+            .maxSelectNum(imgMaxCount - mAdapter.data.filter { !it.isAdd }.sizeNull())
+            .imageSpanCount(3)
+            .isReturnEmpty(false)
+            .compressQuality(80)
+            .cutOutQuality(90)
+            .minimumCompressSize(100)
             .isCamera(true) // 是否显示拍照按钮
-            .withAspectRatio(1, 1) // 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
-            .hideBottomControls(true) // 是否显示uCrop工具栏，默认不显示
-            .freeStyleCropEnabled(true) // 裁剪框是否可拖拽
-            .circleDimmedLayer(false) // 是否圆形裁剪
-            .showCropFrame(false) // 是否显示裁剪矩形边框 圆形裁剪时建议设为false
-            //.cropImageWideHigh(120,120)// 裁剪宽高比，设置如果大于图片本身宽高则无效
-            .rotateEnabled(false) // 裁剪是否可旋转图片
-            .scaleEnabled(false) // 裁剪是否可放大缩小图片
+            .isPreviewImage(false)//不能预览，避免本来想选中，结果查看了大图
             .forResult(object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: List<LocalMedia>) {
                     for (media in result) {
-                        L.e("是否压缩:" + media.isCompressed)
-                        L.e("压缩:" + media.compressPath)
-                        L.e("原图:" + media.path)
-                        L.e("绝对路径:" + media.realPath)
-                        L.e("是否裁剪:" + media.isCut)
-                        L.e("裁剪:" + media.cutPath)
-                        L.e("是否开启原图:" + media.isOriginal)
-                        L.e("原图路径:" + media.originalPath)
-                        L.e("Android Q 特有Path:" + media.androidQToPath)
-                        L.e("宽高: " + media.width + "x" + media.height)
-                        L.e("Size: " + media.size)
-                        val imgPath = if (TextUtils.isEmpty(media.androidQToPath)) {
-                            if (TextUtils.isEmpty(media.compressPath)) media.realPath else media.compressPath
-                        } else {
-                            media.androidQToPath
-                        }
-                        mInsertImageAdapter.insertImage(imgPath)
+                        printFileInfo(media)
+                        val androidQToPath: String? = media.androidQToPath//AndroidQ路径
+                        val filePath = if (androidQToPath.isNullOrEmpty()) {
+                            media.compressPath ?: media.realPath
+                        } else androidQToPath
+                        //添加到已经选择的图片末尾，不包括最后的添加图片位置
+                        val list = mAdapter.data.filter { !it.isAdd }
+                        mAdapter.addData(list.size, ImgSelectBean(filePath))
+
                     }
-                    selectListener?.invoke(mInsertImageAdapter.getDataList())
+                    //添加图片完毕后，回调给页面选择的图片结果，如果已经选择了最大图片数，移除最后的添加图片
+                    val list = mAdapter.data.filter { !it.isAdd }
+                    selectListener?.invoke(list as MutableList<ImgSelectBean>?)
+                    if (list.sizeNull() == imgMaxCount) mAdapter.removeAt(list.size)
                 }
 
                 override fun onCancel() {
-                    L.e("没有选择图片")
+                    showToast("取消了图片选择")
                 }
             })
     }
+
+    /**
+     * 打印选择的文件信息
+     * @param media LocalMedia
+     */
+    private fun printFileInfo(media: LocalMedia) {
+        L.i(
+            "是否压缩:" + media.isCompressed +
+                    "\n压缩:" + media.compressPath +
+                    "\n原图:" + media.path +
+                    "\n绝对路径:" + media.realPath +
+                    "\n是否裁剪:" + media.isCut +
+                    "\n裁剪:" + media.cutPath +
+                    "\n是否开启原图:" + media.isOriginal +
+                    "\n原图路径:" + media.originalPath +
+                    "\nAndroid Q 特有Path:" + media.androidQToPath +
+                    "\n宽高: " + media.width + "x" + media.height +
+                    "\n图片大小: " + media.size
+        )
+    }
 }
+
+
+/**
+ * 图片选择适配器
+ */
+private class ImgSelectAdapter(lineImgNum: Int) : BaseQuickAdapter<ImgSelectBean, BaseViewHolder>(R.layout.item_img_selecter) {
+    private val dp8 = DpUtils.dp2px(8f)
+    private val spaceWidth = dp8 * (lineImgNum+1)
+    private val layoutParams = LinearLayoutCompat.LayoutParams(
+        (Screen.width - spaceWidth) / 3,
+        (Screen.width - spaceWidth) / 3
+    )
+    private val layoutParams2 = LinearLayoutCompat.LayoutParams(
+        (Screen.width - spaceWidth) / 3,
+        (Screen.width - spaceWidth) / 3
+    )
+    init {
+        layoutParams.setMargins(dp8,0,0,0)
+        layoutParams2.setMargins(0,0,dp8,0)
+    }
+
+    override fun convert(holder: BaseViewHolder, item: ImgSelectBean) {
+        val isAdd = item.isAdd
+        //布局动态换算
+        val layoutSelect = holder.getView<FrameLayout>(R.id.layout_select)
+        layoutSelect.layoutParams = if ((holder.layoutPosition)%3==0) {
+            if (isAdd) layoutParams2 else layoutParams
+        }else {layoutParams2}
+
+        //根据是否是添加图片来显示和隐藏图片，添加图片，删除按钮
+
+        val addImgIv = holder.getView<ImageFilterView>(R.id.iv_add)
+        val iv = holder.getView<ImageFilterView>(R.id.iv_show)
+        val ivDel = holder.getView<ImageFilterView>(R.id.iv_del)
+        addImgIv.visibility = isAdd.visiable()
+        iv.visibility = isAdd.visiableReverse()
+        ivDel.visibility = isAdd.visiableReverse()
+        //有图片就显示
+        if (!TextUtils.isEmpty(item.path)) iv.load(File(item.path))
+    }
+}
+
+/**
+ * 图片选择类
+ * @property path String 选择图片后的文件路径
+ * @property isAdd Boolean 是否是添加图片
+ * @constructor
+ */
+data class ImgSelectBean(val path: String = "", var isAdd: Boolean = false)
