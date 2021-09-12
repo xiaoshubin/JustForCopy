@@ -103,4 +103,13 @@ object FileUtils {
     }
 
     fun getFileSize(path: String?) = getFileSize(File(path))
+    /**
+     * 获取文件后缀
+     * /storage/emulated/0/DCIM/Camera/IMG_20210829_115105.jpg
+     * 返回jpg
+     * @param fileName String
+     */
+    fun getFileSuffix(fileName: String):String{
+        return fileName.substring(fileName.lastIndexOf(".") + 1)
+    }
 }

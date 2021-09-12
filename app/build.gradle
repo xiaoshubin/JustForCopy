@@ -172,6 +172,12 @@ dependencies {
     implementation 'com.github.xuexiangjys:XQRCode:1.1.0'
     //https://github.com/getActivity/ShapeView
     implementation 'com.github.getActivity:ShapeView:5.0'
+    //腾讯云
+    implementation ('com.qcloud.cos:cos-android:5.7.+') {
+        //关闭beacon 上报功能
+        exclude group: 'com.tencent.qcloud', module: 'beacon-android-release'
+    }
+    implementation 'com.qcloud.cos:cos-ktx:5.6.+'
 
 
 }
