@@ -1,29 +1,23 @@
 package com.smallcake.temp.fragment
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
-import android.content.DialogInterface
-import android.graphics.Color
 import android.os.Bundle
-import android.os.Message
 import android.view.MotionEvent
 import android.view.View
-import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.jaygoo.widget.SeekBar
 import com.smallcake.smallutils.Captcha
-import com.smallcake.smallutils.SpannableStringUtils
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindFragment
 import com.smallcake.temp.databinding.FragmentListBinding
-import com.smallcake.temp.utils.L
 import com.smallcake.temp.utils.PopShowUtils
 import com.smallcake.temp.utils.showToast
 import com.willy.ratingbar.BaseRatingBar
 import java.util.*
+
 
 class ListFragment: BaseBindFragment<FragmentListBinding>() {
 
@@ -57,10 +51,19 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
             addBody(48)
             addBody(32)
         }
-        val bitmap = Captcha.getInstance().createBitmap("0527")
+
+        //验证码控件
+        val bitmap = Captcha.createBitmap("0527")
         bind.ivAuthCode.setImageBitmap(bitmap)
+        //圆环控件
+        animProgress(100,60f)
 
-
+    }
+    private fun animProgress(max: Int, current: Float) {
+        val percentage = 100f * current / max
+        val animator: ObjectAnimator = ObjectAnimator.ofFloat(bind.circlePercentProgress, "percentage", 0f, percentage)
+        animator.duration = 2000
+        animator.start()
     }
 
     @SuppressLint("ClickableViewAccessibility", "SetTextI18n")

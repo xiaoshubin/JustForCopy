@@ -19,7 +19,7 @@ android {
         }
     }
     compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    buildToolsVersion '30.0.3'
     defaultConfig {
         applicationId "com.smallcake.justforcopy"
         minSdkVersion 21
@@ -52,11 +52,10 @@ android {
     kapt {
         generateStubs = true
     }
-    dataBinding{
-        enabled = true
-    }
-    viewBinding {
-        enabled = true
+
+    buildFeatures{
+        viewBinding = true
+        dataBinding = true
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all{

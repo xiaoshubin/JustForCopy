@@ -12,6 +12,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import java.util.concurrent.TimeUnit
 
 /**
  * 下载工具类
@@ -23,7 +24,11 @@ object DownloadUtils {
 
     init {
         mHandler = Handler(Looper.getMainLooper())
-        okHttpClient = ProgressManager.getInstance().with(OkHttpClient().newBuilder()).build()
+        val okhttpBuilder = OkHttpClient().newBuilder()
+        okhttpBuilder.connectTimeout(60,TimeUnit.SECONDS)
+        okhttpBuilder.readTimeout(60,TimeUnit.SECONDS)
+        okhttpBuilder.writeTimeout(60,TimeUnit.SECONDS)
+        okHttpClient = ProgressManager.getInstance().with(okhttpBuilder).build()
     }
 
 

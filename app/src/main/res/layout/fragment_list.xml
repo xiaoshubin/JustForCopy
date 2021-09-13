@@ -234,6 +234,15 @@
             android:id="@+id/iv_auth_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
+        <View style="@style/h_line"/>
+        <com.smallcake.smallutils.custom.CirclePercentView
+            android:id="@+id/circle_percent_progress"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            app:circleBgColor="@color/lightgray"
+            app:circleIsGradient="true"
+            app:circleProgressColor="@color/red" />
+        <View style="@style/h_line"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
