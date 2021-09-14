@@ -3,6 +3,8 @@ package com.smallcake.temp
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import com.lsxiao.apollo.core.Apollo
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
@@ -37,6 +39,10 @@ class MyApplication : Application() {
         MMKV.initialize(this)
         //小工具初始化
         SmallUtils.init(this)
+        //facebook登录
+        AppEventsLogger.activateApp(this)
+        FacebookSdk.setAutoLogAppEventsEnabled(true)
+        FacebookSdk.setIsDebugEnabled(true)
     }
 
 

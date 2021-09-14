@@ -34,4 +34,22 @@
         android:text="使用Google登录"
         android:layout_width="match_parent"
         android:layout_height="44dp"/>
+    <com.smallcake.smallutils.text.ShapeTextButton
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp"
+        android:textSize="14sp"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:gravity="center"
+        android:drawableStart="@mipmap/facebook"
+        android:textColor="@color/text_blue"
+        android:id="@+id/btn_facebook_login"
+        app:stb_radius="60dp"
+        app:stb_solidColor="@color/transparent"
+        app:stb_strokeColor="@color/titleColor"
+        app:stb_strokeWidth="1"
+        android:text="使用Facebook登录"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"/>
 </LinearLayout>

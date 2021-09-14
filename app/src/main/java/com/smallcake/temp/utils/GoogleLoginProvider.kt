@@ -104,7 +104,7 @@ class GoogleLoginProvider(val activity: AppCompatActivity) {
                     Log.e(TAG, "开发者配置错误")}
                 12500 -> {
                     Log.e(TAG, "当前设备不支持")}
-                else -> { Log.e(TAG, "signInResult:failed code=${e.statusCode} msg:${e.message}"  )}
+                else -> { Log.e(TAG, "google signInResult:failed code=${e.statusCode} msg:${e.message}"  )}
             }
 
         }

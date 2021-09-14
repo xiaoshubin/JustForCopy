@@ -68,13 +68,13 @@ dependencies {
     //内存泄漏检测
 //    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.6"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.core:core-ktx:1.3.2"
+    implementation "androidx.core:core-ktx:1.6.0"
     implementation "androidx.activity:activity-ktx:1.2.2"
     implementation "androidx.fragment:fragment-ktx:1.3.2"
     implementation "androidx.appcompat:appcompat:1.3.0"
     implementation "com.google.android.material:material:1.2.1"
     implementation "androidx.constraintlayout:constraintlayout:2.0.4"
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     //总方法数超过限制>65536支持
     implementation "androidx.multidex:multidex:2.0.1"
@@ -84,7 +84,7 @@ dependencies {
     implementation "com.orhanobut:logger:2.2.0"
     //图片加载
 //    implementation "com.github.bumptech.glide:glide:4.11.0"
-    implementation "io.coil-kt:coil:1.1.1"
+    implementation "io.coil-kt:coil:1.3.0"
     implementation "io.coil-kt:coil-gif:1.3.2"
     //ViewBinding基类
     implementation "com.dylanc:viewbinding-ktx:1.0.1"
@@ -102,7 +102,7 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"//Rxjava转换
     //Rxjava2
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
     //pop弹框
     implementation "com.lxj:xpopup:2.2.17"
     //生命周期绑定
@@ -164,6 +164,8 @@ dependencies {
     implementation 'com.haibin:calendarview:3.7.1'
     //Google登录
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    //facebook登录
+    implementation 'com.facebook.android:facebook-login:8.2.0'
     //区间进度条
     implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
     //zxing二维码生成扫描
@@ -172,11 +174,11 @@ dependencies {
     //https://github.com/getActivity/ShapeView
     implementation 'com.github.getActivity:ShapeView:5.0'
     //腾讯云
-    implementation ('com.qcloud.cos:cos-android:5.7.+') {
+    implementation ('com.qcloud.cos:cos-android:5.7.1') {
         //关闭beacon 上报功能
         exclude group: 'com.tencent.qcloud', module: 'beacon-android-release'
     }
-    implementation 'com.qcloud.cos:cos-ktx:5.6.+'
+    implementation 'com.qcloud.cos:cos-ktx:5.6.5'
 
 
 }
