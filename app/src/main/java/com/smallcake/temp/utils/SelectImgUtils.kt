@@ -34,7 +34,7 @@ import java.io.File
 object SelectImgUtils {
     private var lineImgNum = 3 //单排排列的图片个数
     private var imgMaxCount = 9 //图片最大上传数量
-    private var selectListener: ((MutableList<ImgSelectBean>?) -> Unit)? = null//选择图片后的结果
+    private var selectListener: ((List<String>?) -> Unit)? = null//选择图片后的结果
 
     /**
      * 绑定一个RecyclerView用于显示图片选择
@@ -47,7 +47,7 @@ object SelectImgUtils {
         activity: AppCompatActivity,
         recyclerView: RecyclerView,
         maxCount: Int = 9,
-        cb: (MutableList<ImgSelectBean>?) -> Unit
+        cb: (List<String>?) -> Unit
     ) {
         selectListener = cb
         imgMaxCount = maxCount
@@ -69,6 +69,9 @@ object SelectImgUtils {
                     R.id.iv_show -> PopShowUtils.showBigPic(view as ImageView, File(item.path))
                     R.id.iv_del -> {
                         removeAt(position)
+                        val list = mAdapter.data.filter { !it.isAdd }
+                        val listStr = list.map { it.path }
+                        selectListener?.invoke(listStr)
                         if (!haveAddImg(mAdapter)) mAdapter.addData(ImgSelectBean(isAdd = true))
                     }
                 }
@@ -153,7 +156,8 @@ object SelectImgUtils {
                     }
                     //添加图片完毕后，回调给页面选择的图片结果，如果已经选择了最大图片数，移除最后的添加图片
                     val list = mAdapter.data.filter { !it.isAdd }
-                    selectListener?.invoke(list as MutableList<ImgSelectBean>?)
+                    val listStr = list.map { it.path }
+                    selectListener?.invoke(listStr)
                     if (list.sizeNull() == imgMaxCount) mAdapter.removeAt(list.size)
                 }
 
