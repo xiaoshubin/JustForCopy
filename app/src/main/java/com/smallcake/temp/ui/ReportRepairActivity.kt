@@ -16,7 +16,7 @@ import com.smallcake.temp.utils.sizeNull
  *
  */
 class ReportRepairActivity : BaseBindActivity<ActivityReportRepairBinding>() {
-    private var imgs: MutableList<ImgSelectBean>?=null
+    private var imgs: List<String>?=null
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.setTitle("报事报修")
         initView()
@@ -26,8 +26,8 @@ class ReportRepairActivity : BaseBindActivity<ActivityReportRepairBinding>() {
     private fun onEvent() {
         bind.btnReport.setOnClickListener{
             ldd("要上传的图片：${imgs.sizeNull()}")
-            imgs?.forEachIndexed{i,imgBean->
-                L.d("$i =="+imgBean.path)
+            imgs?.forEachIndexed{i,path->
+                L.d("$i =="+path)
             }
         }
         bind.tvStartTime.setOnClickListener{
