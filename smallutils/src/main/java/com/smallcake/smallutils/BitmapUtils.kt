@@ -39,14 +39,16 @@ object BitmapUtils {
 
     /**
      * 保存位图图像到指定的路径
-     *
-     * @param bitmap
-     * @param outPath
+     * @param bitmap Bitmap?
+     * @param outPath String?
+     * @param format CompressFormat
+     * @param quality Int   0-100 压缩质量
+     * @return Boolean?
      * @throws FileNotFoundException
      */
     @Throws(FileNotFoundException::class)
-    fun saveBitmap(bitmap: Bitmap, outPath: String?): Boolean {
-        return bitmap.compress(Bitmap.CompressFormat.JPEG, 100, FileOutputStream(outPath))
+    fun saveBitmap(bitmap: Bitmap?, outPath: String?,format: Bitmap.CompressFormat=Bitmap.CompressFormat.JPEG,quality:Int=100): Boolean? {
+        return bitmap?.compress(format, quality, FileOutputStream(outPath))
     }
 
     /**

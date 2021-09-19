@@ -113,7 +113,7 @@ class VideoActivity : BaseBindActivity<ActivityVideoBinding>() {
         val outBitrate = bitrate / 2
         CoroutineScope(Dispatchers.IO).launch {
             VideoProcessor.processor(context)
-                .input(videoPath)
+                .input(selectedVideoUri)
                 .output(outPath)
                 .outWidth(outWidth)
                 .outHeight(outHeight)
