@@ -1,13 +1,10 @@
 package com.smallcake.temp.fragment
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.smallcake.smallutils.custom.GridItemDecoration
-import com.smallcake.temp.R
 import com.smallcake.temp.adapter.PageBeanAdapter
 import com.smallcake.temp.base.BaseBindFragment
 import com.smallcake.temp.bean.PageBean
@@ -39,12 +36,12 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("倒计时列表", CountDownListActivity::class.java,"倒计时列表"),
             PageBean("下载", DownloadDataActivity::class.java,"下载apk"),
             PageBean("视频相关", VideoActivity::class.java,"视频压缩，视频播放"),
+            PageBean("多布局列表", MoreLayoutListActivity::class.java,"多布局列表"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
             val item = adapter.getItem(position) as PageBean
             goActivity(item.clz)
-
         }
     }
 }

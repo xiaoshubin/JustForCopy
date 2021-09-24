@@ -24,7 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
-        <activity android:name=".ui.VideoActivity"></activity>
+        <activity android:name=".ui.MoreLayoutListActivity"></activity>
+        <activity android:name=".ui.VideoActivity" />
         <activity android:name=".ui.DownloadDataActivity" />
         <activity android:name=".ui.CountDownListActivity" />
         <activity android:name=".ui.ShapeViewActivity" />
