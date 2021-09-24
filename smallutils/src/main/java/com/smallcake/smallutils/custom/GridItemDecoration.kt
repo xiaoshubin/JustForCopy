@@ -7,7 +7,7 @@ import android.graphics.Rect
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.RecyclerView
-import com.smallcake.smallutils.DpUtils
+import com.smallcake.smallutils.pxInt
 
 
 /**
@@ -25,7 +25,7 @@ import com.smallcake.smallutils.DpUtils
  */
 
 class GridItemDecoration(val spanCount:Int, space:Float=8f, @ColorInt dividerColor:Int=Color.TRANSPARENT,private val isBorder:Boolean=true): RecyclerView.ItemDecoration() {
-    private val spaceSize = DpUtils.dp2px(space)
+    private val spaceSize = space.pxInt
     private val mPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     init {
         mPaint.apply {

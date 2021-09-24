@@ -1,7 +1,5 @@
 package com.smallcake.smallutils
 
-import android.annotation.SuppressLint
-import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,73 +31,23 @@ object TimeUtils {
     const val YYYY_MM_DD_H24_MM_SS = "yyyy-MM-dd HH:mm:ss"
 
     /**
-     * 24小时，年-月-日 时：分：秒 : 毫秒
-     */
-    const val YYYY_MM_DD_H24_MM_SS_SSS = "yyyy-MM-dd HH:mm:ss:SSS"
-
-    /**
      * 时间戳 转 String
      * @param time 时间戳
      * @param timeFormat 时间戳 默认yyyy-MM-dd
-     * @return
+     * @return 2021-09-24
      */
     fun timeToStr(time: Int, timeFormat: String = YYYY_MM_DD): String {
-        val fm =
-            SimpleDateFormat(timeFormat, Locale.CHINA)
+        val fm = SimpleDateFormat(timeFormat, Locale.CHINA)
         val time1000 = time.toString().toLong() * 1000
         return fm.format(time1000)
     }
-
-    /**
-     * 获取今天年月日
-     * @param timeFormat 时间戳 默认yyyy-MM-dd
-     * @return 2017-08-14
-     */
-    fun today(timeFormat: String = YYYY_MM_DD): String {
-        val date = Date()
-        val sdf = SimpleDateFormat(timeFormat, Locale.CHINA)
-        return sdf.format(date)
-    }
-
-
-    /**
-     * 获取当前系统的时间戳(10位)
-     * @return 1502697135
-     */
-    val currentTime: Int
-        get() = (System.currentTimeMillis() / 1000).toInt()
-    val currentTimeYmdhms: String
-        get() = timeToStr((System.currentTimeMillis() / 1000).toInt(),YYYY_MM_DD_H24_MM_SS)
-
-    /**
-     * 获取当前系统的时间戳(13位) 毫秒级
-     * @return 1502697135000
-     */
-    val currentTimeSSS: Long
-        get() = System.currentTimeMillis() / 1000L
-
-    /**
-     * 获取几个月后的今天
-     * 例如今天是6月12日（2021-06-12），那么如果addMmonth传入2后就是（2021-08-12）
-     * @param addMmonth Int 追加的月份
-     * @return String 2021-08-12
-     */
-    fun getAddMonthDateFromNow(addMmonth: Int, timeFormat: String = YYYY_MM_DD): String {
-        val sdf = SimpleDateFormat(timeFormat, Locale.CHINA)
-        val now = Date()
-        val calendar = Calendar.getInstance()
-        calendar.time = now
-        calendar.add(Calendar.MONTH, addMmonth)
-        return sdf.format(calendar.time)
-    }
-
     /**
      * 将字符串转为时间戳
      * @param dateFormat 时间戳格式
      * @param dateTime       时间
-     * @return 时间戳(毫秒)
+     * @return 时间戳(秒)
      */
-    fun strToDate(dateTime: String, dateFormat: String = YYYY_MM_DD_H24_MM_SS): Int {
+    fun strToTime(dateTime: String, dateFormat: String = YYYY_MM_DD_H24_MM_SS): Int {
         val sdf = SimpleDateFormat(dateFormat, Locale.CHINA)
         var date: Date? = null
         try {
@@ -111,13 +59,42 @@ object TimeUtils {
     }
 
     /**
+     * 获取今天年月日
+     * @param timeFormat 时间戳 默认yyyy-MM-dd
+     * @return 2017-08-14
+     */
+    fun today(timeFormat: String = YYYY_MM_DD): String {
+        val timeInt = (Date().time/1000).toInt()
+        return timeToStr(timeInt,timeFormat)
+    }
+
+
+    /**
+     * 获取当前系统的时间戳(10位)
+     * @return 1502697135
+     */
+    val currentTime: Int
+        get() = (System.currentTimeMillis() / 1000).toInt()
+    /**
+     * 获取当前系统的时间戳(10位)
+     * @return 2021-09-24 09:21:33
+     */
+    val currentTimeYmdhms: String
+        get() = timeToStr((System.currentTimeMillis() / 1000).toInt(),YYYY_MM_DD_H24_MM_SS)
+
+
+
+
+
+
+    /**
      * 获取日期是星期几
      * @param dateTime       时间
      * @param dateFormat 时间戳格式
      *
      * 注意：dateTime格式要为 yyyy-MM-dd
      */
-    fun getDayofWeek(dateTime: String, dateFormat: String = YYYY_MM_DD): String {
+    fun dayOfWeek(dateTime: String, dateFormat: String = YYYY_MM_DD): String {
         val cal = Calendar.getInstance()
         val sdf = SimpleDateFormat(dateFormat, Locale.CHINA)//这里的格式要和传进来的一样，否则会转换错误
         var date: Date? = null
@@ -138,7 +115,7 @@ object TimeUtils {
             else -> ""
         }
     }
-    fun getDayofWeek(date: Date?): String {
+    fun dayOfWeek(date: Date?): String {
         val cal = Calendar.getInstance()
         cal.time = Date(date?.time ?: 0)
         return when (cal.get(Calendar.DAY_OF_WEEK)) {
@@ -156,10 +133,24 @@ object TimeUtils {
      * 获取几天后的时间戳（秒）
      * @param day 几天后
      */
-    fun getTimeDaysLater(day: Int): Int {
+    fun afterDays(day: Int): Int {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.SECOND, calendar.get(Calendar.SECOND) + (day * 60 * 60 * 24)) //秒
         return (calendar.time.time/1000L).toInt()
+    }
+    /**
+     * 获取几个月后的今天
+     * 例如今天是6月12日（2021-06-12），那么如果addMonth传入2后就是（2021-08-12）
+     * @param addMonth Int 追加的月份
+     * @return String 2021-08-12
+     */
+    fun afterMonths(addMonth: Int, timeFormat: String = YYYY_MM_DD): String {
+        val sdf = SimpleDateFormat(timeFormat, Locale.CHINA)
+        val now = Date()
+        val calendar = Calendar.getInstance()
+        calendar.time = now
+        calendar.add(Calendar.MONTH, addMonth)
+        return sdf.format(calendar.time)
     }
     /**
      * 将时间戳转化成Calendar对象(获取时间详情)
@@ -199,6 +190,10 @@ object TimeUtils {
 
         return "$dayStr$hourStr:$minutesStr:$secoundStr"
     }
-
-
 }
+
+/**
+ * 时间相关的扩展函数
+ * @receiver Int
+ * @return [ERROR : <ERROR FUNCTION RETURN TYPE>]
+ */

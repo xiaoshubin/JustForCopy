@@ -14,7 +14,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.core.view.ViewCompat
-import com.smallcake.smallutils.DpUtils
+import com.smallcake.smallutils.px
 import com.smallcake.temp.utils.showToast
 import kotlin.math.roundToInt
 
@@ -89,13 +89,13 @@ open class LuckPan: View {
         }
         paintText.apply {
             color = Color.parseColor("#FFBE04")
-            textSize = DpUtils.dp2pxFloat(18f)
+            textSize = 18f.px
             letterSpacing = 0.2f
             isFakeBoldText = true
         }
         paintBtnText.apply {
             color = Color.WHITE
-            textSize = DpUtils.dp2pxFloat(22f)
+            textSize = 22f.px
             isFakeBoldText = true
         }
         isClickable = true

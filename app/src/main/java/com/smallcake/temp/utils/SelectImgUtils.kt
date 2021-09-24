@@ -18,8 +18,8 @@ import com.luck.picture.lib.PictureSelector
 import com.luck.picture.lib.config.PictureMimeType
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import com.smallcake.smallutils.DpUtils
 import com.smallcake.smallutils.Screen
+import com.smallcake.smallutils.px
 import com.smallcake.temp.R
 import java.io.File
 
@@ -193,7 +193,7 @@ object SelectImgUtils {
  * 图片选择适配器
  */
 private class ImgSelectAdapter(lineImgNum: Int) : BaseQuickAdapter<ImgSelectBean, BaseViewHolder>(R.layout.item_img_selecter) {
-    private val spaceWidth = DpUtils.dp2px(16f)//RecyclerView左右margin的总和
+    private val spaceWidth = 16.px //RecyclerView左右margin的总和
     private val layoutParams = LinearLayoutCompat.LayoutParams(
         (Screen.width - spaceWidth) / lineImgNum,
         (Screen.width - spaceWidth) / lineImgNum

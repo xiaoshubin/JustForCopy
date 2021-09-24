@@ -1,10 +1,15 @@
 package com.smallcake.temp
 
 import android.os.Bundle
+import com.amap.api.mapcore.util.dp
+import com.smallcake.smallutils.dp
+import com.smallcake.smallutils.px
 import com.smallcake.smallutils.text.NavigationBar
+import com.smallcake.smallutils.twoDecimals
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityMainBinding
 import com.smallcake.temp.utils.BottomNavUtils
+import com.smallcake.temp.utils.L
 
 
 /**
@@ -21,7 +26,7 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
     }
 
     private fun onEvent() {
-
+        L.e("1pxToDp=="+1.895565454f.twoDecimals)
     }
 
     private fun initView() {

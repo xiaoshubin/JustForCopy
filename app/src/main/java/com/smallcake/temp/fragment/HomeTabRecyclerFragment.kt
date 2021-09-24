@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.appbar.AppBarLayout
-import com.smallcake.smallutils.DpUtils
+import com.smallcake.smallutils.px
 import com.smallcake.temp.R
 import com.smallcake.temp.adapter.WaitDisposeAdapter
 import com.smallcake.temp.base.BaseBindFragment
@@ -159,7 +159,7 @@ class HomeTabRecyclerFragment : BaseBindFragment<FragmentHomeTabRecyclerviewBind
         val menuViewPagerAdapter = MenuViewPagerAdapter(mList)
         bind.viewPager.adapter = menuViewPagerAdapter
         //3.动态设置ViewPager的高度，并加载所有页面
-        val height = DpUtils.dp2px(80f) //这里的80为MainMenuAdapter中布局文件高度
+        val height =80.px //这里的80为MainMenuAdapter中布局文件高度
         val layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             if (datas.size <= spanNum) height else height * rowNum

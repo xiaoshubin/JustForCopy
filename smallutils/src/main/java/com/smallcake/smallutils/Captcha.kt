@@ -2,7 +2,6 @@ package com.smallcake.smallutils
 
 import android.graphics.*
 import android.text.TextUtils
-import com.smallcake.smallutils.DpUtils.dp2px
 import java.util.*
 
 /**
@@ -52,7 +51,7 @@ object Captcha {
         val canvas = Canvas(bitmap)
         val codeStr = if (TextUtils.isEmpty(code)) createCode() else code!!
         val rectF = RectF(0f, 0f, DEFAULT_WIDTH.toFloat(), DEFAULT_HEIGHT.toFloat())
-        val radius = dp2px(0f).toFloat()
+        val radius = 0f
         canvas.drawColor(Color.parseColor("#040323"))
         val bgPaint = Paint()
         bgPaint.color = DEFAULT_COLOR
@@ -84,7 +83,7 @@ object Captcha {
         for (i in 0 until DEFAULT_CODE_LENGTH) {
             mBuilder.append(CHARS[mRandom.nextInt(CHARS.size)])
         }
-        val upper = mBuilder.toString().uppercase(Locale.getDefault())
+        val upper = mBuilder.toString().toUpperCase(Locale.getDefault())
         return if (upper.contains("O") && upper.contains("0")) {
             createCode()
         } else mBuilder.toString()
