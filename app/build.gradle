@@ -184,5 +184,10 @@ dependencies {
     //视频压缩
     implementation 'com.github.yellowcath:VideoProcessor:2.4.2'
 
+    //Facebook Spring动画库
+    implementation 'com.facebook.rebound:rebound:0.3.8'
+    //权限申请
+    implementation 'com.yanzhenjie:permission:2.0.0-rc11'
+
 
 }

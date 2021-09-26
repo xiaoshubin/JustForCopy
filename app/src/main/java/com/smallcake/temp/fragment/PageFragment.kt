@@ -37,6 +37,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("下载", DownloadDataActivity::class.java,"下载apk"),
             PageBean("视频相关", VideoActivity::class.java,"视频压缩，视频播放"),
             PageBean("多布局列表", MoreLayoutListActivity::class.java,"多布局列表"),
+            PageBean("相机", CameraCustomActivity::class.java,"自定义相机"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
