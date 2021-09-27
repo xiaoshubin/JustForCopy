@@ -21,6 +21,16 @@ import java.util.*
 
 object PopShowUtils {
     /**
+     * 显示取消去顶弹框
+     * @param listener Function4<DatePicker?, Int, Int, Int, Unit>
+     */
+    fun showConfirm(context: Context,title: String="",content:String,listener: () -> Unit) {
+        XPopup.Builder(context)
+            .asConfirm(title,content){
+                listener.invoke()
+            }.show()
+    }
+    /**
      * 原生显示时分
      * @param listener Function4<DatePicker?, Int, Int, Int, Unit>
      */

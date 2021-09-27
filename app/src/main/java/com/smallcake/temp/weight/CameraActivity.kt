@@ -14,16 +14,15 @@ import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.hjq.permissions.OnPermissionCallback
+import com.hjq.permissions.Permission
+import com.hjq.permissions.XXPermissions
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityCamreLayoutBinding
-import com.smallcake.temp.weight.CameraActivity
-import com.smallcake.temp.weight.PermissionUtils.PermissionListener
-import com.yanzhenjie.permission.AndPermission
-import com.yanzhenjie.permission.Permission
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -33,8 +32,6 @@ import java.util.*
 
 /**
  * @author 郭翰林
- * @date 2019/2/28 0028 16:23
- * 注释:Android自定义相机
  */
 class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnClickListener {
     /**
@@ -135,15 +132,13 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camre_layout)
-        mMongolianLayerType =
-            intent.getSerializableExtra("MongolianLayerType") as MongolianLayerType?
         initView()
         setOnclickListener()
     }
 
     override fun onResume() {
         super.onResume()
-        mCamera = Camera.open(CameraInfo.CAMERA_FACING_BACK)
+        mCamera = Camera.open(CameraInfo.CAMERA_FACING_FRONT)
         val preview = CameraPreview(this, mCamera)
         mOverCameraView = OverCameraView(this)
         mPreviewLayout!!.addView(preview)
@@ -152,8 +147,6 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
 
     /**
      * 注释：获取蒙版图片
-     * 时间：2019/3/4 0004 17:19
-     * 作者：郭翰林
      *
      * @return
      */
@@ -177,8 +170,6 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
 
     /**
      * 注释：设置监听事件
-     * 时间：2019/3/1 0001 11:13
-     * 作者：郭翰林
      */
     private fun setOnclickListener() {
         mCancleButton!!.setOnClickListener(this)
@@ -212,8 +203,6 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
 
     /**
      * 注释：自动对焦回调
-     * 时间：2019/3/1 0001 10:02
-     * 作者：郭翰林
      */
     private val autoFocusCallback = Camera.AutoFocusCallback { success, camera ->
         isFoucing = false
@@ -225,8 +214,6 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
 
     /**
      * 注释：拍照并保存图片到相册
-     * 时间：2019/3/1 0001 15:37
-     * 作者：郭翰林
      */
     private fun takePhoto() {
         isTakePhoto = true
@@ -235,7 +222,6 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
             //视图动画
             mPhotoLayout!!.visibility = View.GONE
             mConfirmLayout!!.visibility = View.VISIBLE
-            AnimSpring.getInstance(mConfirmLayout).startRotateAnim(120f, 360f)
             imageData = data
             //停止预览
             mCamera!!.stopPreview()
@@ -244,13 +230,10 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
 
     /**
      * 注释：切换闪光灯
-     * 时间：2019/3/1 0001 15:40
-     * 作者：郭翰林
      */
     private fun switchFlash() {
         isFlashing = !isFlashing
         mFlashButton!!.setImageResource(if (isFlashing) R.mipmap.flash_open else R.mipmap.flash_close)
-        AnimSpring.getInstance(mFlashButton).startRotateAnim(120f, 360f)
         try {
             val parameters = mCamera!!.parameters
             parameters.flashMode =
@@ -263,13 +246,10 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
 
     /**
      * 注释：取消保存
-     * 时间：2019/3/1 0001 16:31
-     * 作者：郭翰林
      */
     private fun cancleSavePhoto() {
         mPhotoLayout!!.visibility = View.VISIBLE
         mConfirmLayout!!.visibility = View.GONE
-        AnimSpring.getInstance(mPhotoLayout).startRotateAnim(120f, 360f)
         //开始预览
         mCamera!!.startPreview()
         imageData = null
@@ -295,8 +275,6 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
 
     /**
      * 注释：蒙版类型
-     * 时间：2019/2/28 0028 16:26
-     * 作者：郭翰林
      */
     enum class MongolianLayerType {
         /**
@@ -337,8 +315,6 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
 
     /**
      * 注释：初始化视图
-     * 时间：2019/3/1 0001 11:12
-     * 作者：郭翰林
      */
     private fun initView() {
         mCancleButton = findViewById(R.id.cancle_button)
@@ -353,23 +329,24 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
         rlCameraTip = findViewById(R.id.camera_tip)
         mPassportEntryAndExitImage = findViewById(R.id.passport_entry_and_exit_img)
         if (mMongolianLayerType == null) {
-            bind.maskImg.setVisibility(View.GONE)
-            bind.cameraTip.setVisibility(View.GONE)
+            bind.maskImg.visibility = View.GONE
+            bind.cameraTip.visibility = View.GONE
             return
         }
         //设置蒙版,护照出入境蒙版特殊处理
         if (mMongolianLayerType != MongolianLayerType.PASSPORT_ENTRY_AND_EXIT) {
             Glide.with(this).load(maskImage).into(bind.maskImg)
         } else {
-            bind.maskImg.setVisibility(View.GONE)
-            bind.passportEntryAndExitImg.setVisibility(View.VISIBLE)
+            bind.maskImg.visibility = View.GONE
+            bind.passportEntryAndExitImg.visibility = View.VISIBLE
         }
+
+        mCancleButton?.visibility = View.GONE
+        bind.flashButton.visibility = View.GONE
     }
 
     /**
      * 注释：保持图片
-     * 时间：2019/3/1 0001 16:32
-     * 作者：郭翰林
      */
     private fun savePhoto() {
         var fos: FileOutputStream? = null
@@ -397,7 +374,7 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
                 try {
                     fos.close()
                     var retBitmap = BitmapFactory.decodeFile(imagePath)
-                    retBitmap = setTakePicktrueOrientation(CameraInfo.CAMERA_FACING_BACK, retBitmap)
+                    retBitmap = setTakePicktrueOrientation(CameraInfo.CAMERA_FACING_FRONT, retBitmap)
                     saveBitmap(retBitmap, imagePath)
                     val intent = Intent()
                     intent.putExtra(KEY_IMAGE_PATH, imagePath)
@@ -421,32 +398,25 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
          * @param requestCode
          * @param type
          */
-        fun startMe(activity: Activity, requestCode: Int, type: MongolianLayerType?) {
-            PermissionUtils.applicationPermissions(activity, object : PermissionListener {
-                override fun onSuccess(context: Context) {
-                    val intent = Intent(activity, CameraActivity::class.java)
-                    intent.putExtra("MongolianLayerType", type)
-                    activity.startActivityForResult(intent, requestCode)
-                }
-
-                override fun onFailed(context: Context) {
-                    if (AndPermission.hasAlwaysDeniedPermission(context, *Permission.Group.CAMERA)
-                        && AndPermission.hasAlwaysDeniedPermission(
-                            context,
-                            *Permission.Group.STORAGE
-                        )
-                    ) {
-                        AndPermission.with(context).runtime().setting().start()
+        fun startMe(activity: Activity,fragment: Fragment, requestCode: Int) {
+            XXPermissions.with(activity)
+                .permission(arrayListOf(Permission.CAMERA,Permission.MANAGE_EXTERNAL_STORAGE))
+                .request(object :OnPermissionCallback{
+                    override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
+                        if (!all)return
+                        val intent = Intent(activity, CameraActivity::class.java)
+                        fragment.startActivityForResult(intent, requestCode)
                     }
-                    Toast.makeText(context, "需要相机和存储权限", Toast.LENGTH_SHORT)
-                }
-            }, Permission.Group.STORAGE, Permission.Group.CAMERA)
+
+                    override fun onDenied(permissions: MutableList<String>?, never: Boolean) {
+                        XXPermissions.startPermissionActivity(activity,permissions)
+                    }
+
+                })
         }
 
         /**
          * 注释：设置拍照图片正确方向
-         * 时间：2020/8/7 0007 17:08
-         * 作者：郭翰林
          *
          * @param id
          * @param bitmap
@@ -487,8 +457,6 @@ class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnCl
 
         /**
          * 注释：保存图片
-         * 时间：2020/8/7 0007 17:19
-         * 作者：郭翰林
          *
          * @param bitmap
          * @param path

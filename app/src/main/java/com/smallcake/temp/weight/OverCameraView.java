@@ -16,9 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author 郭翰林
- * @date 2019/3/1 0001 9:21
- * 注释:对焦框
+ * 聚焦视图
  */
 public class OverCameraView extends AppCompatImageView {
     private Context context;
@@ -60,8 +58,6 @@ public class OverCameraView extends AppCompatImageView {
 
     /**
      * 注释：对焦并绘制对焦矩形框
-     * 时间：2019/3/1 0001 9:28
-     * 作者：郭翰林
      *
      * @param camera
      * @param autoFocusCallback
@@ -92,8 +88,6 @@ public class OverCameraView extends AppCompatImageView {
 
     /**
      * 注释：设置camera参数，并完成对焦
-     * 时间：2019/3/1 0001 9:27
-     * 作者：郭翰林
      *
      * @param camera
      * @param autoFocusCallback
@@ -123,8 +117,6 @@ public class OverCameraView extends AppCompatImageView {
 
     /**
      * 注释：对焦完成后，清除对焦矩形框
-     * 时间：2019/3/1 0001 9:28
-     * 作者：郭翰林
      */
     public void disDrawTouchFocusRect() {
         //将对焦区域设置为null，刷新界面后对焦框消失

@@ -16,6 +16,7 @@
         android:orientation="vertical">
         <!--提示文字-->
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/camera_tip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -41,7 +42,7 @@
             android:layout_marginRight="20dp"
             android:scaleType="fitCenter"
             android:src="@mipmap/hk_macao_taiwan_passes_positive"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/passport_entry_and_exit_img"
@@ -59,6 +60,7 @@
     </LinearLayout>
     <!--顶部视图-->
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:gravity="bottom"
@@ -107,6 +109,7 @@
         android:visibility="visible">
 
         <Button
+            android:visibility="gone"
             android:id="@+id/cancle_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
