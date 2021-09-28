@@ -2,7 +2,9 @@ package com.smallcake.temp.fragment
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
 import com.jaygoo.widget.OnRangeChangedListener
@@ -57,6 +59,12 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
         bind.ivAuthCode.setImageBitmap(bitmap)
         //圆环控件
         animProgress(100,60f)
+        //圆球
+        Handler().postDelayed({
+            bind.ball.setBgColor(Color.parseColor("#F5AD06"))
+            bind.ball.setBottomColor(Color.parseColor("#FECE0A"))
+        },3000)
+
 
     }
     private fun animProgress(max: Int, current: Float) {

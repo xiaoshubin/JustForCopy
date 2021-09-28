@@ -244,5 +244,9 @@
             app:circleIsGradient="true"
             app:circleProgressColor="@color/red" />
         <View style="@style/h_line"/>
+        <com.smallcake.temp.weight.BallView
+            android:id="@+id/ball"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
