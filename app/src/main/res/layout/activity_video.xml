@@ -34,4 +34,8 @@
         android:background="@color/lightgray"
         android:layout_width="match_parent"
         android:layout_height="200dp"/>
+    <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
+        android:id="@+id/video_player"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

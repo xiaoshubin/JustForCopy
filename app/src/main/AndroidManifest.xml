@@ -27,7 +27,10 @@
         <activity android:name=".weight.CameraActivity"/>
         <activity android:name=".ui.CameraCustomActivity"/>
         <activity android:name=".ui.MoreLayoutListActivity" />
-        <activity android:name=".ui.VideoActivity" />
+        <activity android:name=".ui.VideoActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="fullSensor"
+            />
         <activity android:name=".ui.DownloadDataActivity" />
         <activity android:name=".ui.CountDownListActivity" />
         <activity android:name=".ui.ShapeViewActivity" />
