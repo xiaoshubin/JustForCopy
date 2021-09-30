@@ -185,6 +185,10 @@ dependencies {
     implementation 'com.github.yellowcath:VideoProcessor:2.4.2'
     //视频播放完整版引入
     implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.1.6-jitpack'
+    //PDF查看器
+    implementation 'es.voghdev.pdfviewpager:library:1.1.2'
+    //腾讯tbs 打开word、excel、pdf、ppt
+    implementation 'com.tencent.tbs:tbssdk:44085'
 
 
 
