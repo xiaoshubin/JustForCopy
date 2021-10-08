@@ -103,6 +103,12 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+        <!--tbs优化服务：该Service仅在TBS内核首次Dex加载时触发并执行dex2oat任务，任务完成后自动结束-->
+        <service
+            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+            android:label="dexopt"
+            android:process=":dexopt" >
+        </service>
     </application>
 
 </manifest>

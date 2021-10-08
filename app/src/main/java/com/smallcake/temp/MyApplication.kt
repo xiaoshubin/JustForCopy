@@ -10,7 +10,10 @@ import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.smallcake.smallutils.SmallUtils
 import com.smallcake.temp.module.httpModule
+import com.smallcake.temp.utils.L
 import com.tencent.mmkv.MMKV
+import com.tencent.smtt.export.external.TbsCoreSettings
+import com.tencent.smtt.sdk.QbSdk
 import io.reactivex.android.schedulers.AndroidSchedulers
 import org.koin.core.context.startKoin
 
@@ -43,6 +46,22 @@ class MyApplication : Application() {
         AppEventsLogger.activateApp(this)
         FacebookSdk.setAutoLogAppEventsEnabled(true)
         FacebookSdk.setIsDebugEnabled(true)
+        // 腾讯tbs优化:在调用TBS初始化、创建WebView之前进行如下配置
+        val map = HashMap<String, Any>()
+        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
+        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
+        QbSdk.initTbsSettings(map)
+        QbSdk.initX5Environment(this,object :QbSdk.PreInitCallback{
+            override fun onCoreInitFinished() {
+                L.e("onCoreInitFinished")
+            }
+
+            override fun onViewInitFinished(b: Boolean) {
+                L.e("onViewInitFinished:$b")
+            }
+
+        })
+
     }
 
 

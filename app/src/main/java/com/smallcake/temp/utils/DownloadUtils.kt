@@ -3,7 +3,9 @@ package com.smallcake.temp.utils
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.webkit.DownloadListener
+import com.amap.api.mapcore.util.fi
+import com.smallcake.smallutils.FileUtils
+import com.smallcake.smallutils.SmallUtils
 import me.jessyan.progressmanager.ProgressListener
 import me.jessyan.progressmanager.ProgressManager
 import me.jessyan.progressmanager.body.ProgressInfo
@@ -36,7 +38,7 @@ object DownloadUtils {
         /**
          * 下载成功
          */
-        fun onDownloadSuccess()
+        fun onDownloadSuccess(downloadPath:String)
 
         /**
          * @param progress 下载进度
@@ -48,11 +50,17 @@ object DownloadUtils {
          */
         fun onDownloadFailed()
     }
+
+    fun download(url: String,listener: OnDownloadListener){
+       val fileName =  FileUtils.getFileName(url)
+        val saveDir = SmallUtils.context?.externalCacheDir?.path
+        download(url,saveDir,fileName,listener)
+    }
     /**
-     * @param url      下载连接
-     * @param saveDir  储存下载文件的SDCard目录
+     * @param url       下载连接
+     * @param saveDir   储存下载文件的SDCard目录
      * @param saveName  储存下载文件的名称
-     * @param listener 下载监听
+     * @param listener  下载监听
      */
     fun download(url: String, saveDir: String?, saveName: String?, listener: OnDownloadListener) {
         val request: Request = Request.Builder().url(url).build()
@@ -80,7 +88,7 @@ object DownloadUtils {
                     }
                     fos.flush()
                     mHandler?.post {
-                        listener.onDownloadSuccess()
+                        listener.onDownloadSuccess(saveDir+File.separator+saveName)
                     }
                 } catch (e: Exception) {
                     Log.e("下载异常", e.message?:"--")

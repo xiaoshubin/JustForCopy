@@ -40,12 +40,11 @@ class DownloadDataActivity : BaseBindActivity<ActivityDownloadDataBinding>() {
             val name = "qq.apk"
             DownloadUtils.download(url,path,name,(object :
                 DownloadUtils.OnDownloadListener {
-                override fun onDownloadSuccess() {
+                override fun onDownloadSuccess(downloadPath:String) {
                     progressDialog.dismiss()
-                    val successDownloadApkPath: String = path + name
-                    L.e("已下载到${successDownloadApkPath}开始安装...")
-                    showToast("已下载到${successDownloadApkPath}开始安装...")
-                    AppUtils.installApk(this@DownloadDataActivity, successDownloadApkPath)
+                    L.e("已下载到${downloadPath}开始安装...")
+                    showToast("已下载到${downloadPath}开始安装...")
+                    AppUtils.installApk(this@DownloadDataActivity, downloadPath)
                 }
 
                 override fun onDownloading(progressInfo: ProgressInfo?) {

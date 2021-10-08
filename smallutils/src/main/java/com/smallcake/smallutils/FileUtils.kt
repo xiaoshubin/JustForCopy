@@ -112,4 +112,13 @@ object FileUtils {
     fun getFileSuffix(fileName: String):String{
         return fileName.substring(fileName.lastIndexOf(".") + 1)
     }
+    /**
+     * 获取文件名称
+     * http://testing.cloudjoytech.com.cn:50011/upload/2021-09/04f700dcb0634d6e959887f02e10789d.pdf
+     * 返回04f700dcb0634d6e959887f02e10789d.pdf
+     * @param fileName String
+     */
+    fun getFileName(fileName: String):String{
+        return fileName.substring(fileName.lastIndexOf("/") + 1)
+    }
 }
