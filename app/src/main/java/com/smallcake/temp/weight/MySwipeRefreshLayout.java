@@ -41,6 +41,9 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.smallcake.temp.R;
 
+/**
+ * 自定义下拉刷新
+ */
 public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingParent3,
         NestedScrollingParent2, NestedScrollingChild3, NestedScrollingChild2, NestedScrollingParent,
         NestedScrollingChild {

@@ -18,7 +18,7 @@ object KeyboardUtils {
      * 设置页面中要被顶起的视图View
      * 注意：页面根布局需要设置android:fitsSystemWindows="true"
      * 列表需要滚动到末尾
-     * 例如：
+     * 例如：当输入框失去焦点后滚动到末尾
     bind.etMsg.setOnFocusChangeListener{
             _,hasFocus ->if (hasFocus){
                 Handler().postDelayed({ bind.recyclerView.smoothScrollToPosition(mAdapter.data.size)},300)
