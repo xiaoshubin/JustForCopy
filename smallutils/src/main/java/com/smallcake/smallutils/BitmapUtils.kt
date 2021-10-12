@@ -5,7 +5,9 @@ import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.NinePatchDrawable
+import android.graphics.pdf.PdfDocument
 import android.os.Environment
+import android.print.PrintAttributes
 import android.util.Log
 import android.view.View
 import java.io.*
@@ -67,6 +69,47 @@ object BitmapUtils {
             100,
             FileOutputStream(file)
         )
+    }
+    /**
+     * 保存bitmap到download,以pdf格式
+     * @param bitmaps List<Bitmap>
+     * @return File
+     */
+    fun saveBitmapForPdf(bitmaps: List<Bitmap>): File {
+        val cameraPath = Environment.getExternalStorageDirectory().absolutePath+ File.separator+ Environment.DIRECTORY_DOWNLOADS+ File.separator
+        val name = "${System.currentTimeMillis()}.pdf"
+        val doc = PdfDocument()
+        val pageWidth = PrintAttributes.MediaSize.ISO_A4.widthMils * 72 / 1000
+        val scale = pageWidth.toFloat() / bitmaps[0].width.toFloat()
+        val pageHeight = (bitmaps[0].height * scale).toInt()
+        val matrix = Matrix()
+        matrix.postScale(scale, scale)
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        for (i in bitmaps.indices) {
+            val newPage = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, i).create()
+            val page = doc.startPage(newPage)
+            val canvas: Canvas = page.canvas
+            canvas.drawBitmap(bitmaps[i], matrix, paint)
+            doc.finishPage(page)
+        }
+        val file = File(cameraPath, name)
+        var outputStream: FileOutputStream? = null
+        try {
+            outputStream = FileOutputStream(file)
+            doc.writeTo(outputStream)
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            doc.close()
+            try {
+                outputStream?.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return file
     }
 
     /**
@@ -242,4 +285,5 @@ object BitmapUtils {
             null
         }
     }
+
 }

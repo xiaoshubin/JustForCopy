@@ -39,6 +39,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("多布局列表", MoreLayoutListActivity::class.java,"多布局列表"),
             PageBean("相机", CameraCustomActivity::class.java,"自定义相机"),
             PageBean("PDF", PdfActivity::class.java,"PDF"),
+            PageBean("手写签名", SignActivity::class.java,"手写签名"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->

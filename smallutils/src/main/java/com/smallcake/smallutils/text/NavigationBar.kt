@@ -59,15 +59,15 @@ class NavigationBar(var context: Context) {
     /**
      * 自定义的导航栏View
      */
-     var navigationView: FrameLayout? = null
+    lateinit var navigationView: FrameLayout
     /**
      * 图片返回控件
      */
-    var backImageView: ImageView? = null
+    lateinit var backImageView: ImageView
     /**
      * 文字返回控件
      */
-     var backTextView: TextView? = null
+    lateinit var backTextView: TextView
     /**
      * 标题控件
      */
@@ -75,7 +75,7 @@ class NavigationBar(var context: Context) {
     /**
      * 图片菜单控件
      */
-     var menuImageView: ImageView? = null
+    lateinit var menuImageView: ImageView
     /**
      * 文字菜单图片
      */

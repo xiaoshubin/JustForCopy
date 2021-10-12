@@ -24,7 +24,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
-        <activity android:name=".ui.PdfActivity"></activity>
+        <activity android:name=".ui.SignActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="签名"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
+            />
+        <activity android:name=".ui.PdfActivity"/>
         <activity android:name=".weight.CameraActivity" />
         <activity android:name=".ui.CameraCustomActivity" />
         <activity android:name=".ui.MoreLayoutListActivity" />

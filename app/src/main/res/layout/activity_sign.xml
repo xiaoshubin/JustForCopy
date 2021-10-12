@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/dp_39"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/exo_ic_default_album_image"
+        android:padding="3dp"
+        android:layout_weight="1">
+
+        <com.smallcake.temp.weight.SignatureView
+            android:id="@+id/sign_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+        <TextView
+            android:id="@+id/tv_tips"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请在此处手写签名"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_13"
+        android:layout_marginBottom="@dimen/dp_13"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.smallcake.smallutils.text.ShapeTextButton
+            android:id="@+id/tv_cancel"
+            android:layout_width="@dimen/dp_140"
+            android:layout_height="@dimen/dp_40"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="重置签名"
+            android:textColor="@color/text_blue"
+            android:textSize="@dimen/sp_15"
+            app:stb_radius="20dp"
+            app:stb_solidColor="@color/transparent"
+            app:stb_strokeColor="@color/text_blue"
+            app:stb_strokeWidth="2" />
+
+
+        <com.smallcake.smallutils.text.ShapeTextButton
+            android:id="@+id/tv_confirm"
+            android:layout_width="@dimen/dp_140"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginLeft="@dimen/dp_83"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="保存"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            app:stb_radius="20dp"
+            app:stb_solidColor="@color/text_blue" />
+    </LinearLayout>
+</LinearLayout>
