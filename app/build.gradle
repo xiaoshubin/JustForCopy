@@ -187,6 +187,8 @@ dependencies {
     implementation 'com.github.CarGuo.GSYVideoPlayer:GSYVideoPlayer:v8.1.6-jitpack'
     //腾讯tbs 打开word、excel、pdf、ppt：https://x5.tencent.com/docs/access.html
     implementation 'com.tencent.tbs:tbssdk:44085'
+    //数据库
+    implementation 'org.litepal.guolindev:core:3.2.3'
 
 
 

@@ -16,6 +16,7 @@ import com.tencent.smtt.export.external.TbsCoreSettings
 import com.tencent.smtt.sdk.QbSdk
 import io.reactivex.android.schedulers.AndroidSchedulers
 import org.koin.core.context.startKoin
+import org.litepal.LitePal
 
 
 /**
@@ -61,6 +62,8 @@ class MyApplication : Application() {
             }
 
         })
+        //数据库
+        LitePal.initialize(this)
 
     }
 

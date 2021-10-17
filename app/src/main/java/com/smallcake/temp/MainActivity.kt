@@ -7,9 +7,13 @@ import com.smallcake.smallutils.px
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.smallutils.twoDecimals
 import com.smallcake.temp.base.BaseBindActivity
+import com.smallcake.temp.bean.Song
 import com.smallcake.temp.databinding.ActivityMainBinding
 import com.smallcake.temp.utils.BottomNavUtils
 import com.smallcake.temp.utils.L
+import org.litepal.LitePal
+import org.litepal.extension.find
+import org.litepal.extension.findAll
 
 
 /**
@@ -26,7 +30,12 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
     }
 
     private fun onEvent() {
-        L.e("1pxToDp=="+1.895565454f.twoDecimals)
+//        Song("儿歌",108).save()
+//        Song("儿歌2",68).save()
+//        val list = LitePal.findAll<Song>()
+//        list.forEach{
+//            L.e("song:$it")
+//        }
     }
 
     private fun initView() {
