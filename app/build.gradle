@@ -26,8 +26,17 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "你的Appkey", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
     }
 
     buildTypes {
@@ -189,6 +198,9 @@ dependencies {
     implementation 'com.tencent.tbs:tbssdk:44085'
     //数据库
     implementation 'org.litepal.guolindev:core:3.2.3'
+    //极光推送
+    implementation 'cn.jiguang.sdk:jpush:4.3.0'
+    implementation 'cn.jiguang.sdk:jcore:2.9.0'
 
 
 

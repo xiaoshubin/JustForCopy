@@ -42,4 +42,16 @@ object GsonUtils {
     fun strToMap(str:String):HashMap<String, String>{
         return JSON.parseObject(str,HashMap::class.java) as HashMap<String, String>
     }
+    /**
+     * json字符串转实体类
+     * @param objStr
+     * @param clz
+     * @param <T>
+     * @return
+    </T> */
+    fun <T> jsonToObj(jsonStr: String?, clz: Class<T>?): T? {
+        var t: T? = null
+        if (jsonStr != null) t = Gson().fromJson(jsonStr, clz)
+        return t
+    }
 }
