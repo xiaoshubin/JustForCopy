@@ -11,5 +11,9 @@
         android:background="#59FF0000"
         android:id="@+id/radar_chart"
         android:layout_width="match_parent"
-        android:layout_height="400dp"/>
+        android:layout_height="200dp"/>
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"/>
 </androidx.appcompat.widget.LinearLayoutCompat>

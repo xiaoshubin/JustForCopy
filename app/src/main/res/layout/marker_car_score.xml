@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.smallcake.smallutils.text.ShapeTextButton
+        android:id="@+id/tv_content"
+        android:padding="4dp"
+        app:stb_radius="2dp"
+        app:stb_solidColor="#FFFF2D55"
+        android:minWidth="36dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="25"
+        android:textColor="#ffffffff"
+        android:textSize="14sp"
+        />
+    <com.smallcake.temp.chart.TrangleView
+        android:layout_width="12dp"
+        android:layout_height="8dp"/>
+    <RelativeLayout
+        android:gravity="center"
+        android:layout_marginTop="1dp"
+        android:layout_width="10dp"
+        android:layout_height="10dp">
+        <View
+            android:background="@drawable/pot_red"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+        <View
+            android:layout_centerInParent="true"
+            android:background="@drawable/pot_black"
+            android:layout_width="6dp"
+            android:layout_height="6dp"/>
+    </RelativeLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
