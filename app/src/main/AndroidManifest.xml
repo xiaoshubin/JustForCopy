@@ -24,13 +24,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
-        <activity android:name=".ui.SignActivity"
+        <activity android:name=".chart.ChartActivity"></activity>
+        <activity
+            android:name=".ui.SignActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="签名"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"
-            />
-        <activity android:name=".ui.PdfActivity"/>
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity android:name=".ui.PdfActivity" />
         <activity android:name=".weight.CameraActivity" />
         <activity android:name=".ui.CameraCustomActivity" />
         <activity android:name=".ui.MoreLayoutListActivity" />
@@ -108,15 +109,13 @@
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
-        </activity>
-        <!--tbs优化服务：该Service仅在TBS内核首次Dex加载时触发并执行dex2oat任务，任务完成后自动结束-->
+        </activity> <!-- tbs优化服务：该Service仅在TBS内核首次Dex加载时触发并执行dex2oat任务，任务完成后自动结束 -->
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
             android:label="dexopt"
-            android:process=":dexopt" >
-        </service>
-        <!-- 极光推送 开始-->
-        <service android:name=".jpush.JPushService"
+            android:process=":dexopt"></service> <!-- 极光推送 开始 -->
+        <service
+            android:name=".jpush.JPushService"
             android:enabled="true"
             android:exported="true"
             android:process=":pushcore">
@@ -124,16 +123,17 @@
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
         </service>
+
         <receiver
             android:name=".jpush.JPushReceiver"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
-        <!-- 极光推送 结束-->
     </application>
 
 </manifest>

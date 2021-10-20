@@ -201,6 +201,8 @@ dependencies {
     //极光推送
     implementation 'cn.jiguang.sdk:jpush:4.3.0'
     implementation 'cn.jiguang.sdk:jcore:2.9.0'
+    //各种统计图
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
 
 

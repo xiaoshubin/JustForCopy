@@ -8,6 +8,7 @@ import com.smallcake.smallutils.custom.GridItemDecoration
 import com.smallcake.temp.adapter.PageBeanAdapter
 import com.smallcake.temp.base.BaseBindFragment
 import com.smallcake.temp.bean.PageBean
+import com.smallcake.temp.chart.ChartActivity
 import com.smallcake.temp.databinding.FragmentRecyclerviewBinding
 import com.smallcake.temp.map.LocationMapActivity
 import com.smallcake.temp.ui.*
@@ -40,6 +41,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("相机", CameraCustomActivity::class.java,"自定义相机"),
             PageBean("PDF", PdfActivity::class.java,"PDF"),
             PageBean("手写签名", SignActivity::class.java,"手写签名"),
+            PageBean("雷达图", ChartActivity::class.java,"雷达图"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
