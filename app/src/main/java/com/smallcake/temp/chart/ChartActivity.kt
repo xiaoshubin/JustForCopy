@@ -2,22 +2,29 @@ package com.smallcake.temp.chart
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.Legend.LegendForm
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.LargeValueFormatter
+import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.formatter.StackedValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mikephil.charting.utils.MPPointF
+import com.github.mikephil.charting.utils.ViewPortHandler
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityChartBinding
+import com.smallcake.temp.utils.L
 
 
 /**
@@ -25,10 +32,18 @@ import com.smallcake.temp.databinding.ActivityChartBinding
  * https://github.com/PhilJay/MPAndroidChart
  * MPChart官方文档：
  * https://weeklycoding.com/mpandroidchart-documentation/getting-started/
+ * 优秀博客系列参考；
+ * https://blog.csdn.net/dt235201314/article/details/70142117
+ *
+ *
  * 雷达图参考：
  * https://blog.csdn.net/petterp/article/details/90115690
- *
- * 自定义MarkerView参考：
+ * 曲线图参考：
+ * https://www.jianshu.com/p/185e50a70aa7
+ * 饼状图参考：
+ * https://blog.csdn.net/baidu_31956557/article/details/80930116
+ * 设置MarkerView参考：
+ * https://www.jianshu.com/p/54d7322ee1e1
  * https://blog.csdn.net/qq_26787115/article/details/53199030
  *
  * 雷达图问题：
@@ -44,11 +59,117 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
         bar.setTitle("雷达图")
         initView()
     }
+
     private fun initView() {
         initRadarChart()
-
         initLineChart()
+        initPieChart()
     }
+
+    private fun initPieChart() {
+        bind.pieChart.apply {
+            setUsePercentValues(true)//是否以百分比的值来显示圆环
+
+            description.isEnabled = false
+            legend.isEnabled = true
+
+            setExtraOffsets(5f, 10f, 5f, 5f)
+            dragDecelerationFrictionCoef = 0.95f
+            centerText = "同比昨天"
+            isDrawHoleEnabled = true//是否显示中间空心
+            setHoleColor(Color.WHITE)
+            setTransparentCircleColor(Color.WHITE)
+            setTransparentCircleAlpha(110)
+            holeRadius = 58f
+            transparentCircleRadius = 61f
+            setDrawCenterText(true)
+            rotationAngle = 0f
+            isRotationEnabled = true
+            isHighlightPerTapEnabled = true
+            setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                override fun onValueSelected(e: Entry?, h: Highlight?) {
+                }
+
+                override fun onNothingSelected() {
+                }
+            })
+            legend.apply {
+                verticalAlignment = Legend.LegendVerticalAlignment.TOP
+                horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+                orientation = Legend.LegendOrientation.VERTICAL
+                setDrawInside(false)
+                xEntrySpace = 7f
+                yEntrySpace = 0f
+                yOffset = 0f
+            }
+            setDrawEntryLabels(false)//是否绘制文字到圆环上
+            setEntryLabelColor(Color.RED) //描述文字的颜色
+            setEntryLabelTextSize(14f)//描述文字的大小
+            setEntryLabelTypeface(Typeface.DEFAULT_BOLD) //描述文字的样式
+            animateY(1400, Easing.EaseInOutQuad)
+        }
+        setPieChartData()
+
+    }
+    private fun setPieChartData() {
+        val entries: ArrayList<PieEntry> = ArrayList()
+        entries.add(PieEntry(20f,"超速报警\n15.85%"))
+        entries.add(PieEntry(30f,"2-5小时禁行\n15.85%"))
+        entries.add(PieEntry(30f,"其他报警\n15.85%"))
+        entries.add(PieEntry(20f,"疲劳驾驶\n15.85%"))
+        val dataSet = PieDataSet(entries, "")
+        dataSet.apply {
+            values = entries
+            valueTextSize = 12f
+            valueTextColor = Color.BLACK
+            sliceSpace = 3f//圆环之间的间隙
+            iconsOffset = MPPointF(0f, 40f)
+            selectionShift = 5f
+
+            //当值位置为外边线时，表示线的前半段长度。
+            valueLinePart1Length = 0.3f
+            //当值位置为外边线时，表示线的后半段长度。
+            valueLinePart2Length = 0.7f
+            //当ValuePosits为OutsiDice时，指示偏移为切片大小的百分比
+            valueLinePart1OffsetPercentage = 80f
+            //当值位置为外边线时，表示线的颜色
+            valueLineColor = Color.parseColor("#a1a1a1")
+            //设置Y值的位置是在圆内还是圆外
+            xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+            yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+            //设置Y轴描述线和填充区域的颜色一致
+            isUsingSliceColorAsValueLineColor = true
+
+            setDrawValues(true)
+            valueFormatter = object :ValueFormatter(){
+                override fun getFormattedValue(
+                    value: Float,
+                    entry: Entry?,
+                    dataSetIndex: Int,
+                    viewPortHandler: ViewPortHandler?
+                ): String {
+                    L.e("value:$value  dataSetIndex:$dataSetIndex")
+                    return "${value}--%"
+                }
+            }
+
+
+        }
+
+
+        val colors: ArrayList<Int> = ArrayList()
+
+        colors.add(Color.parseColor("#FF807AFF"))//紫色
+        colors.add(Color.parseColor("#FCF25C5D"))//红色
+        colors.add(Color.parseColor("#FFEDAE5D"))//黄色
+        colors.add(Color.parseColor("#FF3FBCFC"))//蓝色
+        dataSet.colors = colors
+        val data = PieData(dataSet)
+//        data.setValueFormatter(PercentFormatter())
+        bind.pieChart.data = data
+        bind.pieChart.invalidate()
+    }
+
 
     private fun initLineChart() {
         val tvGrayColor = Color.parseColor("#FF9C9FA9")
@@ -129,7 +250,7 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
             }
 
 
-            axisRight.apply{
+            axisRight.apply {
                 setDrawGridLines(false)
                 isGranularityEnabled = false
                 setDrawZeroLine(false)
@@ -141,8 +262,9 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
 
         }
 
-        setLineChartData(7,30f)
+        setLineChartData(7, 30f)
     }
+
     @SuppressLint("ResourceType")
     private fun setLineChartData(count: Int, range: Float) {
 
@@ -156,18 +278,18 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
 
         val values1: ArrayList<Entry> = ArrayList()
         for (i in 0 until count) {
-            val num = (Math.random()*range).toFloat()
-            values1.add(Entry(i.toFloat()+0.1f, num))
+            val num = (Math.random() * range).toFloat()
+            values1.add(Entry(i.toFloat() + 0.1f, num))
         }
         val values2: ArrayList<Entry> = ArrayList()
         for (i in 0 until count) {
-            val num = (Math.random()*range).toFloat()
-            values2.add(Entry(i.toFloat()+0.1f, num))
+            val num = (Math.random() * range).toFloat()
+            values2.add(Entry(i.toFloat() + 0.1f, num))
         }
         val values3: ArrayList<Entry> = ArrayList()
         for (i in 0 until count) {
-            val num = (Math.random()*range).toFloat()
-            values3.add(Entry(i.toFloat()+0.1f, num))
+            val num = (Math.random() * range).toFloat()
+            values3.add(Entry(i.toFloat() + 0.1f, num))
         }
 
         val set1 = LineDataSet(values1, "蓝色报警车辆")
@@ -224,12 +346,11 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
             setDrawHorizontalHighlightIndicator(false)
         }
 
-        val data = LineData(set1,set2,set3)
+        val data = LineData(set1, set2, set3)
         data.setValueTextColor(Color.WHITE)
         data.setValueTextSize(10f)
         data.setDrawValues(false)
         bind.lineChart.data = data
-
 
 
     }
