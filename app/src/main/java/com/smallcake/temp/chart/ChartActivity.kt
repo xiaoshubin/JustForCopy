@@ -2,6 +2,7 @@ package com.smallcake.temp.chart
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.DashPathEffect
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -183,6 +184,7 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
         val tvGrayColor = Color.parseColor("#FF9C9FA9")
 
         bind.lineChart.apply {
+            renderer = CarLineChartRenderer(this,animator,viewPortHandler)
             //避免底部文字显示不完整
             extraBottomOffset = 16f
             //设置marker
@@ -206,6 +208,7 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
             setScaleEnabled(true)
             setDrawGridBackground(false)
             isHighlightPerDragEnabled = true
+
             setPinchZoom(true)
             setBackgroundColor(Color.TRANSPARENT)
             animateY(500)
@@ -248,13 +251,12 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
             }
 
             axisLeft.apply {
-
                 textSize = 12f
                 textColor = tvGrayColor
                 axisMaximum = 40f
                 axisMinimum = 0f
                 setDrawGridLines(true)
-                setDrawTopYLabelEntry(false)
+                setDrawTopYLabelEntry(true)//是否绘制最顶点数值
             }
 
 
@@ -317,7 +319,7 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
             //点击选中的竖线
             highLightColor = colorBlue
             highlightLineWidth = 1f
-            setDrawHorizontalHighlightIndicator(false)
+            setDrawHorizontalHighlightIndicator(true)
             setDrawIcons(true)
 
         }

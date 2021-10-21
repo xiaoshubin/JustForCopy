@@ -18,6 +18,7 @@ class TrangleView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         val p =  Paint()
+        p.isAntiAlias = true
         p.color = Color.parseColor("#FFFF2D55")
         //实例化路径
         val path =  Path()

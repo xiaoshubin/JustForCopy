@@ -14,9 +14,6 @@ class CarLineChart @JvmOverloads constructor(context: Context, attrs: AttributeS
         return getMarkerPosition(highlight)
     }
 
-    override fun drawMarkers(canvas: Canvas?) {
-        super.drawMarkers(canvas)
 
-    }
 
 }
