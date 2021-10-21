@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -20,6 +21,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.smallcake.smallutils.SpannableStringUtils
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
@@ -68,6 +70,8 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
 
     private fun initPieChart() {
         bind.pieChart.apply {
+            //从新定义可以换行的渲染器
+            renderer = NewLinePieChartRenderer(this,animator,viewPortHandler)
             setUsePercentValues(true)//是否以百分比的值来显示圆环
 
             description.isEnabled = false
@@ -75,7 +79,12 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
 
             setExtraOffsets(5f, 10f, 5f, 5f)
             dragDecelerationFrictionCoef = 0.95f
-            centerText = "同比昨天"
+
+            val centerStr = SpannableStringUtils.getBuilder("+10%")
+                .setForegroundColor(Color.parseColor("#FFFFAA45")).setProportion(1.8f).setBold()
+                .append("\n同比昨天").create()
+
+            centerText = centerStr
             isDrawHoleEnabled = true//是否显示中间空心
             setHoleColor(Color.WHITE)
             setTransparentCircleColor(Color.WHITE)
@@ -107,16 +116,18 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
             setEntryLabelTextSize(14f)//描述文字的大小
             setEntryLabelTypeface(Typeface.DEFAULT_BOLD) //描述文字的样式
             animateY(1400, Easing.EaseInOutQuad)
+
+
         }
         setPieChartData()
 
     }
     private fun setPieChartData() {
         val entries: ArrayList<PieEntry> = ArrayList()
-        entries.add(PieEntry(20f,"超速报警\n15.85%"))
-        entries.add(PieEntry(30f,"2-5小时禁行\n15.85%"))
-        entries.add(PieEntry(30f,"其他报警\n15.85%"))
-        entries.add(PieEntry(20f,"疲劳驾驶\n15.85%"))
+        entries.add(PieEntry(20f,"超速报警"))
+        entries.add(PieEntry(30f,"2-5小时禁行"))
+        entries.add(PieEntry(30f,"其他报警"))
+        entries.add(PieEntry(20f,"疲劳驾驶"))
         val dataSet = PieDataSet(entries, "")
         dataSet.apply {
             values = entries
@@ -140,18 +151,7 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
             //设置Y轴描述线和填充区域的颜色一致
             isUsingSliceColorAsValueLineColor = true
 
-            setDrawValues(true)
-            valueFormatter = object :ValueFormatter(){
-                override fun getFormattedValue(
-                    value: Float,
-                    entry: Entry?,
-                    dataSetIndex: Int,
-                    viewPortHandler: ViewPortHandler?
-                ): String {
-                    L.e("value:$value  dataSetIndex:$dataSetIndex")
-                    return "${value}--%"
-                }
-            }
+
 
 
         }
@@ -165,7 +165,12 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
         colors.add(Color.parseColor("#FF3FBCFC"))//蓝色
         dataSet.colors = colors
         val data = PieData(dataSet)
-//        data.setValueFormatter(PercentFormatter())
+        data.setValueFormatter(object :ValueFormatter(){
+            override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
+                return "${pieEntry?.label}\n${pieEntry?.value}%"
+            }
+
+        })
         bind.pieChart.data = data
         bind.pieChart.invalidate()
     }
