@@ -3,8 +3,11 @@ package com.smallcake.temp.chart
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import androidx.core.content.ContextCompat
+import com.amap.api.mapcore.util.gd
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
@@ -361,6 +364,7 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
     }
 
     private fun initRadarChart() {
+
         bind.radarChart.apply {
             isRotationEnabled = false
             setBackgroundColor(Color.parseColor("#FF2A375E"))
@@ -407,8 +411,16 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
         setRadarData()
     }
 
+    private fun createGradient():Drawable{
+        // 创建渐变的shape drawable
+        val colors = intArrayOf(Color.parseColor("#FFF35531"), Color.parseColor("#14F4A77D"))
+        val gradientDrawable =  GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors)
+        return gradientDrawable
+    }
+
     private fun setRadarData() {
         //网格背景色
+        val drawableRed = ContextCompat.getDrawable(this, R.drawable.gradient_red_trans)
         val entries0: ArrayList<RadarEntry> = ArrayList()
         entries0.add(RadarEntry(100f))
         entries0.add(RadarEntry(100f))
@@ -442,6 +454,7 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
             fillColor = Color.parseColor("#FFF35531")
             setDrawFilled(true)
             fillAlpha = 100
+            fillDrawable = createGradient()
             lineWidth = 0.5f
             valueTextColor = Color.WHITE
 
