@@ -82,13 +82,6 @@ object PopShowUtils {
      */
      fun showTimePicker(context: Context,cb:(Date)->Unit) {
         val showTypes = booleanArrayOf(true,true,true,true,true,false)
-        val types = BooleanArray(6)
-        types[0] = true
-        types[1] = true
-        types[2] = true
-        types[3] = true
-        types[4] = true
-        types[5] = false
         val picker = TimePickerBuilder(context) { date, _ ->
             cb.invoke(date)
         }.setType(showTypes)
@@ -182,16 +175,17 @@ object PopShowUtils {
 
 /**
  * 范围设定 ：从当前时间 到 一年后的当前时间
+ * 自定义 start 前多少年，end 后多少年
  */
-fun TimePickerBuilder.setupDefault(): TimePickerBuilder {
+fun TimePickerBuilder.setupDefault(start:Int=0, end:Int=1): TimePickerBuilder {
     val currentCalendar = TimeUtils.getTimeCalender(System.currentTimeMillis())
     val currentYear = currentCalendar.get(Calendar.YEAR)
     val currentMonth = currentCalendar.get(Calendar.MONTH)
     val currentDay = currentCalendar.get(Calendar.DAY_OF_MONTH)
     val startDate: Calendar = Calendar.getInstance()
-    startDate.set(currentYear, currentMonth, currentDay)
+    startDate.set(currentYear-start, currentMonth, currentDay)
     val endDate: Calendar = Calendar.getInstance()
-    endDate.set(currentYear + 1, currentMonth, currentMonth)
+    endDate.set(currentYear + end, currentMonth, currentMonth)
     return setCancelText("取消")
         .setSubmitText("确定")
         .setCancelColor(Color.parseColor("#666666"))
