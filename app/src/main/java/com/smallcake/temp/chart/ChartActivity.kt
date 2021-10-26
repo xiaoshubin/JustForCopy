@@ -2,35 +2,26 @@ package com.smallcake.temp.chart
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.DashPathEffect
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import androidx.core.content.ContextCompat
-import com.amap.api.mapcore.util.gd
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.LargeValueFormatter
-import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.formatter.StackedValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
-import com.github.mikephil.charting.utils.ViewPortHandler
 import com.smallcake.smallutils.SpannableStringUtils
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityChartBinding
-import com.smallcake.temp.utils.L
 
 
 /**
@@ -44,6 +35,7 @@ import com.smallcake.temp.utils.L
  *
  * 雷达图参考：
  * https://blog.csdn.net/petterp/article/details/90115690
+ * [RadarChart（雷达蜘蛛图）绘制圆点]https://blog.csdn.net/qq_27489007/article/details/107083691
  * 曲线图参考：
  * https://www.jianshu.com/p/185e50a70aa7
  * 饼状图参考：
@@ -368,6 +360,10 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
     private fun initRadarChart() {
 
         bind.radarChart.apply {
+            //自定义有圆点的渲染器
+            renderer = RadarChartPointsRenderer(this,animator,viewPortHandler)
+
+            setTouchEnabled(false)
             isRotationEnabled = false
             setBackgroundColor(Color.parseColor("#FF2A375E"))
             //禁用图例和图表描述
@@ -412,17 +408,13 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
         }
         setRadarData()
     }
-
-    private fun createGradient():Drawable{
+    private fun createGradient(): Drawable {
         // 创建渐变的shape drawable
         val colors = intArrayOf(Color.parseColor("#FFF35531"), Color.parseColor("#14F4A77D"))
-        val gradientDrawable =  GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors)
-        return gradientDrawable
+        return GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors)
     }
-
     private fun setRadarData() {
         //网格背景色
-        val drawableRed = ContextCompat.getDrawable(this, R.drawable.gradient_red_trans)
         val entries0: ArrayList<RadarEntry> = ArrayList()
         entries0.add(RadarEntry(100f))
         entries0.add(RadarEntry(100f))
