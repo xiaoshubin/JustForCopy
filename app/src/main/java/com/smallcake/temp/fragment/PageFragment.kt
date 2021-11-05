@@ -42,6 +42,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("PDF", PdfActivity::class.java,"PDF"),
             PageBean("手写签名", SignActivity::class.java,"手写签名"),
             PageBean("雷达图", ChartActivity::class.java,"雷达图，曲线图，饼状图"),
+            PageBean("音乐播放", MusicPlayActivity::class.java,"音乐播放"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
