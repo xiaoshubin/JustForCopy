@@ -10,6 +10,8 @@ import android.os.Handler
 import android.renderscript.Allocation
 import android.util.Log
 import android.widget.SeekBar
+import androidx.annotation.RequiresApi
+import com.google.android.exoplayer2.ExoPlayer
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
 import com.smallcake.smallutils.text.NavigationBar
@@ -17,13 +19,21 @@ import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityMusicPlayBinding
 
 /**
- * 采用MediaPlayer进行音乐播放
+ * 一 采用MediaPlayer进行音乐播放
+ * 缺点：播放网络音频进度设置无效，回到了开头的位置进行播放
  * 1.播放
  * 2.暂停
  * 3.停止
  * 4.播放进度监听
  * 5.进度设置
+ *参考：
+ * Android MediaPlayer的状态管理：https://www.jianshu.com/p/55afaa0a96f7
+ * Android MediaPlayer控制进度播放音频:https://blog.csdn.net/wenzhi20102321/article/details/103787884
  *
+ * 二 采用ExoPlayer进行音乐播放
+ *
+ * 参考：
+ * ExoPlayer简单使用：https://www.jianshu.com/p/6e466e112877
  *
  */
 @SuppressLint("SetTextI18n")
@@ -39,6 +49,13 @@ class MusicPlayActivity : BaseBindActivity<ActivityMusicPlayBinding>() {
         checkManagerEx()
         onEvent()
 
+        initExo()
+
+
+    }
+
+    private fun initExo() {
+
     }
 
     private fun checkManagerEx() {
@@ -50,7 +67,7 @@ class MusicPlayActivity : BaseBindActivity<ActivityMusicPlayBinding>() {
 
     private fun initMediaPlayer() {
         mediaPlayer.apply {
-            setDataSource(music2Url)//指定音频文件路径
+            setDataSource(musicUrl)//指定音频文件路径
             isLooping = true       //设置为循环播放
             prepare()              //初始化播放器MediaPlayer
             val duration = mediaPlayer.duration
@@ -65,7 +82,6 @@ class MusicPlayActivity : BaseBindActivity<ActivityMusicPlayBinding>() {
                 override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                     if (fromUser){
                         Log.e(TAG,"用户触摸==onProgressChanged:$progress")
-                        seekTo(progress)
                     }else{
                         Log.e(TAG,"非用户触摸==onProgressChanged:$progress")
                     }
@@ -76,14 +92,19 @@ class MusicPlayActivity : BaseBindActivity<ActivityMusicPlayBinding>() {
                     Log.e(TAG,"onStartTrackingTouch")
                 }
 
+                @RequiresApi(Build.VERSION_CODES.O)
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    Log.e(TAG,"onStopTrackingTouch")
+                    Log.e(TAG,"onStopTrackingTouch：${seekBar?.progress?.toLong()}")
+                    mediaPlayer.pause()
+                    Handler().postDelayed({
+                        mediaPlayer.seekTo(seekBar?.progress?.toLong()?:0L,MediaPlayer.SEEK_CLOSEST)
+                    },1000)
 
                 }
 
             })
             //监听播放进度
-            mHandler.sendEmptyMessageDelayed(0,1000)
+//            mHandler.sendEmptyMessageDelayed(0,1000)
         }
     }
     private val mHandler = Handler{
@@ -91,7 +112,7 @@ class MusicPlayActivity : BaseBindActivity<ActivityMusicPlayBinding>() {
         val seconds = mediaPlayer.currentPosition/1000
         val minutes = seconds/60    //分钟
         val str = if (minutes>0)"${minutes}分${seconds%60}秒" else "${seconds}秒"
-        bind.seekBar.progress = seconds
+//        bind.seekBar.progress = seconds
         bind.tvTime.text = "已播放：$str"
         it.target.sendEmptyMessageDelayed(0,1000)
         false
