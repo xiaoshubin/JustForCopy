@@ -24,7 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
-        <activity android:name=".ui.MusicPlayActivity"></activity>
+        <activity android:name=".music.ExoMusicActivity"></activity>
+        <activity android:name=".ui.MusicPlayActivity" />
         <activity android:name=".chart.ChartActivity" />
         <activity
             android:name=".ui.SignActivity"
@@ -114,7 +115,8 @@
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
             android:label="dexopt"
-            android:process=":dexopt" /> <!-- 极光推送 开始 -->
+            android:process=":dexopt" />
+        <!-- 极光推送 开始 -->
         <service
             android:name=".jpush.JPushService"
             android:enabled="true"
@@ -135,6 +137,14 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
+        <!-- 极光推送 结束 -->
+        <!-- 音乐播放 开始 -->
+        <service android:name=".music.MusicService">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+        <!-- 音乐播放  结束 -->
     </application>
 
 </manifest>
