@@ -150,7 +150,8 @@
             android:textColor="@color/exo_black_opacity_70" />
     </LinearLayout>
 
-    <RelativeLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="48dp">
 
@@ -166,7 +167,8 @@
 
         <SeekBar
             android:id="@+id/seekbar"
-            android:layout_width="fill_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
@@ -186,5 +188,5 @@
             android:maxLines="1"
             android:textColor="@android:color/background_dark" />
 
-    </RelativeLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </LinearLayout>

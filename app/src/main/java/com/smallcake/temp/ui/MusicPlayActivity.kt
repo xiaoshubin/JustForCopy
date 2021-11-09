@@ -30,11 +30,7 @@ import com.smallcake.temp.databinding.ActivityMusicPlayBinding
  * Android MediaPlayer的状态管理：https://www.jianshu.com/p/55afaa0a96f7
  * Android MediaPlayer控制进度播放音频:https://blog.csdn.net/wenzhi20102321/article/details/103787884
  *
- * 二 采用ExoPlayer进行音乐播放
  *
- * 参考：
- * ExoPlayer简单使用：https://www.jianshu.com/p/6e466e112877
- *音视频开发之旅（45)-ExoPlayer 音频播放器实践(一)：https://www.jianshu.com/p/1bb4ca733b55
  *
  * 后台服务来播放音乐更合理
  * @see com.smallcake.temp.music.ExoMusicActivity
