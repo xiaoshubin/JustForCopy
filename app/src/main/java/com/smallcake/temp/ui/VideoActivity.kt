@@ -133,6 +133,9 @@ class VideoActivity : BaseBindActivity<ActivityVideoBinding>() {
             }
 
         }
+        bind.btnPlaySingleVideo.setOnClickListener{
+            SingleVideoPlayActivity.go(this@VideoActivity,url)
+        }
     }
 
     /**
