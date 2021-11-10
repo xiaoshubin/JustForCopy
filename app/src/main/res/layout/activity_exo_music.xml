@@ -18,7 +18,7 @@
         android:textColor="@color/exo_black_opacity_70" />
 
     <TextView
-        android:id="@+id/artist"
+        android:id="@+id/tv_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -156,6 +156,7 @@
         android:layout_height="48dp">
 
         <TextView
+            android:text="0:00"
             android:id="@+id/startText"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
@@ -178,6 +179,7 @@
             android:layout_toEndOf="@+id/startText" />
 
         <TextView
+            android:text="0:00"
             android:id="@+id/endText"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"

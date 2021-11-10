@@ -16,6 +16,7 @@ import android.view.View
 import android.widget.SeekBar
 import androidx.annotation.NonNull
 import com.smallcake.smallutils.text.NavigationBar
+import com.smallcake.temp.MyApplication
 import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityExoMusicBinding
@@ -28,18 +29,21 @@ import com.smallcake.temp.databinding.ActivityExoMusicBinding
  * ExoPlayer简单使用：                            https://www.jianshu.com/p/6e466e112877
  * 音视频开发之旅（45)-ExoPlayer 音频播放器实践(一)：https://www.jianshu.com/p/1bb4ca733b55
  * ScheduledExecutorService的使用：               https://blog.csdn.net/ma969070578/article/details/82863477
+ *
+ * MediaBrowserCompat : connect -> onConnected -> subscribe -> onChildrenLoaded
  */
 class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnClickListener {
     private val TAG = "ExoMusicActivity"
     private var mediaBrowser:MediaBrowserCompat?=null                                   //流媒体：MediaBrowser执行两个重要功能：它连接到MediaBrowserService，连接后，将为您的UI创建MediaController。
     private var mediaController:MediaControllerCompat?=null                             //控制器
-    private var transportControls: MediaControllerCompat.TransportControls?=null                             //控制器
+    private var transportControls: MediaControllerCompat.TransportControls?=null        //控制器
 
     private var durationSet = false                                                     //是否是总进度设置
 
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.setTitle("音乐播放")
-        mediaBrowser = MediaBrowserCompat(this,ComponentName(this, MusicService::class.java),mConnectionCallbacks,null)
+        mediaBrowser = MediaBrowserCompat(MyApplication.instance,ComponentName(this, MusicService::class.java),mConnectionCallbacks,null)
+        mediaBrowser?.connect()
         onEvent()
     }
 
@@ -108,9 +112,6 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
             transportControls = mediaController?.transportControls
 
             mHandler.sendEmptyMessage(0)
-            //通过mediaController获取MediaMetadataCompat
-//            val metadata = mediaController!!.metadata
-//            updateDuration(metadata)
         }
 
         override fun onConnectionSuspended() {
@@ -123,32 +124,52 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
             Log.e(TAG, "onConnectionFailed：$TAG 已与 ${mediaBrowser?.sessionToken} 连接失败")
         }
     }
-    private fun sendAction(){
-        mediaBrowser?.sendCustomAction("getPosition",null,object :MediaBrowserCompat.CustomActionCallback(){
-            override fun onProgressUpdate(action: String?, extras: Bundle?, data: Bundle?) {
-                super.onProgressUpdate(action, extras, data)
-                val currentPosition = extras?.getInt("currentPosition",0)?:0
-                bind.startText.text = DateUtils.formatElapsedTime(currentPosition.toLong())
+    private fun sendAction(cmdStr:String){
+        mediaBrowser?.sendCustomAction(cmdStr,null,object :MediaBrowserCompat.CustomActionCallback(){
+            override fun onResult(action: String?, extras: Bundle?, resultData: Bundle?) {
+                super.onResult(action, extras, resultData)
+                when(cmdStr){
+                    GET_PROGRESS->{
+                        val currentPosition = resultData?.getInt("currentPosition",0)?:0
+                        bind.startText.text = DateUtils.formatElapsedTime(currentPosition.toLong())
+                        bind.seekbar.progress = currentPosition
+                    }
+                    GET_MUSIC_MEDIA->{
+                        //直接在 onMetadataChanged 处理数据
+                    }
+                }
+
             }
+
+
         })
     }
 
 
     /**
      * 订阅媒体文件来发起数据请求
+     * 客户端通过调用subscribe方法，传递MediaID，在SubscriptionCallback的方法中进行处理
+     * MediaBrowser是通过订阅方式向Service请求数据的
      */
     private fun subscribe() {
         mediaBrowser?.apply {
             //先取消订阅
             unsubscribe(root)
             subscribe(root, object :MediaBrowserCompat.SubscriptionCallback(){
-                ////数据获取成功后的回调
+                //数据获取成功后的回调
                 override fun onChildrenLoaded(@NonNull parentId: String, @NonNull children: List<MediaBrowserCompat.MediaItem>) {
                     super.onChildrenLoaded(parentId, children)
+                    //children 为来自Service的列表数据
                     Log.i(TAG, "onChildrenLoaded: parentId=$parentId children=${children[0].description.mediaUri}")
+                    val buffer = StringBuffer()
+                    children.forEach {
+                        buffer.append("${it.description.title}--${it.description.mediaUri}").append("\n")
+                    }
+                    bind.tvDesc.text = buffer.toString()
 
                 }
-                ////数据获取失败的回调
+
+                //数据获取失败的回调
                 override fun onError(@NonNull parentId: String) {
                     super.onError(parentId)
                     Log.i(TAG, "onError: parentId=$parentId")
@@ -177,7 +198,12 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
         //播放的媒体数据发生变化时的回调
         override fun onMetadataChanged(metadata: MediaMetadataCompat) {
             super.onMetadataChanged(metadata)
-            Log.i(TAG, "onMetadataChanged: metadata=${metadata.description}")
+
+            metadata.description.apply {
+                val  duration = metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)
+                Log.i(TAG, "onMetadataChanged: title=${title} mediaUri=$mediaUri duration=${duration} ")
+            }
+
             durationSet = false
             updateDuration(metadata)
         }
@@ -229,37 +255,17 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
         }
     }
 
-    /**
-     * 更新进度
-     */
-    private fun updateProgress() {
-//        mLastPlaybackState?.apply {
-//            Log.i(TAG,"updateProgress: playbackState=${playbackState}")
-//            var curPos = position.toDouble()
-//            if (state == PlaybackStateCompat.STATE_PLAYING){
-//                val timeDelta: Long = SystemClock.elapsedRealtime() -lastPositionUpdateTime
-//                curPos += timeDelta.toInt() * playbackSpeed
-//            }
-//            curPos /= 1000
-//            bind.seekbar.progress = curPos.toInt()
-//            bind.startText.text = DateUtils.formatElapsedTime(curPos.toLong())
-//        }
-    }
 
     private val mHandler = Handler{
-        sendAction()
+        sendAction(GET_PROGRESS)
         it.target.sendEmptyMessageDelayed(0,1000)
         false
     }
 
-    override fun onStart() {
-        super.onStart()
-        mediaBrowser?.connect()
-    }
 
     override fun onStop() {
         super.onStop()
-        mediaBrowser?.disconnect()
+        mediaController?.unregisterCallback(mediaControllerCallback)
         mHandler.removeCallbacksAndMessages(null)
     }
 

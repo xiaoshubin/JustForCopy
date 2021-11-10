@@ -3,6 +3,9 @@
     <string name="facebook_app_id" tools:ignore="ExtraTranslation">958954564951148</string>
     <string name="fb_login_protocol_scheme" tools:ignore="ExtraTranslation">fb958954564951148</string>
     <string name="server_client_id">150164664582-t935bcb35tp2ec5i2kmbe5eu05277lmi.apps.googleusercontent.com</string>
+
+    <string name="notification_channel">Now Playing</string>
+    <string name="notification_channel_description">Shows what music is currently playing in UAMP</string>
     <string-array name="months">
         <item>3个月</item>
         <item>4个月</item>

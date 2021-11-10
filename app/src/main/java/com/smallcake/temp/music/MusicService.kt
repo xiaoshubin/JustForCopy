@@ -1,18 +1,22 @@
 package com.smallcake.temp.music
 
+import android.drm.DrmErrorEvent.TYPE_OUT_OF_MEMORY
 import android.os.Binder
 import android.os.Bundle
+import android.provider.Contacts
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.text.TextUtils
 import android.util.Log
+import android.widget.Toast
 import androidx.media.MediaBrowserServiceCompat
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.analytics.AnalyticsListener
+import com.google.android.exoplayer2.audio.AudioAttributes
+import com.smallcake.smallutils.FileUtils
+import com.smallcake.temp.utils.showToast
 
 
 /**
@@ -57,50 +61,113 @@ MediaBrowserServiceCompat【Service】(MediaSessionCompat【Session】) <-----> 
 
 参考：
 MediaBrowserCompat和MediaBrowserServiceCompat： https://blog.csdn.net/xiaxl/article/details/78780691
-关于媒体浏览器服务(MediaBrowserService):          https://blog.csdn.net/huyongl1989/article/details/71037284
+关于媒体浏览器服务MediaBrowserService:            https://blog.csdn.net/huyongl1989/article/details/71037284
 Android基于MediaBroswerService的App实现概述:     https://segmentfault.com/a/1190000014375066
+android-UniversalMusicPlayer 学习笔记（一）:     https://www.jianshu.com/p/d3a329e787ad
+Android音乐播放器实战：                          https://github.com/android/uamp
+
+ 关键点：
+ 1.如何把播放音乐的进度传递给UI界面
+    问题：通过mediaBrowser?.sendCustomAction发送事件，主动获取，但当退出界面关闭连接后，重新连接获取的exoPlayer播放进度一直是0?
+    原因：MediaBrowserCompat创建的时候第一个参数传入了当前页面，导致每次都会新建MusicService和ExoPlayer，且断开了连接mediaBrowser?.disconnect()
+    解决：传入当前应用MyApplication,这样只会不会多次创建MusicService和ExoPlayer，不断开连接，否则会导致当前MusicService执行onDestroy
+ 2.在退出界面关闭连接后，再次进入UI界面，如何重新关联进度
+ 3.播放状态同步
+setMetadata(android.media.MediaMetadata))
+setPlaybackState(android.media.session.PlaybackState))
 
 
  */
+const val GET_PROGRESS = "getProgress"//获取音乐播放进度
+const val GET_MUSIC_MEDIA = "getMusicMedia"//获取音乐媒体信息
 class MusicService: MediaBrowserServiceCompat() {
     private val TAG = "MusicService"
-    private var exoPlayer:SimpleExoPlayer?=null
+
+
+
+
     private lateinit var mediaSession:MediaSessionCompat
+
 
     /**
      * 当服务收到onCreate（）生命周期回调方法时，它应该执行以下步骤：
      * 1. 创建并初始化media session
      * 2. 设置media session回调
      * 3. 设置media session token
+     * 会多次执行
      */
     override fun onCreate() {
         super.onCreate()
         Log.i(TAG,"音乐服务已创建...")
         //1. 创建并初始化MediaSession
         mediaSession = MediaSessionCompat(applicationContext, TAG)
-        //2. 设置mediaSessionToken
+        //2. 设置mediaSessionToken用于和控制器配对的令牌并通知浏览器连接服务成功
         sessionToken = mediaSession.sessionToken
         //3. 设置mediaSession回调
         mediaSession.setCallback(mediaSessionCallBack)
-        //4.设置标签
-        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
-
-        val playbackState = PlaybackStateCompat.Builder().setActions(
-                        PlaybackStateCompat.ACTION_PLAY or PlaybackStateCompat.ACTION_PLAY_PAUSE
-                        or PlaybackStateCompat.ACTION_STOP or PlaybackStateCompat.ACTION_PLAY_PAUSE or
-                        PlaybackStateCompat.ACTION_PLAY_FROM_MEDIA_ID or
-                        PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH or
-                        PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS or
-                        PlaybackStateCompat.ACTION_SKIP_TO_NEXT or PlaybackStateCompat.ACTION_SEEK_TO)
-                        .build()
-        mediaSession.setPlaybackState(playbackState)
-
-
-        //4.创建播放器实例
-        exoPlayer = SimpleExoPlayer.Builder(applicationContext).build()
 
 
     }
+
+    private val uAmpAudioAttributes = AudioAttributes.Builder()
+        .setContentType(C.CONTENT_TYPE_MUSIC)
+        .setUsage(C.USAGE_MEDIA)
+        .build()
+    private val exoPlayer: ExoPlayer by lazy {
+        SimpleExoPlayer.Builder(this).build().apply {
+            setAudioAttributes(uAmpAudioAttributes, true)//样式设置
+            setHandleAudioBecomingNoisy(true)//降噪
+            addListener(object : Player.Listener {
+                override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                    val totalDuration = exoPlayer.duration/1000
+                    val currentPosition = exoPlayer.currentPosition/1000
+                    Log.i(TAG,"exoPlayer：已播放=${currentPosition} s 音频总时长=${totalDuration} s 播放状态=${playbackState}[${playbackStateToStr(playbackState)}]")
+                    var state = PlaybackStateCompat.STATE_NONE
+                    when(playbackState){
+                        Player.STATE_IDLE     ->state =PlaybackStateCompat.STATE_NONE
+                        Player.STATE_BUFFERING->state =PlaybackStateCompat.STATE_BUFFERING
+                        Player.STATE_READY    ->{
+                            if (playWhenReady)sendMediaDataToUI()
+                            state =if (playWhenReady) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
+                        }
+                        Player.STATE_ENDED    ->state = PlaybackStateCompat.STATE_STOPPED
+                    }
+                    setPlaybackState(state)
+                }
+
+            })
+        }
+    }
+
+    /**
+     * 发送媒体信息给UI
+     */
+    private fun sendMediaDataToUI() {
+        val mediaMetadata = exoPlayer.mediaMetadata
+        mediaMetadata.apply {
+            val totalDuration = exoPlayer.duration/1000
+            val mediaMetadataCompat = MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, System.currentTimeMillis().toString())
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, mediaUri.toString())
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title.toString())
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, totalDuration)
+                .build()
+            mediaSession.setMetadata(mediaMetadataCompat)
+        }
+
+    }
+
+    private fun playbackStateToStr(playbackState: Int):String{
+        return when(playbackState){
+            Player.STATE_IDLE     ->"无音频资源状态"
+            Player.STATE_BUFFERING->"音频缓冲状态"
+            Player.STATE_READY    ->if (exoPlayer.playWhenReady) "播放中" else "暂停"
+            Player.STATE_ENDED    ->"已停止"
+            else ->"未知的播放状态"
+        }
+    }
+
+
 
     /**
      * 接收客服端发送过来的自定义消息
@@ -109,9 +176,8 @@ class MusicService: MediaBrowserServiceCompat() {
      * @param result Result<Bundle>
      */
     override fun onCustomAction(action: String, extras: Bundle?, result: Result<Bundle>) {
-        super.onCustomAction(action, extras, result)
         when(action){
-            "getPosition"->{
+            GET_PROGRESS->{
                 val isPlay = exoPlayer?.isPlaying
                 val speed = exoPlayer?.playbackParameters?.speed?:0f
                 val totalDuration = exoPlayer?.duration?:0
@@ -202,15 +268,16 @@ class MusicService: MediaBrowserServiceCompat() {
         val mediaItems: ArrayList<MediaBrowserCompat.MediaItem> = ArrayList()
 
         if (TextUtils.equals("media_root_id", parentId)) {
+
+
         }
         val musicEntityList: ArrayList<MusicEntity> = getMusicEntityList()
-
         for (i in 0 until musicEntityList.size) {
             val musicEntity: MusicEntity = musicEntityList[i]
             val metadataCompat: MediaMetadataCompat = buildFromLocal(musicEntity)
-            if (i == 0) {
-                mediaSession.setMetadata(metadataCompat)
-            }
+//            if (i == 0) {
+//                mediaSession.setMetadata(metadataCompat)
+//            }
 
             mediaItems.add(
                 MediaBrowserCompat.MediaItem(
@@ -226,42 +293,18 @@ class MusicService: MediaBrowserServiceCompat() {
         result.sendResult(mediaItems)
         Log.i(TAG, "onLoadChildren: addMediaItem")
 
-        initExoPlayerListener()
+
         exoPlayer?.prepare()
+
         Log.i(TAG, "onLoadChildren: prepare")
+        //每次连接，设置媒体资源和播放状态
+        sendMediaDataToUI()
+        val state =if (exoPlayer.playWhenReady) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
+        setPlaybackState(state)
 
     }
 
-    /**
-     * 初始化ExoPlayer播放器监听
-     * 1. 用户触发的  比如： 手动切歌曲、暂停、播放、seek等；
-     * 2. 播放器内部触发 比如： 播放结束、自动切歌曲等）
-     * UI通过setPlaybackState设置
-     */
-    private fun initExoPlayerListener() {
-        exoPlayer?.apply {
-            addListener(object : Player.Listener{
-                    //播放状态回调
-                    override fun onPlaybackStateChanged(state: Int) {
-                        Log.i(TAG,"exoPlayer播放状态：currentPositon=$currentPosition duduration=$duration state=$state")
-                        var playbackState=PlaybackStateCompat.STATE_NONE
-                        when(state){
-                            Player.STATE_IDLE     ->playbackState =PlaybackStateCompat.STATE_NONE
-                            Player.STATE_BUFFERING->playbackState =PlaybackStateCompat.STATE_BUFFERING
-                            Player.STATE_READY    ->playbackState =if (playWhenReady) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
-                            Player.STATE_ENDED    ->playbackState = PlaybackStateCompat.STATE_STOPPED
-                        }
-                        setPlaybackState(playbackState)
-                    }
 
-            })
-            addAnalyticsListener(object :AnalyticsListener{
-
-            })
-
-        }
-
-    }
 
     /**
      * 设置mediaSession中的播放状态
@@ -271,7 +314,7 @@ class MusicService: MediaBrowserServiceCompat() {
         val speed = exoPlayer?.playbackParameters?.speed?:0f
         val totalDuration = exoPlayer?.duration?:0
         val currentPosition = exoPlayer?.currentPosition?:0
-        Log.i(TAG,"速度：${speed}倍 总时长：${(totalDuration/1000).toInt()}s  已播放：${(currentPosition/1000).toInt()}s 状态：$state")
+//        Log.i(TAG,"速度：${speed}倍 总时长：${(totalDuration/1000).toInt()}s  已播放：${(currentPosition/1000).toInt()}s 状态：$state")
         val playbackState = PlaybackStateCompat.Builder()
                                 .setState(state,currentPosition,speed)
                                 .build()
@@ -290,8 +333,10 @@ class MusicService: MediaBrowserServiceCompat() {
 
     private fun getMusicEntityList():ArrayList<MusicEntity> {
         val list =  ArrayList<MusicEntity>()
-        val musicEntity =  MusicEntity("Geisha","http://music.163.com/song/media/outer/url?id=447925558.mp3")
+        val musicEntity =  MusicEntity("纯音乐1","http://music.163.com/song/media/outer/url?id=447925558.mp3")
+        val musicEntity2 =  MusicEntity("纯音乐2","http://music.163.com/song/media/outer/url?id=447925559.mp3")
         list.add(musicEntity)
+        list.add(musicEntity2)
         return list
     }
 
