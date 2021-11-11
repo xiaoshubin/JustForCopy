@@ -136,9 +136,18 @@ class MusicService: MediaBrowserServiceCompat() {
                             sendMediaDataToUI()
                             state =if (playWhenReady) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
                         }
-                        Player.STATE_ENDED    ->state = PlaybackStateCompat.STATE_STOPPED
+                        Player.STATE_ENDED    ->{
+                            Log.d(TAG, "播放结束...")
+                            state = PlaybackStateCompat.STATE_STOPPED
+                        }
                     }
                     setPlaybackState(state)
+                }
+
+                override fun onPositionDiscontinuity(oldPosition: Player.PositionInfo, newPosition: Player.PositionInfo, reason: Int) {
+                    //重新播放其他资源，刷新UI
+                    if(reason == 0)sendMediaDataToUI()
+
                 }
 
             })
@@ -197,7 +206,8 @@ class MusicService: MediaBrowserServiceCompat() {
                 bundle.putInt("currentPosition",(exoPlayer.currentPosition/1000).toInt())
                 bundle.putInt("duration",(exoPlayer.duration/1000).toInt())
                 result.sendResult(bundle)
-                printPlayProgress()
+//                printPlayProgress()
+
             }
             GET_MUSIC_MEDIA->{
                 result.detach()

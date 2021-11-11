@@ -21,6 +21,7 @@ import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityExoMusicBinding
+import com.smallcake.temp.utils.PopShowUtils
 
 
 /**
@@ -42,13 +43,10 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
         bar.setTitle("音乐播放")
         onEvent()
         MCManager.instance.registerListener(musicClientListener)
-        mHandler.sendEmptyMessage(0)
         if (!durationSet)mHandler.sendEmptyMessageDelayed(1,100)
 
     }
     private val musicClientListener = object :MusicClientListener{
-
-
         override fun onPlaybackStateChanged(state: PlaybackStateCompat) {
             bind.btnPlay.text=if (PlaybackStateCompat.STATE_PLAYING == state.state)"暂停" else  "播放"
         }
@@ -57,7 +55,6 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
             durationSet = false
             updateDuration(metadata)
         }
-
         override fun onProgress(currentDuration: Int, totalDuration: Int) {
             bind.startText.text = DateUtils.formatElapsedTime(currentDuration.toLong())
             bind.seekbar.progress = currentDuration
@@ -67,16 +64,11 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
 
     private val mHandler = Handler{
         when(it.what){
-            0->{
-                MCManager.instance.sendAction(GET_PROGRESS)
-                it.target.sendEmptyMessageDelayed(0,1000)
-            }
             1->{
                 MCManager.instance.sendAction(GET_MUSIC_MEDIA)
                 if (!durationSet)it.target.sendEmptyMessageDelayed(1,300)
             }
         }
-
         false
     }
 
@@ -124,113 +116,19 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
             }
             //后台播放，弹出一个悬浮框
             R.id.btn_background_play->{
-                showMusicFloatWeight()
+                PopShowUtils.showMusicFloatWeight()
             }
         }
     }
 
-    /**
-     * 显示一个音乐播放的悬浮小控件
-     * 需要悬浮窗权限
-     */
-    private fun showMusicFloatWeight() {
-        XXPermissions.with(this).permission(SYSTEM_ALERT_WINDOW).request { _, all ->
-                if (!all) return@request
-                EasyFloat.with(this)
-                    .setLayout(R.layout.music_weight){
-                        //关闭音乐小控件
-                        it.findViewById<ImageView>(R.id.iv_close).setOnClickListener{ EasyFloat.dismissAppFloat("MusicWeight") }
-                        //播放音乐按钮
-                        val ivPlay = it.findViewById<ImageView>(R.id.iv_play)
-                        val tvName = it.findViewById<TextView>(R.id.tv_name)
-                        val tvCurrentTime = it.findViewById<TextView>(R.id.tv_current_time)
-                        val tvTotalTime = it.findViewById<TextView>(R.id.tv_total_time)
-                        val seekBar = it.findViewById<SeekBar>(R.id.seek_bar)
-                        //播放+暂停
-                        ivPlay.setOnClickListener{
-                            MCManager.instance.transportControls?.apply {
-                                val state =  MCManager.instance.mediaController?.playbackState?.state
-                                if (state == PlaybackStateCompat.STATE_PLAYING)pause() else play()
-                            }
-                        }
-                        seekBar.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener{
-                            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {}
-                            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-                            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                                val progress = seekBar.progress
-                                val max = seekBar.max
-                                Log.i("EasyFloat", "onStopTrackingTouch: progress=$progress max=$max")
-                                MCManager.instance.transportControls?.seekTo(progress.toLong())
-                            }
-                        })
 
-                        val musicClientListener = object :MusicClientListener{
-
-                            override fun onPlaybackStateChanged(state: PlaybackStateCompat) {
-                                ivPlay.setImageResource(if (PlaybackStateCompat.STATE_PLAYING == state.state)R.drawable.exo_ic_pause_circle_filled else  R.drawable.exo_ic_play_circle_filled)
-                            }
-                            override fun onMetadataChanged(metadata: MediaMetadataCompat) {
-                                    val duration = metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)
-                                    val title = metadata.getString(MediaMetadataCompat.METADATA_KEY_TITLE)
-                                    if (duration > 0) {
-                                        Log.i("EasyFloat", "更新总进度: duration=$duration")
-                                        tvName.text = title
-                                        seekBar.max = duration.toInt()
-                                        tvTotalTime.text = DateUtils.formatElapsedTime(duration)
-                                    }
-
-                            }
-
-                            override fun onProgress(currentDuration: Int, totalDuration: Int) {
-                                seekBar.progress = currentDuration
-                                tvCurrentTime.text = DateUtils.formatElapsedTime(currentDuration.toLong())
-                            }
-
-                        }
-                        MCManager.instance.registerListener(musicClientListener)
-
-                    }
-                    .setTag("MusicWeight")
-                    .setShowPattern(ShowPattern.ALL_TIME)
-                    .setDragEnable(true)
-                    .setGravity(Gravity.CENTER_VERTICAL or Gravity.END)
-                    .show()
-
-
-        }
-
-    }
 
     private var speedArray = floatArrayOf(0.5f, 1f, 1.5f, 2f)
     private var curSpeedIndex = 1
     private fun getSpeed(): Float {
-        if (curSpeedIndex > 3) {
-            curSpeedIndex = 0
-        }
+        if (curSpeedIndex > 3) curSpeedIndex = 0
         return speedArray[curSpeedIndex++]
     }
-
-//    private fun sendAction(cmdStr:String){
-//        if (!MCManager.instance.isConnect)return
-//        MCManager.instance.mediaBrowser.sendCustomAction(cmdStr,null,object :MediaBrowserCompat.CustomActionCallback(){
-//            override fun onResult(action: String?, extras: Bundle?, resultData: Bundle?) {
-//                super.onResult(action, extras, resultData)
-//                when(cmdStr){
-//                    GET_PROGRESS->{
-//                        val currentPosition = resultData?.getInt("currentPosition",0)?:0
-//                        val bufferedPosition = resultData?.getInt("bufferedPosition",0)?:0
-//                        bind.startText.text = DateUtils.formatElapsedTime(currentPosition.toLong())
-//                        bind.seekbar.progress = currentPosition
-//                        bind.seekbar.secondaryProgress = bufferedPosition
-//                    }
-//
-//                }
-//
-//            }
-//
-//
-//        })
-//    }
 
     /**
      * 初始化歌曲时长
@@ -246,7 +144,5 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
             }
         }
     }
-
-
 
 }
