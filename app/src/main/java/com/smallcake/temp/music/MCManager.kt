@@ -2,11 +2,13 @@ package com.smallcake.temp.music
 
 import android.content.ComponentName
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.text.format.DateUtils
 import android.util.Log
 import androidx.annotation.NonNull
 import com.smallcake.temp.MyApplication
@@ -20,17 +22,14 @@ class MCManager {
     lateinit var mediaBrowser:MediaBrowserCompat
     var mediaController:MediaControllerCompat?=null
     var transportControls: MediaControllerCompat.TransportControls?=null
-    private var listener: MusicClientListener?=null
+    private var listeners: ArrayList<MusicClientListener> = ArrayList()
 
-    fun registerCallback(musicClientListener: MusicClientListener){
-        this.listener = musicClientListener
+    fun registerListener(musicClientListener: MusicClientListener){
+        listeners.add(musicClientListener)
     }
-    fun unregisterCallback(callback: MusicClientListener){
-        this.listener = null
+    fun unregisterListener(musicClientListener: MusicClientListener){
+        listeners.remove(musicClientListener)
     }
-
-
-
 
 
 
@@ -56,9 +55,8 @@ class MCManager {
                     //MediaController发送命令
                     mediaController?.registerCallback(mediaControllerCallback)
                     transportControls = mediaController?.transportControls
-
-                    listener?.onConnected()
                     isConnect = true
+                    mHandler.sendEmptyMessage(0)
                 }
             },
             null)
@@ -106,13 +104,13 @@ class MCManager {
         override fun onPlaybackStateChanged(state: PlaybackStateCompat) {
             super.onPlaybackStateChanged(state)
             Log.i(TAG, "播放状态改变为：" + if (PlaybackStateCompat.STATE_PLAYING == state.state)"播放中" else  "暂停")
-            listener?.onPlaybackStateChanged(state)
+            listeners.forEach{it.onPlaybackStateChanged(state)}
 
         }
         //播放的媒体数据发生变化时的回调：MusicService: mediaSession.setMetadata(mediaMetadataCompat)
         override fun onMetadataChanged(metadata: MediaMetadataCompat) {
             super.onMetadataChanged(metadata)
-            listener?.onMetadataChanged(metadata)
+            listeners.forEach{it.onMetadataChanged(metadata)}
         }
 
         override fun onSessionDestroyed() {
@@ -139,6 +137,42 @@ class MCManager {
             super.onSessionEvent(event, extras)
             Log.i(TAG, "onSessionEvent: ")
         }
+    }
+
+    private val mHandler = Handler{
+        when(it.what){
+            0->{
+                sendAction(GET_PROGRESS)
+                it.target.sendEmptyMessageDelayed(0,1000)
+            }
+            1->{
+                sendAction(GET_MUSIC_MEDIA)
+
+            }
+        }
+
+        false
+    }
+
+     fun sendAction(cmdStr:String){
+        if (!isConnect)return
+        mediaBrowser.sendCustomAction(cmdStr,null,object :MediaBrowserCompat.CustomActionCallback(){
+            override fun onResult(action: String?, extras: Bundle?, resultData: Bundle?) {
+                super.onResult(action, extras, resultData)
+                when(cmdStr){
+                    GET_PROGRESS->{
+                        val currentPosition = resultData?.getInt("currentPosition",0)?:0
+                        val duration = resultData?.getInt("duration",0)?:0
+                        listeners.forEach{it.onProgress(currentPosition,duration)}
+
+                    }
+
+                }
+
+            }
+
+
+        })
     }
 
 

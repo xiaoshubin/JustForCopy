@@ -150,12 +150,14 @@ class MusicService: MediaBrowserServiceCompat() {
      */
     private fun sendMediaDataToUI() {
         val mediaMetadata = exoPlayer.mediaMetadata
+        val musicEntitys = getMusicEntityList()
+        val musicEntity = musicEntitys[isPlayingIndex]
         mediaMetadata.apply {
             val totalDuration = exoPlayer.duration/1000
             val mediaMetadataCompat = MediaMetadataCompat.Builder()
                 .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, System.currentTimeMillis().toString())
                 .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, mediaUri.toString())
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title.toString())
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, musicEntity.name)
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, totalDuration)
                 .build()
             mediaSession.setMetadata(mediaMetadataCompat)
@@ -193,7 +195,7 @@ class MusicService: MediaBrowserServiceCompat() {
             GET_PROGRESS->{
                 val bundle = Bundle()
                 bundle.putInt("currentPosition",(exoPlayer.currentPosition/1000).toInt())
-                bundle.putInt("bufferedPosition",(exoPlayer.bufferedPosition/1000).toInt())
+                bundle.putInt("duration",(exoPlayer.duration/1000).toInt())
                 result.sendResult(bundle)
                 printPlayProgress()
             }
@@ -331,7 +333,8 @@ class MusicService: MediaBrowserServiceCompat() {
                     MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
                 )
             )
-            exoPlayer.addMediaItem(MediaItem.fromUri(musicEntity.url))
+            val exoMediaItem = MediaItem.fromUri(musicEntity.url)
+            exoPlayer.addMediaItem(exoMediaItem)
         }
         //当设置多首歌曲组成队列时报错
         // IllegalStateException: sendResult() called when either sendResult() or sendError() had already been called for: media_root_id
