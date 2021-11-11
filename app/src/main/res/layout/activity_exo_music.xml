@@ -36,7 +36,7 @@
             android:textSize="12sp"
             android:layout_weight="1"
             android:text="上一首"
-            android:textColor="@color/exo_black_opacity_70" />
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_play"
@@ -46,7 +46,7 @@
             android:textSize="12sp"
             android:layout_weight="1"
             android:text="播放"
-            android:textColor="@color/exo_black_opacity_70" />
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/next"
@@ -56,7 +56,7 @@
             android:textSize="12sp"
             android:layout_weight="1"
             android:text="下一首"
-            android:textColor="@color/exo_black_opacity_70" />
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <LinearLayout
@@ -71,9 +71,10 @@
             android:textSize="12sp"
             android:layout_weight="1"
             android:text="倍速"
-            android:textColor="@color/exo_black_opacity_70" />
+            android:textColor="@color/white" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@color/gray"
             android:id="@+id/fadeinout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -83,7 +84,8 @@
             android:text="淡入淡出"
             android:textColor="@color/exo_black_opacity_70" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@color/gray"
             android:id="@+id/effect"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -93,7 +95,8 @@
             android:text="简单音效"
             android:textColor="@color/exo_black_opacity_70" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@color/gray"
             android:id="@+id/cache"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -109,7 +112,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@color/gray"
             android:id="@+id/audiofocus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -119,8 +123,9 @@
             android:text="音频焦点"
             android:textColor="@color/exo_black_opacity_70" />
 
-        <Button
-            android:id="@+id/backgroundplay"
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@color/gray"
+            android:id="@+id/btn_background_play"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -129,7 +134,8 @@
             android:text="后台播放"
             android:textColor="@color/exo_black_opacity_70" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@color/gray"
             android:id="@+id/playqueue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -139,7 +145,8 @@
             android:text="播放队列"
             android:textColor="@color/exo_black_opacity_70" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@color/gray"
             android:id="@+id/playmode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

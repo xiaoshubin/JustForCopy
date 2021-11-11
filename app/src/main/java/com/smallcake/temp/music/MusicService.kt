@@ -74,13 +74,14 @@ Android音乐播放器实战：                          https://github.com/andr
      1.播放
      2.暂停
      3.上一首，下一首
-     4.进度回调到UI
+     4.进度回调到UI,缓冲进度
      5.时长总时长更新到UI:sendMediaDataToUI()
      6.拖动进度改变播放位置
      7.倍速播放
  未完成的功能：
     1.缓存
     2.播放模式：单曲循环，顺序播放
+    3.常驻后台播放
 
 
 
@@ -192,9 +193,15 @@ class MusicService: MediaBrowserServiceCompat() {
             GET_PROGRESS->{
                 val bundle = Bundle()
                 bundle.putInt("currentPosition",(exoPlayer.currentPosition/1000).toInt())
+                bundle.putInt("bufferedPosition",(exoPlayer.bufferedPosition/1000).toInt())
                 result.sendResult(bundle)
-
                 printPlayProgress()
+            }
+            GET_MUSIC_MEDIA->{
+                result.detach()
+                sendMediaDataToUI()
+                val state =if (exoPlayer.playWhenReady) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
+                setPlaybackState(state)
             }
         }
     }
@@ -203,11 +210,8 @@ class MusicService: MediaBrowserServiceCompat() {
      */
     private fun printPlayProgress(){
         exoPlayer.apply {
-            val isPlay = isPlaying
             val speed = playbackParameters.speed
-            val totalDuration = duration
-            val currentPosition = currentPosition
-//            Log.i(TAG,"速度：${speed}倍 总时长：${(totalDuration/1000).toInt()}s  已播放：${(currentPosition/1000).toInt()}s isPlay：$isPlay")
+            Log.i(TAG,"速度：${speed}倍 总时长：${(duration/1000).toInt()}s  已播放：${(currentPosition/1000).toInt()}s 已缓存：${(bufferedPosition/1000).toInt()}s isPlay：$isPlaying")
         }
 
     }
