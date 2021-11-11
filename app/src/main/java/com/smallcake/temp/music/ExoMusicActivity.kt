@@ -134,9 +134,7 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
                         bind.startText.text = DateUtils.formatElapsedTime(currentPosition.toLong())
                         bind.seekbar.progress = currentPosition
                     }
-                    GET_MUSIC_MEDIA->{
-                        //直接在 onMetadataChanged 处理数据
-                    }
+
                 }
 
             }
@@ -188,22 +186,17 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
     val mediaControllerCallback =object: MediaControllerCompat.Callback() {
         //这里的回调，只有用户触发的才会有相应的回调。
         //ExoPlayer getDuration : https://stackoverflow.com/questions/35298125/exoplayer-getduration
+        //播放状态变化回调：usicService: mediaSession.setPlaybackState(playbackState)
         override fun onPlaybackStateChanged(state: PlaybackStateCompat) {
             super.onPlaybackStateChanged(state)
-            Log.i(TAG, "播放状态改变onPlaybackStateChanged: state=" + state.state)
+            Log.i(TAG, "播放状态改变为：" + if (PlaybackStateCompat.STATE_PLAYING == state.state)"播放中" else  "暂停")
             bind.btnPlay.text=if (PlaybackStateCompat.STATE_PLAYING == state.state)"暂停" else  "播放"
             val metadata: MediaMetadataCompat = mediaController!!.metadata
             updateDuration(metadata)
         }
-        //播放的媒体数据发生变化时的回调
+        //播放的媒体数据发生变化时的回调：MusicService: mediaSession.setMetadata(mediaMetadataCompat)
         override fun onMetadataChanged(metadata: MediaMetadataCompat) {
             super.onMetadataChanged(metadata)
-
-            metadata.description.apply {
-                val  duration = metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION)
-                Log.i(TAG, "onMetadataChanged: title=${title} mediaUri=$mediaUri duration=${duration} ")
-            }
-
             durationSet = false
             updateDuration(metadata)
         }
@@ -212,7 +205,7 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
             super.onSessionDestroyed()
             Log.i(TAG, "onSessionDestroyed: ")
         }
-
+        //连接MusicService时触发
         override fun onSessionReady() {
             super.onSessionReady()
             Log.i(TAG, "onSessionReady: ")
@@ -263,8 +256,9 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
     }
 
 
-    override fun onStop() {
-        super.onStop()
+
+    override fun onDestroy() {
+        super.onDestroy()
         mediaController?.unregisterCallback(mediaControllerCallback)
         mHandler.removeCallbacksAndMessages(null)
     }
