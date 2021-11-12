@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <com.smallcake.smallutils.custom.AutoNewLineLayout
@@ -117,20 +118,37 @@
 
 
     </com.smallcake.smallutils.custom.AutoNewLineLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_desc"
+            android:textColor="@color/black"
+            android:padding="8dp"
+            android:text="正在播放："
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     <LinearLayout
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <TextView
-            android:text="0:00"
+            tools:text="0:00"
             android:id="@+id/startText"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="8dp"
-            android:gravity="center_vertical"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:maxLines="1"
             android:textColor="@android:color/background_dark" />
 
@@ -139,28 +157,17 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_toStartOf="@+id/endText"
-            android:layout_toEndOf="@+id/startText" />
+            android:layout_gravity="center"/>
 
         <TextView
-            android:text="0:00"
+            tools:text="0:00"
             android:id="@+id/endText"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="8dp"
-            android:gravity="center_vertical"
+            android:layout_width="44dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:maxLines="1"
             android:textColor="@android:color/background_dark" />
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </LinearLayout>

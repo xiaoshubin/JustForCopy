@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.media.MediaBrowserServiceCompat
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
+import com.smallcake.temp.utils.sizeNull
 
 
 /**
@@ -158,16 +159,16 @@ class MusicService: MediaBrowserServiceCompat() {
      * 发送媒体信息给UI
      */
     private fun sendMediaDataToUI() {
+        if (locaMusicList==null)return
         val mediaMetadata = exoPlayer.mediaMetadata
-        val musicEntitys = getMusicEntityList()
-        val musicEntity = musicEntitys[isPlayingIndex]
+        val song = locaMusicList?.get(isPlayingIndex) ?: return
         mediaMetadata.apply {
             val totalDuration = exoPlayer.duration/1000
             val mediaMetadataCompat = MediaMetadataCompat.Builder()
-                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, System.currentTimeMillis().toString())
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, song.id.toString())
                 .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, mediaUri.toString())
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, musicEntity.name)
-                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, totalDuration)
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, song.name)
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, (song.duration/1000).toLong())
                 .build()
             mediaSession.setMetadata(mediaMetadataCompat)
         }
@@ -176,7 +177,7 @@ class MusicService: MediaBrowserServiceCompat() {
 
     /**
      * 打印播放状态变更
-     * @param playbackState Int
+     * @param playbackState IntonChildrenLoaded
      */
     private fun printPlaybackState(playbackState: Int){
         val totalDuration = exoPlayer.duration/1000
@@ -267,11 +268,11 @@ class MusicService: MediaBrowserServiceCompat() {
         override fun onSkipToPrevious() {
             super.onSkipToPrevious()
             Log.i(TAG, "onSkipToPrevious:")
+            if (locaMusicList==null)return
             if (isPlayingIndex>0){
                 isPlayingIndex--
-                val musicList = getMusicEntityList()
-                val musicEntity = musicList[isPlayingIndex]
-                val mediaItem = MediaItem.fromUri(musicEntity.url)
+                val musicEntity = locaMusicList!![isPlayingIndex]
+                val mediaItem = MediaItem.fromUri(musicEntity.path!!)
                 exoPlayer.setMediaItem(mediaItem)
             }
 
@@ -280,11 +281,11 @@ class MusicService: MediaBrowserServiceCompat() {
         override fun onSkipToNext() {
             super.onSkipToNext()
             Log.i(TAG, "onSkipToNext:")
-            val musicList = getMusicEntityList()
-            if (isPlayingIndex<musicList.size-1){
+            if (locaMusicList==null)return
+            if (isPlayingIndex<locaMusicList.sizeNull()-1){
                 isPlayingIndex++
-                val musicEntity = musicList[isPlayingIndex]
-                val mediaItem = MediaItem.fromUri(musicEntity.url)
+                val musicEntity = locaMusicList!![isPlayingIndex]
+                val mediaItem = MediaItem.fromUri(musicEntity.path!!)
                 exoPlayer.setMediaItem(mediaItem)
             }
         }
@@ -321,33 +322,19 @@ class MusicService: MediaBrowserServiceCompat() {
      * @param parentId String
      * @param result Result<MutableList<MediaItem>>
      */
+    private var locaMusicList:ArrayList<Song>?=null
     override fun onLoadChildren(parentId: String, result: Result<MutableList<MediaBrowserCompat.MediaItem>>) {
         Log.i(TAG, "onLoadChildren: parentId=$parentId")
         val mediaItems: ArrayList<MediaBrowserCompat.MediaItem> = ArrayList()
-
         if (TextUtils.equals("media_root_id", parentId)) {
-
+                val locaMusicList = MusicProvider.getLocaMusic()
+                locaMusicList.forEach{song->
+                    val mediaItem: MediaBrowserCompat.MediaItem = MusicProvider.transMediaItem(song)
+                    mediaItems.add(mediaItem)
+                    val exoMediaItem = MediaItem.fromUri(song.path!!)
+                    exoPlayer.addMediaItem(exoMediaItem)
+                }
         }
-        val musicEntityList: ArrayList<MusicEntity> = getMusicEntityList()
-        for (i in 0 until musicEntityList.size) {
-            val musicEntity: MusicEntity = musicEntityList[i]
-            val metadataCompat: MediaMetadataCompat = buildFromLocal(musicEntity)
-//            if (i == 0) {
-//                mediaSession.setMetadata(metadataCompat)
-//            }
-
-            mediaItems.add(
-                MediaBrowserCompat.MediaItem(
-                    metadataCompat.description,
-                    MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
-                )
-            )
-            val exoMediaItem = MediaItem.fromUri(musicEntity.url)
-            exoPlayer.addMediaItem(exoMediaItem)
-        }
-        //当设置多首歌曲组成队列时报错
-        // IllegalStateException: sendResult() called when either sendResult() or sendError() had already been called for: media_root_id
-        //原因，之前在for处理了，应该在设置好mediaItems列表后，统一设置result
         result.sendResult(mediaItems)
         Log.i(TAG, "onLoadChildren: addMediaItem")
 
@@ -381,24 +368,24 @@ class MusicService: MediaBrowserServiceCompat() {
 
     }
 
-    private fun buildFromLocal(song: MusicEntity): MediaMetadataCompat {
-        val title: String = song.name
-        val source: String = song.url
-        return MediaMetadataCompat.Builder()
-            .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, System.currentTimeMillis().toString())
-            .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, source)
-            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
-            .build()
-    }
+//    private fun buildFromLocal(song: MusicEntity): MediaMetadataCompat {
+//        val title: String = song.name
+//        val source: String = song.url
+//        return MediaMetadataCompat.Builder()
+//            .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, System.currentTimeMillis().toString())
+//            .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, source)
+//            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
+//            .build()
+//    }
 
-    private fun getMusicEntityList():ArrayList<MusicEntity> {
-        val list =  ArrayList<MusicEntity>()
-        val musicEntity =  MusicEntity("纯音乐1","http://music.163.com/song/media/outer/url?id=447925558.mp3")
-        val musicEntity2 =  MusicEntity("纯音乐2","http://music.163.com/song/media/outer/url?id=447925559.mp3")
-        list.add(musicEntity)
-        list.add(musicEntity2)
-        return list
-    }
+//    private fun getMusicEntityList():ArrayList<MusicEntity> {
+//        val list =  ArrayList<MusicEntity>()
+//        val musicEntity =  MusicEntity("纯音乐1","http://music.163.com/song/media/outer/url?id=447925558.mp3")
+//        val musicEntity2 =  MusicEntity("纯音乐2","http://music.163.com/song/media/outer/url?id=447925559.mp3")
+//        list.add(musicEntity)
+//        list.add(musicEntity2)
+//        return list
+//    }
 
 
     /**

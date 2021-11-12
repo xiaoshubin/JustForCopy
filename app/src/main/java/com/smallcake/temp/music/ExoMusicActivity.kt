@@ -3,6 +3,7 @@ package com.smallcake.temp.music
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.text.format.DateUtils
@@ -56,7 +57,7 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
         }
     }
 
-    private val musicClientListener = object :MusicClientListener{
+    private val musicClientListener = object : MusicClientListener() {
         override fun onPlaybackStateChanged(state: PlaybackStateCompat) {
             bind.btnPlay.text=if (PlaybackStateCompat.STATE_PLAYING == state.state)"暂停" else  "播放"
         }
@@ -68,6 +69,24 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
         override fun onProgress(currentDuration: Int, totalDuration: Int) {
             bind.startText.text = DateUtils.formatElapsedTime(currentDuration.toLong())
             bind.seekbar.progress = currentDuration
+        }
+
+         override fun onChildrenLoaded(parentId: String, children: List<MediaBrowserCompat.MediaItem>) {
+              val songList =  children.map { mediaToSong(it) }
+                mAdapter.setList(songList)
+        }
+
+    }
+    private fun mediaToSong(media:MediaBrowserCompat.MediaItem):Song{
+        (media.description as MediaMetadataCompat).apply {
+            val name = this.getString(MediaMetadataCompat.METADATA_KEY_TITLE)
+            val singer =this.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST)
+            val size : Long = 0
+            val duration:Int  =this.getLong(MediaMetadataCompat.METADATA_KEY_DURATION).toInt()
+            val path : String? = this.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI)
+            val albumId  : Long = 0
+            val id: Long = this.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID).toLong()
+            return Song(name,singer,size,duration,path,albumId,id)
         }
 
     }
@@ -167,7 +186,7 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
 class MusicAdapter:BaseQuickAdapter<Song,BaseViewHolder>(R.layout.item_music){
     override fun convert(holder: BaseViewHolder, item: Song) {
         holder.setText(R.id.tv_name,item.name)
-            .setText(R.id.tv_size,FormatUtils.formatSize(item.size)+"\t\t${(item.duration/1000)}s")
+            .setText(R.id.tv_size,FormatUtils.formatSize(item.size)+"\t\t${ DateUtils.formatElapsedTime((item.duration/1000).toLong())}")
             .setText(R.id.tv_singer,item.singer)
     }
 

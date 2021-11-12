@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Message
+import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.text.format.DateUtils
@@ -221,7 +222,7 @@ object PopShowUtils {
                         }
                     })
 
-                    val musicClientListener = object : MusicClientListener {
+                    val musicClientListener = object : MusicClientListener() {
 
                         override fun onPlaybackStateChanged(state: PlaybackStateCompat) {
                             ivPlay.setImageResource(if (PlaybackStateCompat.STATE_PLAYING == state.state)R.drawable.exo_ic_pause_circle_filled else  R.drawable.exo_ic_play_circle_filled)
@@ -235,13 +236,13 @@ object PopShowUtils {
                                 seekBar.max = duration.toInt()
                                 tvTotalTime.text = DateUtils.formatElapsedTime(duration)
                             }
-
                         }
 
                         override fun onProgress(currentDuration: Int, totalDuration: Int) {
                             seekBar.progress = currentDuration
                             tvCurrentTime.text = DateUtils.formatElapsedTime(currentDuration.toLong())
                         }
+
 
                     }
                     MusicClient.instance.registerListener(musicClientListener)

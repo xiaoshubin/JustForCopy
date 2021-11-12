@@ -2,6 +2,8 @@ package com.smallcake.temp.music
 
 import android.database.Cursor
 import android.provider.MediaStore
+import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaMetadataCompat
 import com.smallcake.temp.MyApplication
 
 
@@ -56,5 +58,31 @@ object MusicProvider {
             close()
         }
         return list
+    }
+
+    /**
+     * Song转换为MediaMetadataCompat
+     * @param song Song
+     * @return MediaMetadataCompat
+     */
+    private fun transMediaMetadata(song: Song): MediaMetadataCompat {
+        return MediaMetadataCompat.Builder()
+            .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, song.id.toString())
+            .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, song.path)
+            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, song.name)
+            .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, song.duration.toLong())
+            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST, song.singer)
+            .build()
+    }
+    /**
+     * Song转换为MediaMetadataCompat.MediaItem
+     * @param song Song
+     * @return MediaMetadataCompat
+     */
+     fun transMediaItem(song: Song): MediaBrowserCompat.MediaItem {
+        return MediaBrowserCompat.MediaItem(
+            transMediaMetadata(song).description,
+            MediaBrowserCompat.MediaItem.FLAG_BROWSABLE
+        )
     }
 }

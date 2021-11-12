@@ -76,13 +76,7 @@ class MusicClient {
                 //数据获取成功后的回调
                 override fun onChildrenLoaded(@NonNull parentId: String, @NonNull children: List<MediaBrowserCompat.MediaItem>) {
                     super.onChildrenLoaded(parentId, children)
-                    //children 为来自Service的列表数据
-                    val buffer = StringBuffer()
-                    children.forEach {
-                        buffer.append("${it.description.title}--${it.description.mediaUri}").append("\n")
-                    }
-                    Log.i(TAG, "onChildrenLoaded: parentId=$parentId children=${buffer.toString()}")
-
+                    listeners.forEach{it.onChildrenLoaded(parentId,children)}
                 }
 
                 //数据获取失败的回调
@@ -145,10 +139,6 @@ class MusicClient {
             0->{
                 sendAction(GET_PROGRESS)
                 it.target.sendEmptyMessageDelayed(0,1000)
-            }
-            1->{
-                sendAction(GET_MUSIC_MEDIA)
-
             }
         }
 
