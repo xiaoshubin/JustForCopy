@@ -3,25 +3,23 @@ package com.smallcake.temp.music
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.text.format.DateUtils
 import android.util.Log
-import android.view.Gravity
 import android.view.View
-import android.widget.ImageView
 import android.widget.SeekBar
-import android.widget.TextView
-import com.hjq.permissions.Permission.SYSTEM_ALERT_WINDOW
-import com.hjq.permissions.XXPermissions
-import com.lzf.easyfloat.EasyFloat
-import com.lzf.easyfloat.enums.ShowPattern
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.smallcake.smallutils.FormatUtils
+import com.smallcake.smallutils.GsonUtils
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityExoMusicBinding
 import com.smallcake.temp.utils.PopShowUtils
+import com.smallcake.temp.utils.sizeNull
 
 
 /**
@@ -38,14 +36,26 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
 
     private val TAG = "ExoMusicActivity"
     private var durationSet = false  //是否是总进度设置
+    private val mAdapter = MusicAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.setTitle("音乐播放")
+        initView()
         onEvent()
-        MCManager.instance.registerListener(musicClientListener)
+        MusicClient.instance.registerListener(musicClientListener)
         if (!durationSet)mHandler.sendEmptyMessageDelayed(1,100)
 
+
     }
+
+    private fun initView() {
+        bind.recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@ExoMusicActivity)
+            adapter = mAdapter
+
+        }
+    }
+
     private val musicClientListener = object :MusicClientListener{
         override fun onPlaybackStateChanged(state: PlaybackStateCompat) {
             bind.btnPlay.text=if (PlaybackStateCompat.STATE_PLAYING == state.state)"暂停" else  "播放"
@@ -65,7 +75,7 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
     private val mHandler = Handler{
         when(it.what){
             1->{
-                MCManager.instance.sendAction(GET_MUSIC_MEDIA)
+                MusicClient.instance.sendAction(GET_MUSIC_MEDIA)
                 if (!durationSet)it.target.sendEmptyMessageDelayed(1,300)
             }
         }
@@ -74,7 +84,7 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
 
     override fun onDestroy() {
         super.onDestroy()
-        MCManager.instance.unregisterListener(musicClientListener)
+        MusicClient.instance.unregisterListener(musicClientListener)
         mHandler.removeCallbacksAndMessages(null)
     }
 
@@ -86,7 +96,7 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
                 val progress = seekBar.progress
                 val max = seekBar.max
                 Log.i(TAG, "onStopTrackingTouch: progress=$progress max=$max")
-                MCManager.instance.transportControls?.seekTo(progress.toLong())
+                MusicClient.instance.transportControls?.seekTo(progress.toLong())
             }
         })
         bind.btnPlay.setOnClickListener(this)
@@ -94,6 +104,7 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
         bind.next.setOnClickListener(this)
         bind.speed.setOnClickListener(this)
         bind.btnBackgroundPlay.setOnClickListener(this)
+        bind.btnSearchLocaMusic.setOnClickListener(this)
 
     }
     @SuppressLint("SetTextI18n")
@@ -101,22 +112,28 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
         when(v?.id){
             //播放和暂停
             R.id.btn_play->
-                MCManager.instance.transportControls?.apply {
-                        val state =  MCManager.instance.mediaController?.playbackState?.state
+                MusicClient.instance.transportControls?.apply {
+                        val state =  MusicClient.instance.mediaController?.playbackState?.state
                         if (state == PlaybackStateCompat.STATE_PLAYING)pause() else play()
                     }
 
-            R.id.prev->MCManager.instance.transportControls?.skipToPrevious()//上一首
-            R.id.next->MCManager.instance.transportControls?.skipToNext()    //下一首
+            R.id.prev->MusicClient.instance.transportControls?.skipToPrevious()//上一首
+            R.id.next->MusicClient.instance.transportControls?.skipToNext()    //下一首
             //倍数播放
             R.id.speed->{
                 val speed: Float = getSpeed()
                 bind.speed.text = "倍速 $speed"
-                MCManager.instance.transportControls?.setPlaybackSpeed(speed)
+                MusicClient.instance.transportControls?.setPlaybackSpeed(speed)
             }
             //后台播放，弹出一个悬浮框
             R.id.btn_background_play->{
                 PopShowUtils.showMusicFloatWeight()
+            }
+            R.id.btn_search_loca_music->{
+                val songList = MusicProvider.getLocaMusic()
+                Log.e(TAG,"查询出来歌曲：${songList.sizeNull()}首")
+                GsonUtils.printList(songList)
+                mAdapter.setList(songList)
             }
         }
     }
@@ -143,6 +160,15 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
                 durationSet = true
             }
         }
+    }
+
+}
+
+class MusicAdapter:BaseQuickAdapter<Song,BaseViewHolder>(R.layout.item_music){
+    override fun convert(holder: BaseViewHolder, item: Song) {
+        holder.setText(R.id.tv_name,item.name)
+            .setText(R.id.tv_size,FormatUtils.formatSize(item.size)+"\t\t${(item.duration/1000)}s")
+            .setText(R.id.tv_singer,item.singer)
     }
 
 }

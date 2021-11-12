@@ -2,165 +2,126 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_margin="8dp" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textColor="@color/exo_black_opacity_70" />
-
-    <TextView
-        android:id="@+id/tv_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textColor="@color/exo_black_opacity_70" />
-
-    <LinearLayout
+    <com.smallcake.smallutils.custom.AutoNewLineLayout
+        app:vertivalSpace="8dp"
+        app:horizontalSpace="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <Button
             android:id="@+id/prev"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:textSize="12sp"
-            android:layout_weight="1"
             android:text="上一首"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_play"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:textSize="12sp"
-            android:layout_weight="1"
             android:text="播放"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/next"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:textSize="12sp"
-            android:layout_weight="1"
             android:text="下一首"
             android:textColor="@color/white" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/speed"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:textSize="12sp"
-            android:layout_weight="1"
             android:text="倍速"
             android:textColor="@color/white" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:background="@color/gray"
             android:id="@+id/fadeinout"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:textSize="12sp"
-            android:layout_weight="1"
             android:text="淡入淡出"
             android:textColor="@color/exo_black_opacity_70" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:background="@color/gray"
             android:id="@+id/effect"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:textSize="12sp"
-            android:layout_weight="1"
             android:text="简单音效"
             android:textColor="@color/exo_black_opacity_70" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:background="@color/gray"
             android:id="@+id/cache"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:textSize="12sp"
-            android:layout_weight="1"
             android:text="边缓存边播放"
             android:textColor="@color/exo_black_opacity_70" />
-    </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:background="@color/gray"
             android:id="@+id/audiofocus"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:textSize="12sp"
-            android:layout_weight="1"
             android:text="音频焦点"
             android:textColor="@color/exo_black_opacity_70" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:background="@color/gray"
+        <Button
             android:id="@+id/btn_background_play"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:textSize="12sp"
-            android:layout_weight="1"
             android:text="后台播放"
-            android:textColor="@color/exo_black_opacity_70" />
+            android:textColor="@color/white" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:background="@color/gray"
             android:id="@+id/playqueue"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:textSize="12sp"
-            android:layout_weight="1"
             android:text="播放队列"
             android:textColor="@color/exo_black_opacity_70" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:background="@color/gray"
             android:id="@+id/playmode"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:textSize="12sp"
-            android:layout_weight="1"
             android:text="播放模式"
             android:textColor="@color/exo_black_opacity_70" />
-    </LinearLayout>
+        <Button
+            android:id="@+id/btn_search_loca_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="查询本地歌曲"
+            android:textColor="@color/white" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+
+    </com.smallcake.smallutils.custom.AutoNewLineLayout>
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="wrap_content">
+
 
         <TextView
             android:text="0:00"
@@ -196,6 +157,10 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:textColor="@android:color/background_dark" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
 </LinearLayout>

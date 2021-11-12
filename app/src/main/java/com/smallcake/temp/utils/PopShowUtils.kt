@@ -29,7 +29,7 @@ import com.smallcake.smallutils.SpannableStringUtils
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.temp.MyApplication
 import com.smallcake.temp.R
-import com.smallcake.temp.music.MCManager
+import com.smallcake.temp.music.MusicClient
 import com.smallcake.temp.music.MusicClientListener
 import com.smallcake.temp.weight.XImageLoader
 import java.util.*
@@ -205,8 +205,8 @@ object PopShowUtils {
                     val seekBar = it.findViewById<SeekBar>(R.id.seek_bar)
                     //播放+暂停
                     ivPlay.setOnClickListener{
-                        MCManager.instance.transportControls?.apply {
-                            val state =  MCManager.instance.mediaController?.playbackState?.state
+                        MusicClient.instance.transportControls?.apply {
+                            val state =  MusicClient.instance.mediaController?.playbackState?.state
                             if (state == PlaybackStateCompat.STATE_PLAYING)pause() else play()
                         }
                     }
@@ -217,7 +217,7 @@ object PopShowUtils {
                             val progress = seekBar.progress
                             val max = seekBar.max
                             Log.i("音乐小控件", "onStopTrackingTouch: progress=$progress max=$max")
-                            MCManager.instance.transportControls?.seekTo(progress.toLong())
+                            MusicClient.instance.transportControls?.seekTo(progress.toLong())
                         }
                     })
 
@@ -244,7 +244,7 @@ object PopShowUtils {
                         }
 
                     }
-                    MCManager.instance.registerListener(musicClientListener)
+                    MusicClient.instance.registerListener(musicClientListener)
                 }
                 .setTag("MusicWeight")
                 .setShowPattern(ShowPattern.ALL_TIME)

@@ -8,15 +8,16 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.text.format.DateUtils
 import android.util.Log
 import androidx.annotation.NonNull
 import com.smallcake.temp.MyApplication
 
 /**
  * 音乐客户端管理类
+ * 参考：
+ * 打造基于MediaSessionCompat的音乐播放（二）：https://blog.csdn.net/ckwccc/article/details/80568188
  */
-class MCManager {
+class MusicClient {
     private val TAG = "MusicClientManager"
     var isConnect:Boolean = false//是否已经连接
     lateinit var mediaBrowser:MediaBrowserCompat
@@ -35,8 +36,8 @@ class MCManager {
 
     companion object {
         // 懒汉式，使用 LazyThreadSafetyMode.SYNCHRONIZED 双重同步锁
-        val instance: MCManager by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-            MCManager()
+        val instance: MusicClient by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+            MusicClient()
         }
     }
 

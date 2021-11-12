@@ -327,7 +327,6 @@ class MusicService: MediaBrowserServiceCompat() {
 
         if (TextUtils.equals("media_root_id", parentId)) {
 
-
         }
         val musicEntityList: ArrayList<MusicEntity> = getMusicEntityList()
         for (i in 0 until musicEntityList.size) {
