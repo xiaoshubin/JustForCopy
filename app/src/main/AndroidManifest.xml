@@ -10,7 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -26,7 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
-        <activity android:name=".ui.SingleVideoPlayActivity"></activity>
+        <activity android:name=".pay.GooglePayActivity"></activity>
+        <activity android:name=".ui.SingleVideoPlayActivity" />
         <activity android:name=".music.ExoMusicActivity" />
         <activity android:name=".ui.MusicPlayActivity" />
         <activity android:name=".chart.ChartActivity" />
@@ -145,6 +147,12 @@
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
+        <!-- 音乐播放 结束 -->
+        <!-- GooglePay 开始 -->
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+        <!-- GooglePay 结束 -->
     </application>
 
 </manifest>

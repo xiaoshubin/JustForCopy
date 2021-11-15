@@ -12,6 +12,7 @@ import com.smallcake.temp.chart.ChartActivity
 import com.smallcake.temp.databinding.FragmentRecyclerviewBinding
 import com.smallcake.temp.map.LocationMapActivity
 import com.smallcake.temp.music.ExoMusicActivity
+import com.smallcake.temp.pay.GooglePayActivity
 import com.smallcake.temp.ui.*
 
 class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
@@ -44,6 +45,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("手写签名", SignActivity::class.java,"手写签名"),
             PageBean("雷达图", ChartActivity::class.java,"雷达图，曲线图，饼状图"),
             PageBean("音乐播放", ExoMusicActivity::class.java,"音乐播放"),
+            PageBean("谷歌支付", GooglePayActivity::class.java,"谷歌支付,Google Pay"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->

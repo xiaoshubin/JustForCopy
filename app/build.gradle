@@ -203,6 +203,8 @@ dependencies {
     implementation 'cn.jiguang.sdk:jcore:2.9.0'
     //各种统计图
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //google play
+    implementation 'com.google.android.gms:play-services-wallet:18.1.3'
 
 
 
