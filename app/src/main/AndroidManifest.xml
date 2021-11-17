@@ -27,7 +27,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
-        <activity android:name=".pay.GooglePayActivity"></activity>
+        <activity android:name=".coroutines.CoroutinesActivity"></activity>
+        <activity android:name=".kotlinflow.KotlinFlowActivity" />
+        <activity android:name=".pay.GooglePayActivity" />
         <activity android:name=".ui.SingleVideoPlayActivity" />
         <activity android:name=".music.ExoMusicActivity" />
         <activity android:name=".ui.MusicPlayActivity" />
@@ -134,7 +136,7 @@
         <receiver
             android:name=".jpush.JPushReceiver"
             android:enabled="true"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
 
@@ -142,17 +144,17 @@
             </intent-filter>
         </receiver> <!-- 极光推送 结束 -->
         <!-- 音乐播放 开始 -->
-        <service android:name=".music.MusicService">
+        <service android:name=".music.MusicService"
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
-        </service>
-        <!-- 音乐播放 结束 -->
+        </service> <!-- 音乐播放 结束 -->
         <!-- GooglePay 开始 -->
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
-        <!-- GooglePay 结束 -->
     </application>
 
 </manifest>

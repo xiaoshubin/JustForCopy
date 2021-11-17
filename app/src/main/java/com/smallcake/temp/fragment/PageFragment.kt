@@ -9,7 +9,9 @@ import com.smallcake.temp.adapter.PageBeanAdapter
 import com.smallcake.temp.base.BaseBindFragment
 import com.smallcake.temp.bean.PageBean
 import com.smallcake.temp.chart.ChartActivity
+import com.smallcake.temp.coroutines.CoroutinesActivity
 import com.smallcake.temp.databinding.FragmentRecyclerviewBinding
+import com.smallcake.temp.kotlinflow.KotlinFlowActivity
 import com.smallcake.temp.map.LocationMapActivity
 import com.smallcake.temp.music.ExoMusicActivity
 import com.smallcake.temp.pay.GooglePayActivity
@@ -46,6 +48,8 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("雷达图", ChartActivity::class.java,"雷达图，曲线图，饼状图"),
             PageBean("音乐播放", ExoMusicActivity::class.java,"音乐播放"),
             PageBean("谷歌支付", GooglePayActivity::class.java,"谷歌支付,Google Pay"),
+            PageBean("Kotlin Flow", KotlinFlowActivity::class.java,"Kotlin Flow"),
+            PageBean("协程", CoroutinesActivity::class.java,"协程，Coroutines"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->

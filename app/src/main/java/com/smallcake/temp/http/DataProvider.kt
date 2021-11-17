@@ -1,5 +1,6 @@
 package com.smallcake.temp.http
 
+import com.smallcake.temp.api.MobileApi
 import com.smallcake.temp.api.MobileImpl
 import com.smallcake.temp.api.WeatherImpl
 import org.koin.core.component.KoinApiExtension
@@ -9,8 +10,8 @@ import org.koin.core.component.get
 /**
  * 网络数据提供者
  */
-@KoinApiExtension
 class DataProvider :KoinComponent {
     val weather: WeatherImpl = get()
     val mobile: MobileImpl = get()
+    val mobileApi: MobileApi = get()
 }

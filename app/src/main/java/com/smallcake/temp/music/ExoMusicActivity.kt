@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.text.format.DateUtils
@@ -72,24 +73,24 @@ class ExoMusicActivity : BaseBindActivity<ActivityExoMusicBinding>(), View.OnCli
         }
 
          override fun onChildrenLoaded(parentId: String, children: List<MediaBrowserCompat.MediaItem>) {
-              val songList =  children.map { mediaToSong(it) }
-                mAdapter.setList(songList)
+//              val songList =  children.map { mediaToSong(it) }
+//                mAdapter.setList(songList)
         }
 
     }
-    private fun mediaToSong(media:MediaBrowserCompat.MediaItem):Song{
-        (media.description as MediaMetadataCompat).apply {
-            val name = this.getString(MediaMetadataCompat.METADATA_KEY_TITLE)
-            val singer =this.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST)
-            val size : Long = 0
-            val duration:Int  =this.getLong(MediaMetadataCompat.METADATA_KEY_DURATION).toInt()
-            val path : String? = this.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI)
-            val albumId  : Long = 0
-            val id: Long = this.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID).toLong()
-            return Song(name,singer,size,duration,path,albumId,id)
-        }
-
-    }
+//    private fun mediaToSong(media:MediaBrowserCompat.MediaItem):Song{
+//        (media.description as MediaDescriptionCompat).apply {
+//            val name = this.getString(MediaMetadataCompat.METADATA_KEY_TITLE)
+//            val singer =this.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ARTIST)
+//            val size : Long = 0
+//            val duration:Int  =this.getLong(MediaMetadataCompat.METADATA_KEY_DURATION).toInt()
+//            val path : String? = this.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI)
+//            val albumId  : Long = 0
+//            val id: Long = this.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID).toLong()
+//            return Song(name,singer,size,duration,path,albumId,id)
+//        }
+//
+//    }
 
     private val mHandler = Handler{
         when(it.what){
