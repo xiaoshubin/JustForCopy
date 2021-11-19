@@ -53,6 +53,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("谷歌支付", GooglePayActivity::class.java,"谷歌支付,Google Pay"),
             PageBean("Kotlin Flow", KotlinFlowActivity::class.java,"Kotlin Flow"),
             PageBean("协程", CoroutinesActivity::class.java,"协程，Coroutines"),
+            PageBean("Svga", SvgaActivity::class.java,"Svga"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->

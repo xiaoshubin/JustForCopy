@@ -27,7 +27,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
-        <activity android:name=".coroutines.CoroutinesActivity"></activity>
+        <activity
+            android:name=".ui.SvgaActivity"
+            android:exported="false" />
+        <activity android:name=".coroutines.CoroutinesActivity" />
         <activity android:name=".kotlinflow.KotlinFlowActivity" />
         <activity android:name=".pay.GooglePayActivity" />
         <activity android:name=".ui.SingleVideoPlayActivity" />
@@ -144,9 +147,9 @@
             </intent-filter>
         </receiver> <!-- 极光推送 结束 -->
         <!-- 音乐播放 开始 -->
-        <service android:name=".music.MusicService"
-            android:exported="true"
-            >
+        <service
+            android:name=".music.MusicService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>

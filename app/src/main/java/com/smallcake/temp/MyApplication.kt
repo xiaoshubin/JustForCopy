@@ -2,10 +2,12 @@ package com.smallcake.temp
 
 import android.app.Application
 import android.content.Context
+import android.net.http.HttpResponseCache
 import androidx.multidex.MultiDex
 import com.facebook.FacebookSdk
 import com.facebook.appevents.AppEventsLogger
 import com.lsxiao.apollo.core.Apollo
+import com.opensource.svgaplayer.SVGAParser
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.smallcake.smallutils.SmallUtils
@@ -17,6 +19,7 @@ import com.tencent.smtt.sdk.QbSdk
 import io.reactivex.android.schedulers.AndroidSchedulers
 import org.koin.core.context.startKoin
 import org.litepal.LitePal
+import java.io.File
 
 
 /**
@@ -26,6 +29,14 @@ import org.litepal.LitePal
 class MyApplication : Application() {
     companion object{
        lateinit var instance:MyApplication
+    }
+
+    /**
+     * 获取svga解析器
+     * @return SVGAParser
+     */
+    fun getSVGAParser(): SVGAParser {
+        return SVGAParser.shareParser()
     }
 
     override fun onCreate() {
@@ -64,6 +75,12 @@ class MyApplication : Application() {
         })
         //数据库
         LitePal.initialize(this)
+
+        //必须在使用 SVGAParser 单例前初始化
+        SVGAParser.shareParser().init(this)
+        //SVGAParser 依赖 URLConnection, URLConnection 使用 HttpResponseCache 处理缓存
+        val cacheDir = File(applicationContext.cacheDir, "http")
+        HttpResponseCache.install(cacheDir, 1024 * 1024 * 128)
 
     }
 
