@@ -27,7 +27,6 @@ interface MobileApi {
 
 }
 
-@KoinApiExtension
 class MobileImpl :MobileApi , KoinComponent {
     private val api: MobileApi by inject()
     override fun mobileGet(mobile: String, key: String): Observable<BaseResponse<PhoneRespone>>

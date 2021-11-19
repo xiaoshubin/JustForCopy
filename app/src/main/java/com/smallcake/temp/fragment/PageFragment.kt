@@ -2,6 +2,7 @@ package com.smallcake.temp.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.smallcake.smallutils.custom.GridItemDecoration
@@ -10,6 +11,7 @@ import com.smallcake.temp.base.BaseBindFragment
 import com.smallcake.temp.bean.PageBean
 import com.smallcake.temp.chart.ChartActivity
 import com.smallcake.temp.coroutines.CoroutinesActivity
+import com.smallcake.temp.coroutines.LiveDataViewModule
 import com.smallcake.temp.databinding.FragmentRecyclerviewBinding
 import com.smallcake.temp.kotlinflow.KotlinFlowActivity
 import com.smallcake.temp.map.LocationMapActivity
@@ -19,6 +21,7 @@ import com.smallcake.temp.ui.*
 
 class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
     private val mAdapter = PageBeanAdapter()
+    internal val viewModel: LiveDataViewModule by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bind.recyclerView.apply {
@@ -56,5 +59,8 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             val item = adapter.getItem(position) as PageBean
             goActivity(item.clz)
         }
+
+         bind.lifecycleOwner = this
+         bind.mobileMoudle = viewModel
     }
 }

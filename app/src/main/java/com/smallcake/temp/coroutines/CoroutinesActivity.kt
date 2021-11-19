@@ -1,10 +1,15 @@
 package com.smallcake.temp.coroutines
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.smallcake.smallutils.text.NavigationBar
+import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
+import com.smallcake.temp.base.replaceFragment
 import com.smallcake.temp.databinding.ActivityCoroutinesBinding
+import com.smallcake.temp.http.sub
 import kotlinx.coroutines.*
 
 /**
@@ -27,17 +32,34 @@ implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
  *
  * @see lifecycleScope
  */
+@SuppressLint("SetTextI18n")
 class CoroutinesActivity : BaseBindActivity<ActivityCoroutinesBinding>() {
     private val TAG = "CoroutinesActivity"
+    internal val viewModel:LiveDataViewModule by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.setTitle("协程")
+
+
         bind.btnGet.setOnClickListener{
-            lifecycleScope.launch {
-              delay(3000)
-              val result = withContext(Dispatchers.IO){dataProvider.mobileApi.mobileGetSu("18324138218","c95c37113391b9fff7854ce0eafe496d")}
-                   bind.tvDesc.text = result.result.toString()
-          }
+            viewModel.getMobileData("18324138218")
         }
+
+        viewModel.mobileData.observe(this){
+            bind.tvDesc.text = "主页面result:${it?.result}"
+        }
+
+
+        bind.btnFragment1.setOnClickListener{
+            replaceFragment(Fragment1(), R.id.container)
+        }
+        bind.btnFragment2.setOnClickListener{
+            replaceFragment(Fragment2(), R.id.container)
+        }
+        bind.btnFragment3.setOnClickListener{
+            replaceFragment(Fragment3(), R.id.container)
+        }
+
 
 
     }

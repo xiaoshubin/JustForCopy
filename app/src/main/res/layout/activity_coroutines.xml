@@ -8,12 +8,33 @@
     android:layout_height="match_parent"
     tools:context=".coroutines.CoroutinesActivity">
     <Button
+        android:textAllCaps="false"
         android:id="@+id/btn_get"
-        android:text="请求数据"
+        android:text="LiveData刷新数据"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/tv_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btn_fragment1"
+        android:text="页面1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btn_fragment2"
+        android:text="页面2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btn_fragment3"
+        android:text="页面3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </androidx.appcompat.widget.LinearLayoutCompat>
