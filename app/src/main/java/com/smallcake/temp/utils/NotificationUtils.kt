@@ -29,6 +29,7 @@ object NotificationUtils {
      * 通知消息
      * @param msg
      * 注意：setSmallIcon无效，可能是图片太大（最好32*32），或缓存（重启手机）
+     *      setChannelId(AppUtils.getAppPackageName())一定要设置，否则可能不显示
      */
     fun showNotice(
         title: CharSequence = MyApplication.instance.getString(R.string.app_name),

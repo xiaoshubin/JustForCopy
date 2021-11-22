@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".service.ServiceActivity">
+    <com.smallcake.smallutils.custom.AutoNewLineLayout
+        app:horizontalSpace="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_start"
+            android:textAllCaps="false"
+            android:text="startService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_stop"
+            android:textAllCaps="false"
+            android:text="stopService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_bind"
+            android:textAllCaps="false"
+            android:text="bindService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_unBind"
+            android:textAllCaps="false"
+            android:text="unBindService"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_send_msg"
+            android:textAllCaps="false"
+            android:text="发消息给服务端"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </com.smallcake.smallutils.custom.AutoNewLineLayout>
+    <EditText
+        android:id="@+id/et_content"
+        android:hint="请输入你要发送给服务端的内容"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

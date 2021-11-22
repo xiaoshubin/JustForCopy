@@ -28,6 +28,9 @@
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
         <activity
+            android:name=".service.ServiceActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.SvgaActivity"
             android:exported="false" />
         <activity android:name=".coroutines.CoroutinesActivity" />
@@ -89,6 +92,7 @@
         <activity android:name=".ui.CitySelectActivity" />
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -158,6 +162,10 @@
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
+        <!-- GooglePay 结束 -->
+        <!-- RoomService 开始 -->
+        <service android:name=".service.RoomService"/>
+        <!-- RoomService 结束 -->
     </application>
 
 </manifest>

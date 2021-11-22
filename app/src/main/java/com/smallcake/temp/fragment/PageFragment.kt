@@ -17,6 +17,7 @@ import com.smallcake.temp.kotlinflow.KotlinFlowActivity
 import com.smallcake.temp.map.LocationMapActivity
 import com.smallcake.temp.music.ExoMusicActivity
 import com.smallcake.temp.pay.GooglePayActivity
+import com.smallcake.temp.service.ServiceActivity
 import com.smallcake.temp.ui.*
 
 class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
@@ -54,6 +55,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("Kotlin Flow", KotlinFlowActivity::class.java,"Kotlin Flow"),
             PageBean("协程", CoroutinesActivity::class.java,"协程，Coroutines"),
             PageBean("Svga", SvgaActivity::class.java,"Svga"),
+            PageBean("service服务", ServiceActivity::class.java,"service，后台服务"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
