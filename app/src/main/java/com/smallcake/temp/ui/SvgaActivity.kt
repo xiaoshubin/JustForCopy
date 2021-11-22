@@ -23,7 +23,7 @@ implementation 'com.github.yyued:SVGAPlayer-Android:2.6.1'
  2.在MyApplication初始化
 //必须在使用 SVGAParser 单例前初始化
 SVGAParser.shareParser().init(this)
-//SVGAParser 依赖 URLConnection, URLConnection 使用 HttpResponseCache 处理缓存
+//设置svga 缓存
 val cacheDir = File(applicationContext.cacheDir, "svga")
 HttpResponseCache.install(cacheDir, 1024 * 1024 * 128)
  3.获取单例解析器
@@ -34,6 +34,9 @@ HttpResponseCache.install(cacheDir, 1024 * 1024 * 128)
 fun getSVGAParser(): SVGAParser {
     return SVGAParser.shareParser()
 }
+
+ 参考：
+Android动画SVGA的使用：https://www.jianshu.com/p/23339a9e1f24
  */
 class SvgaActivity : BaseBindActivity<ActivitySvgaBinding>() {
     private val TAG = "SvgaActivity"
@@ -51,12 +54,10 @@ class SvgaActivity : BaseBindActivity<ActivitySvgaBinding>() {
         bind.btnPlay.setOnClickListener{
 
             val url = list[index]
-            showSvgaCache(url)
-            if (index<3){
+            showSvga(url)
+            if (index<list.size-1){
                 index++
             }else index=0
-
-
 
         }
     }
@@ -69,7 +70,6 @@ class SvgaActivity : BaseBindActivity<ActivitySvgaBinding>() {
         MyApplication.instance.getSVGAParser().decodeFromURL(java.net.URL(svgUrl),object : SVGAParser.ParseCompletion{
             override fun onComplete(videoItem: SVGAVideoEntity) {
                 L.e("svga 完成")
-                SVGACache.buildCacheKey(svgUrl)
                 bind.svgaView.apply {
                     setVideoItem(videoItem)
                     stepToFrame(0, true)
@@ -81,40 +81,8 @@ class SvgaActivity : BaseBindActivity<ActivitySvgaBinding>() {
             override fun onError() {
                 L.e("svga 异常")
             }
-
         })
     }
 
-    /**
-     * 从缓存中读取svga动画
-     * @param svgUrl String
-     */
-    private fun showSvgaCache(svgUrl:String){
-       val isCache =  SVGACache.isCached(svgUrl)
-        Log.e(TAG,"[${svgUrl}]是否缓存：$isCache")
-        if (!isCache){
-            showSvga(svgUrl)
-        }else MyApplication.instance.getSVGAParser().decodeFromSVGAFileCacheKey(svgUrl,object : SVGAParser.ParseCompletion{
-            override fun onComplete(videoItem: SVGAVideoEntity) {
 
-                L.e("svga 完成")
-                bind.svgaView.apply {
-                    setVideoItem(videoItem)
-                    stepToFrame(0, true)
-                    loops = 1
-                    clearsAfterDetached = true
-                    fillMode = SVGAImageView.FillMode.Clear
-                }
-            }
-            override fun onError() {
-                L.e("svga 异常")
-            }
-
-        },object :SVGAParser.PlayCallback{
-            override fun onPlay(file: List<File>) {
-                L.e("svga 播放的文件：$file")
-            }
-
-        })
-    }
 }
