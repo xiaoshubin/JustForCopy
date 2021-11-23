@@ -1,24 +1,26 @@
 package com.smallcake.temp.pay
 
 import android.app.Activity
-import android.content.Intent
 import android.util.Log
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.internal.Constants
-import com.google.android.gms.wallet.*
+import com.google.android.gms.wallet.IsReadyToPayRequest
+import com.google.android.gms.wallet.PaymentsClient
+import com.google.android.gms.wallet.Wallet
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.math.BigDecimal
 
 /**
  * 参考：
 Google Pay for Payments Android 教程 ：https://developers.google.cn/pay/api/android/guides/tutorial
  */
 object PaymentsUtil {
+    val CENTS = BigDecimal(100)
     /**
      * 第 1 步：指定您的 Google Pay API 版本
      */
-     val baseRequest = JSONObject().apply {
+    private val baseRequest = JSONObject().apply {
         put("apiVersion", 2)
         put("apiVersionMinor", 0)
     }
@@ -28,12 +30,10 @@ object PaymentsUtil {
      * 将 example 和 exampleGatewayMerchantId 替换为付款服务机构的相应值
      * https://docs.aciworldwide.com/tutorials/mobile-sdk/google-pay
      */
-     fun gatewayTokenizationSpecification(): JSONObject {
+    private fun gatewayTokenizationSpecification(): JSONObject {
         return JSONObject().apply {
             put("type", "PAYMENT_GATEWAY")
-            put("parameters", JSONObject(mapOf(
-                "gateway" to "example",
-                "gatewayMerchantId" to "exampleGatewayMerchantId")))
+            put("parameters", JSONObject(Constants.PAYMENT_GATEWAY_TOKENIZATION_PARAMETERS))
         }
     }
 
@@ -70,13 +70,13 @@ object PaymentsUtil {
     }
 
     /**
-     * 扩展基本的卡付款方式对象，以说明预计会返回给您的应用的信息，其中必须包括令牌化的付款数据
+     * 扩展基本的卡【付款方式】对象，以说明预计会返回给您的应用的信息，其中必须包括令牌化的付款数据
      * @return JSONObject
      */
     private fun cardPaymentMethod(): JSONObject {
         val cardPaymentMethod = baseCardPaymentMethod()
+        // 设置stripe为付款方式
         cardPaymentMethod.put("tokenizationSpecification", gatewayTokenizationSpecification())
-
         return cardPaymentMethod
     }
 
@@ -87,7 +87,7 @@ object PaymentsUtil {
      */
     fun createPaymentsClient(activity: Activity): PaymentsClient {
         val walletOptions = Wallet.WalletOptions.Builder()
-//            .setEnvironment(Constants.PAYMENTS_ENVIRONMENT)
+            .setEnvironment(Constants.PAYMENTS_ENVIRONMENT)
             .setEnvironment(1)
             .build()
         return Wallet.getPaymentsClient(activity, walletOptions)
@@ -97,7 +97,7 @@ object PaymentsUtil {
     /**
      * 第 6 步：确定是否能使用 Google Pay API 进行付款
      */
-    fun isReadyToPayRequest(): JSONObject? {
+    private fun isReadyToPayRequest(): JSONObject? {
         return try {
             baseRequest.apply {
                 put("allowedPaymentMethods", JSONArray().put(baseCardPaymentMethod()))
@@ -140,6 +140,7 @@ object PaymentsUtil {
     }
 
     /**
+     * 金额信息
      * 第 7 步：创建 PaymentDataRequest 对象
      * @param price String
      * @return JSONObject
@@ -151,15 +152,17 @@ object PaymentsUtil {
         return JSONObject().apply {
             put("totalPrice", price)
             put("totalPriceStatus", "FINAL")
-//            put("countryCode", Constants.COUNTRY_CODE)
-//            put("currencyCode", Constants.CURRENCY_CODE)
+            put("countryCode", Constants.COUNTRY_CODE)
+            put("currencyCode", Constants.CURRENCY_CODE)
         }
     }
 
     /**
      * 商家名称
      */
-    private val merchantInfo: JSONObject = JSONObject().put("merchantName", "Example Merchant")
+    private val merchantInfo: JSONObject = JSONObject()
+        .put("merchantName", "Guruji")
+        .put("merchantId", "填写商家ID")
 
     /**
      * 请求付款数据
@@ -169,8 +172,11 @@ object PaymentsUtil {
     fun getPaymentDataRequest(price: String): JSONObject? {
         try {
             return baseRequest.apply {
+                // 指定是否支持 Google Pay API 所支持的一种或多种付款方式。
                 put("allowedPaymentMethods", JSONArray().put(cardPaymentMethod()))
+                // 有关根据用户是否同意交易来为交易授权的详细信息。包含总价和价格状态
                 put("transactionInfo", getTransactionInfo(price))
+                //商家信息
                 put("merchantInfo", merchantInfo)
 
                 // An optional shipping address requirement is a top-level property of the

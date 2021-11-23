@@ -2,6 +2,7 @@ package com.smallcake.temp.coroutines
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.smallcake.smallutils.text.NavigationBar
@@ -44,6 +45,8 @@ class CoroutinesActivity : BaseBindActivity<ActivityCoroutinesBinding>() {
         bind.btnGet.setOnClickListener{
             viewModel.getMobileData("18324138218")
         }
+        Handler().postDelayed({ replaceFragment(Fragment1(), R.id.container)},1000)
+        Handler().postDelayed({viewModel.getMobileData("18324138218")},3000)
 
         viewModel.mobileData.observe(this){
             bind.tvDesc.text = "主页面result:${it?.result}"

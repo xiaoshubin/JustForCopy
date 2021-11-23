@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    android:orientation="vertical"
+<RelativeLayout
+    android:fitsSystemWindows="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".coroutines.CoroutinesActivity">
+
+
+
     <Button
         android:textAllCaps="false"
         android:id="@+id/btn_get"
@@ -37,4 +45,73 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        tools:itemCount="4"
+        tools:listitem="@layout/item_city_select"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layout_bottom_btns"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:padding="8dp">
+
+        <EditText
+            android:id="@+id/et_content"
+            android:singleLine="true"
+            android:imeOptions="actionSend"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp"
+            android:textColorHint="#999999" />
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_game_control"
+            android:scaleType="centerInside"
+            android:layout_marginLeft="4dp"
+            android:src="@mipmap/ic_add_img"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"/>
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_mic_control"
+            android:scaleType="centerInside"
+            android:layout_marginLeft="4dp"
+            android:src="@mipmap/ic_add_img"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"/>
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_gift"
+            android:layout_marginLeft="4dp"
+            android:src="@mipmap/ic_add_img"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"/>
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_add_people"
+            android:scaleType="centerInside"
+            android:layout_marginLeft="4dp"
+            android:src="@mipmap/ic_add_img"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"/>
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:onClick="showRoomManager"
+            android:id="@+id/iv_room_manager"
+            android:scaleType="centerInside"
+            android:layout_marginLeft="4dp"
+            android:src="@mipmap/ic_add_img"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.opensource.svgaplayer.SVGAPlayer
+        android:id="@+id/svga_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>
