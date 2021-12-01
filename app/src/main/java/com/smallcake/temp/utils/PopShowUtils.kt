@@ -24,14 +24,12 @@ import com.lxj.xpopup.core.BasePopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.lzf.easyfloat.EasyFloat
 import com.lzf.easyfloat.enums.ShowPattern
-import com.smallcake.smallutils.ActivityCollector
-import com.smallcake.smallutils.AnimUtils
-import com.smallcake.smallutils.SpannableStringUtils
-import com.smallcake.smallutils.TimeUtils
+import com.smallcake.smallutils.*
 import com.smallcake.temp.MyApplication
 import com.smallcake.temp.R
 import com.smallcake.temp.music.MusicClient
 import com.smallcake.temp.music.MusicClientListener
+import com.smallcake.temp.pop.BottomTimeStartEndSelectPop
 import com.smallcake.temp.weight.XImageLoader
 import java.util.*
 
@@ -105,6 +103,17 @@ object PopShowUtils {
             .build()
         picker.setTitleText("时间选择")
         picker.show(true)
+    }
+    /**
+     * 开始和结束时间选择器
+     * @param context Context
+     * @param cb Function2<String, String, Unit>
+     */
+    fun showDateSelect(context: Context, cb:(String,String)->Unit){
+        XPopup.Builder(context)
+            .maxHeight(Screen.height/3*2)
+            .asCustom(BottomTimeStartEndSelectPop(context,cb))
+            .show()
     }
 
     /**
