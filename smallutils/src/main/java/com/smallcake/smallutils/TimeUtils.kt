@@ -190,6 +190,33 @@ object TimeUtils {
 
         return "$dayStr$hourStr:$minutesStr:$secoundStr"
     }
+
+    /**
+     * 获取这个月有多少天
+     * @param year Int
+     * @param month Int
+     * @return Int
+     */
+    fun getMonthOfDay(year: Int, month: Int): Int {
+        return when (month) {
+            1, 3, 5, 7, 8, 10, 12 ->  31
+            4, 6, 9, 11 ->  30
+            2 ->  if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) 29 else 28
+            else -> 0
+        }
+
+    }
+
+    /**
+     * 当前月份有多少天
+     * @return Int
+     */
+    fun getCurrentMonthOfDay(): Int {
+        val ca = Calendar.getInstance()
+        val year = ca.get(Calendar.YEAR)
+        val month = ca.get(Calendar.MONTH)+1
+        return getMonthOfDay(year,month)
+    }
 }
 
 /**
