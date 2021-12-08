@@ -45,17 +45,11 @@ object TimeUtils {
      * 将字符串转为时间戳
      * @param dateFormat 时间戳格式
      * @param dateTime       时间
-     * @return 时间戳(秒)
+     * @return 时间戳(秒) 2021-12-07 14:21:33 >> 1638858093
      */
     fun strToTime(dateTime: String, dateFormat: String = YYYY_MM_DD_H24_MM_SS): Int {
-        val sdf = SimpleDateFormat(dateFormat, Locale.CHINA)
-        var date: Date? = null
-        try {
-            date = sdf.parse(dateTime)
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
-        return (date?.time?:0L/1000L).toInt()
+        val timeLong = SimpleDateFormat(dateFormat, Locale.CHINA).parse(dateTime)?.time?:0
+        return (timeLong/1000L).toInt()
     }
 
     /**
