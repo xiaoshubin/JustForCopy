@@ -56,6 +56,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("协程", CoroutinesActivity::class.java,"协程，Coroutines"),
             PageBean("Svga", SvgaActivity::class.java,"Svga"),
             PageBean("service服务", ServiceActivity::class.java,"service，后台服务"),
+            PageBean("轮播图", BannerActivity::class.java,"轮播图"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
