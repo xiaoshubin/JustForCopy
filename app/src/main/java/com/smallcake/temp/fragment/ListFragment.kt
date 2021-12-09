@@ -3,13 +3,19 @@ package com.smallcake.temp.fragment
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.graphics.Rect
+import android.graphics.drawable.NinePatchDrawable
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.jaygoo.widget.SeekBar
+import com.smallcake.smallutils.BitmapUtils
 import com.smallcake.smallutils.Captcha
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.temp.R
@@ -22,6 +28,8 @@ import java.util.*
 
 
 class ListFragment: BaseBindFragment<FragmentListBinding>() {
+
+    private val TAG = "ListFragment"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,6 +72,24 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
             bind.ball.setBgColor(Color.parseColor("#F5AD06"))
             bind.ball.setBottomColor(Color.parseColor("#FECE0A"))
         },3000)
+        //网络聊天气泡：https://www.jianshu.com/p/613c1ba238b4
+        val bg =  "https://biubiu-static-1306772580.file.myqcloud.com/kuang/chat/god.png"
+        val request = ImageRequest.Builder(requireContext())
+            .data("https://biubiu-static-1306772580.file.myqcloud.com/kuang/chat/god.png")//图片地址
+            .crossfade(true)
+            .memoryCachePolicy(CachePolicy.ENABLED)//设置内存的缓存策略
+            .diskCachePolicy(CachePolicy.ENABLED)//设置磁盘的缓存策略
+            .networkCachePolicy(CachePolicy.ENABLED)//设置网络的缓存策略
+            .target { drawable -> //图片加载之后的处理
+                val bitmap = BitmapUtils.drawable2Bitmap(drawable)
+                val chunk = bitmap?.ninePatchChunk
+                val ninePatchDrawable = NinePatchDrawable(bitmap,chunk, Rect(),null)
+                bind.layoutChat.background = ninePatchDrawable
+                Log.e(TAG,"chunk:$chunk")
+            }
+            .build()
+
+
 
 
     }

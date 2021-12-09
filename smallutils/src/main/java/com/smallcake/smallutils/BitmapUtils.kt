@@ -11,6 +11,12 @@ import android.print.PrintAttributes
 import android.util.Log
 import android.view.View
 import java.io.*
+import android.graphics.Bitmap
+
+import android.graphics.BitmapFactory
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
 
 
 /**
@@ -284,6 +290,25 @@ object BitmapUtils {
         } else {
             null
         }
+    }
+    private fun getNetBitmap(strUrl: String): Bitmap? {
+        var bitmap: Bitmap? = null
+            try {
+                val url = URL(strUrl)
+                val con: HttpURLConnection = url.openConnection() as HttpURLConnection
+                con.setDoInput(true)
+                con.connect()
+                val `in`: InputStream = con.getInputStream()
+                bitmap = BitmapFactory.decodeStream(`in`)
+                `in`.close()
+            } catch (e: MalformedURLException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } finally {
+            }
+
+        return bitmap
     }
 
 }
