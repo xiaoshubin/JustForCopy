@@ -256,21 +256,7 @@
                android:layout_height="80dp"/>
        </LinearLayout>
         <View style="@style/h_line"/>
-        <LinearLayout
-            android:id="@+id/layout_chat"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:text="SmallCake"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="飓风等级肌肤的肌肤大家附近的肌肤的就附近的肌肤解放军"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
-        </LinearLayout>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -28,6 +28,10 @@
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
         <activity
+            android:name=".ui.NinePatchActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+        <activity
             android:name=".ui.BannerActivity"
             android:exported="false" />
         <activity

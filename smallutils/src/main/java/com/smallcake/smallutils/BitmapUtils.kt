@@ -291,23 +291,23 @@ object BitmapUtils {
             null
         }
     }
-    private fun getNetBitmap(strUrl: String): Bitmap? {
+
+     fun getNetBitmap(strUrl: String): Bitmap? {
         var bitmap: Bitmap? = null
             try {
                 val url = URL(strUrl)
                 val con: HttpURLConnection = url.openConnection() as HttpURLConnection
-                con.setDoInput(true)
+                con.doInput = true
                 con.connect()
-                val `in`: InputStream = con.getInputStream()
-                bitmap = BitmapFactory.decodeStream(`in`)
-                `in`.close()
+                val input: InputStream = con.inputStream
+                bitmap = BitmapFactory.decodeStream(input)
+                input.close()
             } catch (e: MalformedURLException) {
                 e.printStackTrace()
             } catch (e: IOException) {
                 e.printStackTrace()
             } finally {
             }
-
         return bitmap
     }
 

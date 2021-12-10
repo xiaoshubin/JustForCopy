@@ -4,12 +4,14 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.NinePatchDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.jaygoo.widget.OnRangeChangedListener
@@ -21,9 +23,13 @@ import com.smallcake.smallutils.TimeUtils
 import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindFragment
 import com.smallcake.temp.databinding.FragmentListBinding
+import com.smallcake.temp.utils.NinePatchBuilder
 import com.smallcake.temp.utils.PopShowUtils
 import com.smallcake.temp.utils.showToast
 import com.willy.ratingbar.BaseRatingBar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -72,27 +78,10 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
             bind.ball.setBgColor(Color.parseColor("#F5AD06"))
             bind.ball.setBottomColor(Color.parseColor("#FECE0A"))
         },3000)
-        //网络聊天气泡：https://www.jianshu.com/p/613c1ba238b4
-        val bg =  "https://biubiu-static-1306772580.file.myqcloud.com/kuang/chat/god.png"
-        val request = ImageRequest.Builder(requireContext())
-            .data("https://biubiu-static-1306772580.file.myqcloud.com/kuang/chat/god.png")//图片地址
-            .crossfade(true)
-            .memoryCachePolicy(CachePolicy.ENABLED)//设置内存的缓存策略
-            .diskCachePolicy(CachePolicy.ENABLED)//设置磁盘的缓存策略
-            .networkCachePolicy(CachePolicy.ENABLED)//设置网络的缓存策略
-            .target { drawable -> //图片加载之后的处理
-                val bitmap = BitmapUtils.drawable2Bitmap(drawable)
-                val chunk = bitmap?.ninePatchChunk
-                val ninePatchDrawable = NinePatchDrawable(bitmap,chunk, Rect(),null)
-                bind.layoutChat.background = ninePatchDrawable
-                Log.e(TAG,"chunk:$chunk")
-            }
-            .build()
-
-
-
 
     }
+
+
     private fun animProgress(max: Int, current: Float) {
         val percentage = 100f * current / max
         val animator: ObjectAnimator = ObjectAnimator.ofFloat(bind.circlePercentProgress, "percentage", 0f, percentage)

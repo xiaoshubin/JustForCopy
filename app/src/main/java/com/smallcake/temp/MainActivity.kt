@@ -34,15 +34,6 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
     }
 
     private fun onEvent() {
-//        Song("儿歌",108).save()
-//        Song("儿歌2",68).save()
-//        val list = LitePal.findAll<Song>()
-//        list.forEach{
-//            L.e("song:$it")
-//        }
-        val ca = Calendar.getInstance()
-        val day = ca.get(Calendar.DAY_OF_WEEK_IN_MONTH)
-        Log.e("月","==${day}")
     }
 
     private fun initView() {
