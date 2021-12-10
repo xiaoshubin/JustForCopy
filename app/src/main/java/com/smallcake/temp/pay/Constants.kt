@@ -64,7 +64,7 @@ object Constants {
      * @value #PAYMENT_GATEWAY_TOKENIZATION_NAME
      */
     const val PAYMENT_GATEWAY_TOKENIZATION_NAME = "aciworldwide"
-    const val PAYMENT_GATEWAY_MERCHANT_ID = "1001"
+    const val PAYMENT_GATEWAY_MERCHANT_ID = "BCR2DN6TQ7V6ZRSY"
 
     /**
      * Custom parameters required by the processor/gateway.

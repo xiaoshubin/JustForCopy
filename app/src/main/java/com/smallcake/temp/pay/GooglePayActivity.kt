@@ -1,5 +1,6 @@
 package com.smallcake.temp.pay
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.Html
@@ -53,10 +54,14 @@ Google Pay 谷歌支付（gateway = stripe）：https://blog.csdn.net/xp_panda/a
     }
 }
 
+ 后台或产品需要提供的数据
+ 1.商家Id merchantId
+
 
 
  *
  */
+@SuppressLint("SetTextI18n")
 class GooglePayActivity : BaseBindActivity<ActivityGooglePayBinding>() {
 
     private val SHIPPING_COST_CENTS = 9 * PaymentsUtil.CENTS.toLong()
@@ -78,27 +83,21 @@ class GooglePayActivity : BaseBindActivity<ActivityGooglePayBinding>() {
         bind.googlePayButton.setOnClickListener{ requestPayment()}
 
     }
+
+    /**
+     * 点击按钮开始支付
+     */
     private fun requestPayment() {
-
-        // Disables the button to prevent multiple clicks.
         bind.googlePayButton.isClickable = false
-
-        // The price provided to the API should include taxes and shipping.
-        // This price is not displayed to the user.
         val garmentPrice = selectedGarment.getDouble("price")
         val priceCents =  Math.round(garmentPrice * PaymentsUtil.CENTS.toLong())+SHIPPING_COST_CENTS
-
         val paymentDataRequestJson = PaymentsUtil.getPaymentDataRequest(priceCents.toString())
         if (paymentDataRequestJson == null) {
             Log.e("RequestPayment", "Can't fetch payment data request")
             return
         }
         val request = PaymentDataRequest.fromJson(paymentDataRequestJson.toString())
-
-        // Since loadPaymentData may show the UI asking the user to select a payment method, we use
-        // AutoResolveHelper to wait for the user interacting with it. Once completed,
-        // onActivityResult will be called with the result.
-            AutoResolveHelper.resolveTask(paymentsClient.loadPaymentData(request), this, LOAD_PAYMENT_DATA_REQUEST_CODE)
+        AutoResolveHelper.resolveTask(paymentsClient.loadPaymentData(request), this, LOAD_PAYMENT_DATA_REQUEST_CODE)
     }
     private fun fetchRandomGarment() : JSONObject {
         if (!::garmentList.isInitialized) {
@@ -108,12 +107,13 @@ class GooglePayActivity : BaseBindActivity<ActivityGooglePayBinding>() {
         val randomIndex:Int = Math.round(Math.random() * (garmentList.length() - 1)).toInt()
         return garmentList.getJSONObject(randomIndex)
     }
+
     private fun displayGarment(garment:JSONObject) {
-        bind.detailTitle.setText(garment.getString("title"))
-        bind.detailPrice.setText("\$${garment.getString("price")}")
+        bind.detailTitle.text = garment.getString("title")
+        bind.detailPrice.text = "\$${garment.getString("price")}"
 
         val escapedHtmlText:String = Html.fromHtml(garment.getString("description")).toString()
-        bind.detailDescription.setText(Html.fromHtml(escapedHtmlText))
+        bind.detailDescription.text = Html.fromHtml(escapedHtmlText)
 
         val imageUri = "@drawable/${garment.getString("image")}"
         val imageResource = resources.getIdentifier(imageUri, null, packageName)
@@ -123,26 +123,12 @@ class GooglePayActivity : BaseBindActivity<ActivityGooglePayBinding>() {
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
          super.onActivityResult(requestCode, resultCode, data)
          when (requestCode) {
-            // Value passed in AutoResolveHelper
             LOAD_PAYMENT_DATA_REQUEST_CODE -> {
                 when (resultCode) {
-                    RESULT_OK ->
-                        data?.let { intent ->
-                            PaymentData.getFromIntent(intent)?.let(::handlePaymentSuccess)
-                        }
-
-                    RESULT_CANCELED -> {
-                        showToast("cancle Google Pay")
-                    }
-
-                    AutoResolveHelper.RESULT_ERROR -> {
-                        AutoResolveHelper.getStatusFromIntent(data)?.let {
-                            handleError(it)
-                        }
-                    }
+                    RESULT_OK -> data?.let { intent ->PaymentData.getFromIntent(intent)?.let(::handlePaymentSuccess)}
+                    RESULT_CANCELED -> showToast("cancle Google Pay")
+                    AutoResolveHelper.RESULT_ERROR -> AutoResolveHelper.getStatusFromIntent(data)?.let { handleError(it)}
                 }
-
-                // Re-enables the Google Pay payment button.
                 bind.googlePayButton.isClickable = true
             }
         }
@@ -151,6 +137,7 @@ class GooglePayActivity : BaseBindActivity<ActivityGooglePayBinding>() {
     /**
      * 支付异常
      * @param statusCode Int
+     * 405 此商家未启用Google Pay
      */
     private fun handleError(status: Status) {
         Log.e("loadPaymentData failed", String.format("Error code: %d  msg: %s", status.statusCode,status.statusMessage))
@@ -162,21 +149,16 @@ class GooglePayActivity : BaseBindActivity<ActivityGooglePayBinding>() {
      */
     fun handlePaymentSuccess(paymentData: PaymentData){
         val paymentInformation = paymentData.toJson() ?: return
-
         try {
             // Token will be null if PaymentDataRequest was not constructed using fromJson(String).
             val paymentMethodData = JSONObject(paymentInformation).getJSONObject("paymentMethodData")
-            val billingName = paymentMethodData.getJSONObject("info")
-                .getJSONObject("billingAddress").getString("name")
+            val billingName = paymentMethodData.getJSONObject("info").getJSONObject("billingAddress").getString("name")
             Log.d("BillingName", billingName)
-
-//            Toast.makeText(this, getString(R.string.payments_show_name, billingName), Toast.LENGTH_LONG).show()
-
+            // Toast.makeText(this, getString(R.string.payments_show_name, billingName), Toast.LENGTH_LONG).show()
             // Logging token string.
             Log.d("GooglePaymentToken", paymentMethodData
                 .getJSONObject("tokenizationData")
                 .getString("token"))
-
         } catch (e: JSONException) {
             Log.e("handlePaymentSuccess", "Error: " + e.toString())
         }
