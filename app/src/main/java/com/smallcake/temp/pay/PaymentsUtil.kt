@@ -15,6 +15,13 @@ import java.math.BigDecimal
  * 参考：
  *  Google Pay官方教程:https://developers.google.cn/pay/api/android/guides/tutorial
  *  直接令牌化文档：https://developers.google.cn/pay/api/android/reference/request-objects#direct
+ *
+ *  如何生成公钥：https://developers.google.com/pay/api/android/guides/resources/payment-data-cryptography#using-openssl
+ *
+ *  谷歌支付配置
+ *  https://pay.google.com/business/console
+ *  内购服务前置授权配置
+ *  https://play.google.com/apps/publish/#ApiAccessPlace
  */
 object PaymentsUtil {
     val CENTS = BigDecimal(100)
@@ -204,8 +211,8 @@ object PaymentsUtil {
                     put("phoneNumberRequired", false)
                     put("allowedCountryCodes", JSONArray(listOf("US", "GB")))
                 }
-                put("shippingAddressParameters", shippingAddressParameters)
                 put("shippingAddressRequired", true)
+                put("shippingAddressParameters", shippingAddressParameters)
             }
         } catch (e: JSONException) {
             return null

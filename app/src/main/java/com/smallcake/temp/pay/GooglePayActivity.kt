@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
+import com.android.billingclient.api.*
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.wallet.AutoResolveHelper
 import com.google.android.gms.wallet.PaymentData
@@ -15,6 +16,7 @@ import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityGooglePayBinding
 import com.smallcake.temp.utils.showToast
+import com.smallcake.temp.utils.sizeNull
 import com.smallcake.temp.utils.visiable
 import org.json.JSONArray
 import org.json.JSONException
@@ -36,6 +38,7 @@ Google Play支付 接入配置 : https://blog.csdn.net/lxw1844912514/article/det
 
 Android谷歌支付（Google pay）: https://www.jianshu.com/p/afe3a56b7a9f
 Google Pay 谷歌支付（gateway = stripe）：https://blog.csdn.net/xp_panda/article/details/113187561
+Android Google Pay 集成:https://blog.csdn.net/q4878802/article/details/88058343
 
  返回数据
 {
@@ -74,19 +77,92 @@ class GooglePayActivity : BaseBindActivity<ActivityGooglePayBinding>() {
     private lateinit var selectedGarment: JSONObject
 
     private val TAG = "GooglePayActivity"
+    private var skuDetails:SkuDetails?=null
 
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.setTitle("Google Pay")
+        //模拟的商品数据
         selectedGarment = fetchRandomGarment()
         displayGarment(selectedGarment)
+
         paymentsClient = PaymentsUtil.createPaymentsClient(this)
 
         PaymentsUtil.possiblyShowGooglePayButton(paymentsClient){
-            bind.googlePayButton.visibility = it.visiable()
+            Log.e(TAG,"是否支持Google支付：$it")
+//            bind.googlePayButton.visibility = it.visiable()
         }
-        bind.googlePayButton.setOnClickListener{ requestPayment()}
+
+        //3. 初始化
+         val billingClient: BillingClient = BillingClient.newBuilder(this.applicationContext)
+            .setListener { responseCode: Int, purchases: MutableList<Purchase>? ->
+                if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
+                    // TODO 支付完成
+                } else if (responseCode == BillingClient.BillingResponse.USER_CANCELED) {
+                    // Handle an error caused by a user cancelling the purchase flow.
+                    // TODO 用户取消了支付
+                } else if (responseCode == BillingClient.BillingResponse.ITEM_ALREADY_OWNED) {
+                    // Handle an error caused by a user cancelling the purchase flow.
+                    // TODO 商品已经购买过（重复购买了此商品，如果需要支持重复购买，需要将商品购买成功后消费掉）
+                } else {
+                    // Handle any other error codes.
+                }
+            }.build()
+        bind.googlePayButton.setOnClickListener{
+//            requestPayment()
+            //6. 支付商品
+            val flowParams = BillingFlowParams.newBuilder()
+                .setSkuDetails(skuDetails)
+                .build()
+            billingClient.launchBillingFlow(this, flowParams)
+
+        }
+
+        //4. 连接 Google Play Service
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(@BillingClient.BillingResponse billingResponseCode: Int) {
+                // 连接成功
+                if (billingResponseCode == BillingClient.BillingResponse.OK) {
+                    Log.e(TAG,"连接成功")
+                    // The billing client is ready. You can query purchases here.
+
+                    // 5. Query for in-app product details.
+                    // 5. 查询商品详情
+
+                    // 6. 支付商品
+
+                } else {
+                    // TODO 连接失败
+                }
+            }
+
+            // 连接断开
+            override fun onBillingServiceDisconnected() {
+                // Try to restart the connection on the next request to
+                // Google Play by calling the startConnection() method.
+                Log.e(TAG,"断开连接")
+            }
+        })
+
+        //5. 获取商品信息
+        val params = SkuDetailsParams.newBuilder().apply {
+            setSkusList(ArrayList<String>().apply {
+                add("68_diamond") // 可以单个查询也可以多个查询
+            }).setType(BillingClient.SkuType.INAPP)
+        }
+        billingClient.querySkuDetailsAsync(params.build()) { responseCode, skuDetailsList ->
+            Log.e(TAG,"responseCode = $responseCode   skuDetailsList = ${skuDetailsList?.size}")
+            // responseCode 为响应码
+            // skuDetailsList 为查询的商品信息列表
+            if (skuDetailsList.sizeNull()>0){
+                skuDetails = skuDetailsList.get(0)
+            }
+
+        }
+
 
     }
+
+
 
     /**
      * 点击按钮开始支付
@@ -103,6 +179,11 @@ class GooglePayActivity : BaseBindActivity<ActivityGooglePayBinding>() {
         val request = PaymentDataRequest.fromJson(paymentDataRequestJson.toString())
         AutoResolveHelper.resolveTask(paymentsClient.loadPaymentData(request), this, LOAD_PAYMENT_DATA_REQUEST_CODE)
     }
+
+    /**
+     * 模拟商品数据
+     * @return JSONObject
+     */
     private fun fetchRandomGarment() : JSONObject {
         if (!::garmentList.isInitialized) {
             garmentList = Json.readFromResources(this,R.raw.tshirts)

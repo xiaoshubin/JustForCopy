@@ -63,8 +63,8 @@ object Constants {
      *
      * @value #PAYMENT_GATEWAY_TOKENIZATION_NAME
      */
-    const val PAYMENT_GATEWAY_TOKENIZATION_NAME = "example"
-    const val PAYMENT_GATEWAY_MERCHANT_ID = "exampleGatewayMerchantId"
+    const val PAYMENT_GATEWAY_TOKENIZATION_NAME = "Biubiubiu Limited"
+    const val PAYMENT_GATEWAY_MERCHANT_ID = "136737887157521713"
 
     /**
      * Custom parameters required by the processor/gateway.
@@ -85,7 +85,7 @@ object Constants {
      *
      * @value #DIRECT_TOKENIZATION_PUBLIC_KEY
      */
-    const val DIRECT_TOKENIZATION_PUBLIC_KEY = "REPLACE_ME"
+    const val DIRECT_TOKENIZATION_PUBLIC_KEY = "BJJnEX4qzIa190fR9gFfK9WBnslNgD+sjaAM+oldMg+4gL+hcZWVMVqo71cYpvlR6LkID7RgSHLLTjio+okDAVQ="
 
     /**
      * Parameters required for `DIRECT` tokenization.
