@@ -15,6 +15,7 @@ import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityGooglePayBinding
 import com.smallcake.temp.utils.showToast
+import com.smallcake.temp.utils.visiable
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -80,6 +81,9 @@ class GooglePayActivity : BaseBindActivity<ActivityGooglePayBinding>() {
         displayGarment(selectedGarment)
         paymentsClient = PaymentsUtil.createPaymentsClient(this)
 
+        PaymentsUtil.possiblyShowGooglePayButton(paymentsClient){
+            bind.googlePayButton.visibility = it.visiable()
+        }
         bind.googlePayButton.setOnClickListener{ requestPayment()}
 
     }

@@ -13,7 +13,8 @@ import java.math.BigDecimal
 
 /**
  * 参考：
-Google Pay for Payments Android 教程 ：https://developers.google.cn/pay/api/android/guides/tutorial
+ *  Google Pay官方教程:https://developers.google.cn/pay/api/android/guides/tutorial
+ *  直接令牌化文档：https://developers.google.cn/pay/api/android/reference/request-objects#direct
  */
 object PaymentsUtil {
     val CENTS = BigDecimal(100)
@@ -38,6 +39,17 @@ object PaymentsUtil {
     }
 
     /**
+     * 第 2 步：直接令牌化
+     * @return JSONObject
+     */
+    private fun getDirectTokenizationSpecification(): JSONObject {
+        return JSONObject().apply {
+            put("type", "DIRECT")
+            put("parameters", JSONObject(Constants.DIRECT_TOKENIZATION_PARAMETERS))
+        }
+    }
+
+    /**
      * 第 3 步：指定支持的支付卡网络
      */
     private val allowedCardNetworks = JSONArray(listOf(
@@ -47,23 +59,30 @@ object PaymentsUtil {
         "JCB",
         "MASTERCARD",
         "VISA"))
+    /**
+     * 支付卡的验证字段，
+     * PAN_ONLY：返回的付款数据包括个人账号(PAN)以及到期月份和到期年份
+     * CRYPTOGRAM_3DS：返回的付款数据包括在设备上生成的3d安全(3DS)密码
+     */
     private val allowedCardAuthMethods = JSONArray(listOf(
         "PAN_ONLY",
         "CRYPTOGRAM_3DS"))
 
     /**
      * 第 4 步：说明您允许的付款方式
+     * allowedAuthMethods：     验证卡交易字段
+     * allowedCardNetworks：    卡支持的网络
+     * billingAddressRequired： 是否需要账单地址
+     *billingAddressParameters：预期字段 format(MIN:名称、国家代码和邮政编码(默认  FULL:名称、街道地址、位置、地区、国家代码和邮政编码))
      */
     private fun baseCardPaymentMethod(): JSONObject {
         return JSONObject().apply {
-
             val parameters = JSONObject().apply {
                 put("allowedAuthMethods", allowedCardAuthMethods)
                 put("allowedCardNetworks", allowedCardNetworks)
                 put("billingAddressRequired", true)
                 put("billingAddressParameters", JSONObject().apply {put("format", "FULL") })
             }
-
             put("type", "CARD")
             put("parameters", parameters)
         }
@@ -75,8 +94,8 @@ object PaymentsUtil {
      */
     private fun cardPaymentMethod(): JSONObject {
         val cardPaymentMethod = baseCardPaymentMethod()
-        // 设置stripe为付款方式
-        cardPaymentMethod.put("tokenizationSpecification", gatewayTokenizationSpecification())
+        // 设置stripe为付款方式或直接令牌化
+        cardPaymentMethod.put("tokenizationSpecification", getDirectTokenizationSpecification())
         return cardPaymentMethod
     }
 
@@ -113,9 +132,9 @@ object PaymentsUtil {
      * [IsReadyToPayRequest](https://developers.google.cn/pay/api/android/reference/request-objects#IsReadyToPayRequest)
      *
      */
-    private fun possiblyShowGooglePayButton(paymentsClient:PaymentsClient) {
+     fun possiblyShowGooglePayButton(paymentsClient:PaymentsClient,cb:(Boolean)->Unit) {
 
-        val isReadyToPayJson = PaymentsUtil.isReadyToPayRequest() ?: return
+        val isReadyToPayJson = isReadyToPayRequest() ?: return
         val request = IsReadyToPayRequest.fromJson(isReadyToPayJson.toString()) ?: return
 
         // The call to isReadyToPay is asynchronous and returns a Task. We need to provide an
@@ -123,7 +142,7 @@ object PaymentsUtil {
         val task = paymentsClient.isReadyToPay(request)
         task.addOnCompleteListener { completedTask ->
             try {
-                completedTask.getResult(ApiException::class.java)?.let(::setGooglePayAvailable)
+                completedTask.getResult(ApiException::class.java)?.apply(cb)
             } catch (exception: ApiException) {
                 // Process error
                 Log.w("isReadyToPay failed", exception)
@@ -161,8 +180,8 @@ object PaymentsUtil {
      * 商家名称
      */
     private val merchantInfo: JSONObject = JSONObject()
-        .put("merchantName", "Guruji")
-        .put("merchantId", "填写商家ID")
+        .put("merchantName", "BIUBIU LIMIT")
+        .put("merchantId", "BCR2DN6TQ7V6ZRSY")
 
     /**
      * 请求付款数据
