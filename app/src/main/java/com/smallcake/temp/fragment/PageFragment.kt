@@ -14,6 +14,7 @@ import com.smallcake.temp.coroutines.CoroutinesActivity
 import com.smallcake.temp.coroutines.LiveDataViewModule
 import com.smallcake.temp.databinding.FragmentRecyclerviewBinding
 import com.smallcake.temp.kotlinflow.KotlinFlowActivity
+import com.smallcake.temp.map.BaiduMapActivity
 import com.smallcake.temp.map.LocationMapActivity
 import com.smallcake.temp.music.ExoMusicActivity
 import com.smallcake.temp.pay.GooglePayActivity
@@ -34,7 +35,8 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("中间凸起导航栏",MainMiddleOutActivity::class.java,"导航"),
             PageBean("首页多布局",MainFragmentsActivity::class.java,"首页"),
             PageBean("城市选择", CitySelectActivity::class.java,"城市选择，字母选择定位"),
-            PageBean("地图点击选择位置", LocationMapActivity::class.java,"定位，点击选择位置，高德地图"),
+            PageBean("高德地图点击选择位置", LocationMapActivity::class.java,"定位，点击选择位置，高德地图"),
+            PageBean("百度地图", BaiduMapActivity::class.java,"定位，点击选择位置，百度地图"),
             PageBean("多图选择反馈", ReportRepairActivity::class.java,"图片选择，反馈，报事报修"),
             PageBean("录音", RecordActivity::class.java,"录音音频"),
             PageBean("签到日历", SignListActivity::class.java,"签到日历"),

@@ -12,6 +12,7 @@ import com.smallcake.smallutils.twoDecimals
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.bean.Song
 import com.smallcake.temp.databinding.ActivityMainBinding
+import com.smallcake.temp.utils.AppUtils
 import com.smallcake.temp.utils.BottomNavUtils
 import com.smallcake.temp.utils.L
 import org.litepal.LitePal
@@ -26,7 +27,7 @@ import java.util.*
  * @see com.smallcake.temp.fragment.MineFragment 我的
  */
 class MainActivity : BaseBindActivity<ActivityMainBinding>() {
-
+    private val TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.hide()
         initView()
@@ -34,6 +35,8 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
     }
 
     private fun onEvent() {
+        val hashValue = AppUtils.getKeyHashValue(this)
+        Log.e(TAG,"hashValue:$hashValue")
     }
 
     private fun initView() {

@@ -164,7 +164,7 @@ object AppUtils {
      *
      *
      */
-    private fun getKeyHashValue(context: Context) {
+     fun getKeyHashValue(context: Context) {
         try {
             val info = context.packageManager.getPackageInfo(
                 getAppPackageName(),

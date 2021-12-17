@@ -166,6 +166,10 @@ dependencies {
     implementation 'com.amap.api:3dmap:5.0.0'
     //高德检索
     implementation 'com.amap.api:search:5.0.0'
+    //百度地图
+    implementation 'com.baidu.lbsyun:BaiduMapSDK_Map:7.4.0'
+    //百度定位
+    implementation 'com.baidu.lbsyun:BaiduMapSDK_Location:9.1.8'
 
     // 图片浏览组件
     implementation 'com.susion:image-viewer:1.0.1'

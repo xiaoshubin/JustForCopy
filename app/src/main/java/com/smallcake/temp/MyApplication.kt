@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.http.HttpResponseCache
 import androidx.multidex.MultiDex
+import com.baidu.mapapi.SDKInitializer
 import com.facebook.FacebookSdk
 import com.facebook.appevents.AppEventsLogger
 import com.lsxiao.apollo.core.Apollo
@@ -81,6 +82,9 @@ class MyApplication : Application() {
         //SVGAParser 依赖 URLConnection, URLConnection 使用 HttpResponseCache 处理缓存
         val cacheDir = File(applicationContext.cacheDir, "http")
         HttpResponseCache.install(cacheDir, 1024 * 1024 * 128)
+
+        //百度地图
+        SDKInitializer.initialize(this)
 
     }
 

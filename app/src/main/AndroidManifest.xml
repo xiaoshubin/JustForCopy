@@ -15,9 +15,9 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <!-- Google Play 内购权限 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- Google Play 内购权限 -->
     <uses-permission android:name="com.android.vending.BILLING" />
+
 
     <application
         android:name=".MyApplication"
@@ -30,9 +30,12 @@
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
         <activity
-            android:name=".ui.NinePatchActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:name=".map.BaiduMapActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.NinePatchActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.BannerActivity"
             android:exported="false" />
@@ -110,10 +113,20 @@
             </intent-filter>
         </activity> <!-- 高德地图【开始】 -->
         <service android:name="com.amap.api.location.APSService" />
-
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="937f5f48be1d2b39c1af407482e59ac5" /> <!-- 高德地图【结束】 -->
+            android:value="937f5f48be1d2b39c1af407482e59ac5" />
+        <!-- 高德地图【结束】 -->
+
+        <!-- 百度地图【开始】 -->
+            <meta-data
+                android:name="com.baidu.lbsapi.API_KEY"
+                android:value="Z3rtL0suA30NVpa7Cz7jOVgXGfO14MfM" />
+            <service android:name="com.baidu.location.f"
+                android:enabled="true"
+                android:process=":remote"/>
+        <!--百度地图【开始】 -->
+
         <!-- 配置Facebook 【开始】 -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
