@@ -127,7 +127,7 @@
             <service android:name="com.baidu.location.f"
                 android:enabled="true"
                 android:process=":remote"/>
-        <!--百度地图【开始】 -->
+        <!--百度地图【结束】 -->
 
         <!-- 配置Facebook 【开始】 -->
         <meta-data

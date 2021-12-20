@@ -152,6 +152,8 @@ object AppUtils {
      * 获取SHA1命令
      * keytool -keystore 秘钥路径 -list -v
      * 获取应用的的key hashes 例如FaceBook接入SDK就需要
+     * 例如：
+     keytool -keystore D:\smallcake.jks -list -v
      *
      * 也可以通过命令获取
      * sh D:\keyHash.sh 别名 别名密码  签名文件jks

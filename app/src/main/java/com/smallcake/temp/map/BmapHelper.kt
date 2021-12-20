@@ -22,9 +22,19 @@ import com.smallcake.temp.R
  * 参考：
  * 1.定位：https://lbsyun.baidu.com/index.php?title=android-locsdk
  *
- * 问题：
+ * 问题1：
  * 只定位一次，加了服务并配置了定位间隔>1000ms
- * 原因：
+ * 原因：换个手机，重启
+ *
+ * 问题2：定位经纬度出现：4.9E-324
+ * 原因：权限问题，so库错误或没有配置，申请AK时输入的sha错误
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+ <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+ <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
  *
  */
 object BmapHelper {
