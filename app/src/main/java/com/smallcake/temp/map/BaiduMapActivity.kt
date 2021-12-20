@@ -2,6 +2,8 @@ package com.smallcake.temp.map
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.util.Log
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
@@ -19,6 +21,10 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory
 
 import com.baidu.mapapi.map.MapStatusUpdate
 import com.baidu.mapapi.model.LatLng
+import com.hjq.permissions.OnPermissionCallback
+import com.hjq.permissions.Permission
+import com.hjq.permissions.XXPermissions
+import com.smallcake.temp.MyApplication
 
 
 /**
@@ -86,48 +92,24 @@ implementation 'com.baidu.lbsyun:BaiduMapSDK_Panorama:2.9.0'
     }
 
  7.定位的生命周期管理
-
-
+  onCreate方法中，bind.bmapView.map.isMyLocationEnabled = true
+  并在页面结束onDestroy时关闭bind.bmapView.map.isMyLocationEnabled = false
  */
 class BaiduMapActivity : BaseBindActivity<ActivityBaiduMapBinding>() {
+
+    private val TAG = "BaiduMapActivity"
 
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.setTitle("百度地图")
         //开启地图的定位图层
         bind.bmapView.map.isMyLocationEnabled = true
-        //通过LocationClient发起定位
-        val mLocationClient = LocationClient(this)
-        val option = LocationClientOption()
-        option.isOpenGps = true // 打开gps
-        option.setCoorType("bd09ll") // 设置坐标类型
-        option.setScanSpan(1000)
-        mLocationClient.locOption = option
-        //注册监听器
-        mLocationClient.registerLocationListener(bdLocationListener)
-        //开启地图定位图层
-        mLocationClient.start()
-
-
-
-        //定位图标配置
-        val bitmapDescriptor=BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)
-        val myLocationConfiguration = MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL,true,bitmapDescriptor,Color.BLUE,Color.RED)
-        bind.bmapView.map.setMyLocationConfiguration(myLocationConfiguration)
-    }
-
-    private val bdLocationListener =  object :BDAbstractLocationListener(){
-        override fun onReceiveLocation(location: BDLocation?) {
-            if (location == null) return
-            val locData = MyLocationData.Builder()
-                .accuracy(location.radius) // 此处设置开发者获取到的方向信息，顺时针0-360
-                .direction(location.direction).latitude(location.latitude)
-                .longitude(location.longitude).build()
-            //设置定位数据
+        //开始定位，并设置到中心点
+        BmapHelper.startLocation(this){ location: BDLocation?, locData: MyLocationData ->
             bind.bmapView.map.setMyLocationData(locData)
-            //更新到最近定位位置
-            val latLng = LatLng(locData.latitude,locData.longitude)
-            bind.bmapView.map.setMapStatus(MapStatusUpdateFactory.newLatLng(latLng))
+            BmapHelper.updateCenter(bind.bmapView,LatLng(locData.latitude,locData.longitude))
         }
+        //定位图标配置
+        BmapHelper.setConfig(bind.bmapView)
 
     }
 
