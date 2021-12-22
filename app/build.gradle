@@ -171,6 +171,8 @@ dependencies {
     implementation 'com.baidu.lbsyun:BaiduMapSDK_Map:7.4.0'
     //百度定位
     implementation 'com.baidu.lbsyun:BaiduMapSDK_Location:9.1.8'
+    //百度检索
+    implementation 'com.baidu.lbsyun:BaiduMapSDK_Search:7.4.0'
 
     // 图片浏览组件
     implementation 'com.susion:image-viewer:1.0.1'

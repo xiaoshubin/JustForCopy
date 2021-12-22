@@ -34,6 +34,7 @@ fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: Int) {
 /**
  * Fragment基类
  bind需要在 onViewCreated(view: View, savedInstanceState: Bundle?)后调用
+ 注意在onViewCreated不要调用super.onViewCreated(view, savedInstanceState)方法，否则此方法会调用两次
  */
 abstract class BaseBindFragment<VB : ViewBinding>: Fragment() {
     private var _binding: VB? = null
