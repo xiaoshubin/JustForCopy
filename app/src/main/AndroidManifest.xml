@@ -32,6 +32,11 @@
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
         <activity
+            android:name=".ui.P2PChatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity
             android:name=".map.BaiduMapActivity"
             android:exported="false" />
         <activity

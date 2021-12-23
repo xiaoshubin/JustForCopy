@@ -60,6 +60,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("service服务", ServiceActivity::class.java,"service，后台服务"),
             PageBean("轮播图", BannerActivity::class.java,"轮播图"),
             PageBean(".9图片", NinePatchActivity::class.java,".9图片"),
+            PageBean("聊天界面", P2PChatActivity::class.java,"聊天界面"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->

@@ -168,6 +168,19 @@ object EditTextUtils {
             }
         })
     }
+    fun setOnSend(activity: Activity, et:EditText, cb:(String?)->Unit){
+        et.setOnEditorActionListener(object :TextView.OnEditorActionListener{
+            override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    cb.invoke(v.text.toString())
+                    et.setText("")
+                    KeyboardUtils.hintKeyboard(activity)
+                    return true
+                }
+                return false
+            }
+        })
+    }
     /**
      * 移动到末尾
      */

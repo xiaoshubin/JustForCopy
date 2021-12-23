@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:layout_gravity="right"
+            app:round="10dp"
+            android:src="@mipmap/ic_launcher"
+            android:id="@+id/iv_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            app:round="10dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_gravity="right"
+            android:id="@+id/iv"
+            android:textColor="@color/white"
+            android:text="嘿！在那儿 ,到目前为止旅行怎么样我现在被困在这个城市了。"
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp" />
+
+    </FrameLayout>
+</layout>
