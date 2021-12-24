@@ -131,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="每日记录"
-                android:textColor="@color/titleColor"
+                android:textColor="@color/tv_black"
                 android:textSize="16sp"
                 />
             <TextView
@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="(1月)"
-                android:textColor="@color/text_gray"
+                android:textColor="@color/tv_gray"
                 android:textSize="14sp"
                 />
 
@@ -176,7 +176,7 @@
             app:selected_text_color="#ffffff"
             app:selected_theme_color="#3C78FF"
             app:week_background="#fff"
-            app:week_text_color="@color/text_gray"
+            app:week_text_color="@color/tv_gray"
             app:year_view_day_text_color="#333333"
             app:year_view_day_text_size="8sp"
             app:year_view_month_text_color="#ff0000"

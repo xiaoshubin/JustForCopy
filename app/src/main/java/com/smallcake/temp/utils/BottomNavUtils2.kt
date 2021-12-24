@@ -46,8 +46,8 @@ object BottomNavUtils2 {
         R.mipmap.icon_unselected_tab5
     )
     private val tabNames = arrayOf("首页", "服务", "门禁","讯聊","我的")
-    private val textColorNormal = ContextCompat.getColor(MyApplication.instance, R.color.text_gray)
-    private val textColorSelect = ContextCompat.getColor(MyApplication.instance, R.color.text_red)
+    private val textColorNormal = ContextCompat.getColor(MyApplication.instance, R.color.tv_gray)
+    private val textColorSelect = ContextCompat.getColor(MyApplication.instance, R.color.tv_red)
     private var listener : ((Int)->Unit)?=null
     fun tabBindViewPager(
         activity: AppCompatActivity,

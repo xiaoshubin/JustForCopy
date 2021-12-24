@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:background="#FFF8F8F8"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    <com.hjq.shape.view.ShapeEditText
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:shape_solidColor="#FFF2F2F2"
+        app:shape_radius="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:drawablePadding="8dp"
+        android:background="@color/transparent"
+        android:drawableLeft="@mipmap/ic_search_gray"
+        android:hint="搜索"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"/>
+    </FrameLayout>
+    <TextView
+        android:drawableRight="@mipmap/ic_txt_arrow_down"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:drawablePadding="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:drawableLeft="@mipmap/ic_search_gray"
+        android:gravity="center_vertical"
+        android:text="群组"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            tools:listitem="@layout/item_contact"
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.smallcake.temp.weight.IndexBar
+            app:indexSize="12sp"
+            app:selectCircleColor="#FF2E73F9"
+            android:layout_gravity="right"
+            android:id="@+id/index_bar"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

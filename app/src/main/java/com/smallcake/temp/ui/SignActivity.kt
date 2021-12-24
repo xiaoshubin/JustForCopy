@@ -24,7 +24,7 @@ class SignActivity : BaseBindActivity<ActivitySignBinding>() {
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.backTextView.text = "签名资料"
         bar.backTextView.setPadding(32.px,0,0,0)
-        bar.backTextView.setTextColor(ContextCompat.getColor(baseContext, R.color.text_blue))
+        bar.backTextView.setTextColor(ContextCompat.getColor(baseContext, R.color.tv_blue))
         bind.signView.setPenColor(ContextCompat.getColor(baseContext, R.color.black))
         bind.signView.setPentWidth(4)
         bind.signView.setOnTouch(object : SignatureView.OnTouc{

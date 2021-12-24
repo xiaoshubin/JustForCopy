@@ -46,11 +46,11 @@
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:text="重置签名"
-            android:textColor="@color/text_blue"
+            android:textColor="@color/tv_blue"
             android:textSize="@dimen/sp_15"
             app:stb_radius="20dp"
             app:stb_solidColor="@color/transparent"
-            app:stb_strokeColor="@color/text_blue"
+            app:stb_strokeColor="@color/tv_blue"
             app:stb_strokeWidth="2" />
 
 
@@ -65,6 +65,6 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp_15"
             app:stb_radius="20dp"
-            app:stb_solidColor="@color/text_blue" />
+            app:stb_solidColor="@color/tv_blue" />
     </LinearLayout>
 </LinearLayout>

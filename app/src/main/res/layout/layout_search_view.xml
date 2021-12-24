@@ -25,7 +25,7 @@
             android:minHeight="@dimen/dp_33"
             android:paddingLeft="@dimen/dp_23"
             android:singleLine="true"
-            android:textColor="@color/titleColor"
+            android:textColor="@color/tv_black"
             android:textCursorDrawable="@null"
             android:textSize="@dimen/sp_14"
             app:layout_constraintEnd_toStartOf="@id/btn_search"
@@ -45,7 +45,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/et_search"
             app:stb_radius="6dp"
-            app:stb_solidColor="@color/text_red" />
+            app:stb_solidColor="@color/tv_red" />
 
         <ImageView
             android:layout_marginRight="8dp"

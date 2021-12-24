@@ -88,7 +88,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_appoint"
         app:layout_constraintTop_toTopOf="@+id/btn_appoint"
         app:stb_radius="6dp"
-        app:stb_solidColor="@color/text_blue" />
+        app:stb_solidColor="@color/tv_blue" />
 
     <com.smallcake.smallutils.text.ShapeTextButton
         android:layout_marginTop="16dp"
@@ -101,5 +101,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_desc"
         app:stb_radius="6dp"
-        app:stb_solidColor="@color/text_red" />
+        app:stb_solidColor="@color/tv_red" />
 </androidx.constraintlayout.widget.ConstraintLayout>

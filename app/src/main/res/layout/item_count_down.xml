@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
             android:text="活动地址"
-            android:textColor="@color/text_gray"
+            android:textColor="@color/tv_gray"
             android:textSize="@dimen/sp_13"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_img" />
@@ -45,7 +45,7 @@
             android:layout_marginStart="10dp"
             android:includeFontPadding="false"
             tools:text="好城时光中庭大厅内内好城时光中庭大厅内内好城时光中庭大厅内内"
-            android:textColor="@color/text_gray"
+            android:textColor="@color/tv_gray"
             android:textSize="@dimen/sp_13"
             android:singleLine="true"
             android:ellipsize="end"
@@ -62,7 +62,7 @@
             android:layout_marginBottom="8dp"
             android:includeFontPadding="false"
             android:text="活动时间"
-            android:textColor="@color/text_gray"
+            android:textColor="@color/tv_gray"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="@+id/iv_img"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
             android:ellipsize="end"
             android:includeFontPadding="false"
             android:singleLine="true"
-            android:textColor="@color/text_gray"
+            android:textColor="@color/tv_gray"
             android:textSize="@dimen/sp_13"
             app:layout_constraintBottom_toBottomOf="@+id/tv_time_label"
             app:layout_constraintEnd_toStartOf="@id/iv_img"
@@ -96,7 +96,7 @@
             android:includeFontPadding="false"
             android:singleLine="true"
             tools:text="活动标题活动标题活动标题活动标题"
-            android:textColor="@color/text_gray"
+            android:textColor="@color/tv_gray"
             android:textSize="@dimen/sp_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -118,7 +118,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_img"
             app:stb_radius="7dp"
-            app:stb_solidColor="@color/text_gray" />
+            app:stb_solidColor="@color/tv_gray" />
 
         <TextView
             android:id="@+id/tv_deadline"
@@ -127,7 +127,7 @@
             android:layout_marginStart="11dp"
             android:includeFontPadding="false"
             tools:text="截止时间：3天1：10：53"
-            android:textColor="@color/text_gray"
+            android:textColor="@color/tv_gray"
             app:layout_constraintBottom_toBottomOf="@id/tv_count"
             app:layout_constraintStart_toEndOf="@id/tv_count"
             app:layout_constraintTop_toTopOf="@id/tv_count" />

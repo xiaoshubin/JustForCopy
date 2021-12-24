@@ -38,7 +38,7 @@
         android:layout_height="32dp"
         android:text="0''"
         app:stb_radius="60dp"
-        app:stb_solidColor="@color/text_blue" />
+        app:stb_solidColor="@color/tv_blue" />
     </LinearLayout>
     <FrameLayout
         android:id="@+id/layout_recording"

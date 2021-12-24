@@ -45,7 +45,7 @@ class CountDownAdapter: BaseQuickAdapter<CountDownBean, BaseDataBindingHolder<It
                 val view = getViewByPosition(position,R.id.tv_deadline)?:continue
                 (view as TextView).apply {
                         text = if (timeX>0)"截止时间：$timeStr" else "已结束"
-                        setTextColor(ContextCompat.getColor(context,if (timeX>0)R.color.text_blue else R.color.text_gray))
+                        setTextColor(ContextCompat.getColor(context,if (timeX>0)R.color.tv_blue else R.color.tv_gray))
                 }
 
             }
@@ -79,7 +79,7 @@ class CountDownAdapter: BaseQuickAdapter<CountDownBean, BaseDataBindingHolder<It
         holder.dataBinding?.tvDeadline?.apply {
             val timeStr = TimeUtils.timeToDhms(timeX)
             text = if (timeX>0)"截止时间：$timeStr" else "已结束"
-            setTextColor(ContextCompat.getColor(context,if (timeX>0)R.color.text_blue else R.color.text_gray))
+            setTextColor(ContextCompat.getColor(context,if (timeX>0)R.color.tv_blue else R.color.tv_gray))
         }
 
     }

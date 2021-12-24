@@ -25,7 +25,7 @@ abstract class BaseBindActivity<VB:ViewBinding>: BaseActivity() {
         setContentView(bind.root)
         //导航栏设置
         val bar = NavigationBar(this)
-        bar.titleView.setTextColor(ContextCompat.getColor(this,R.color.titleColor))
+        bar.titleView.setTextColor(ContextCompat.getColor(this,R.color.tv_black))
         bar.setBackgroundColor(Color.WHITE,true)
         bar.backImageView?.setImageResource(R.mipmap.ic_back)
         bar.backImageView?.setOnClickListener{finish()}

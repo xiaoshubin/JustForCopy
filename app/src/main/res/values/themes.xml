@@ -49,7 +49,7 @@
 
     <!-- ChekcBox按钮颜色自定义-->
     <style name="MyCheckBox" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/text_gray</item>
-        <item name="colorControlActivated">@color/text_red</item>
+        <item name="colorControlNormal">@color/tv_gray</item>
+        <item name="colorControlActivated">@color/tv_red</item>
     </style>
 </resources>

@@ -3,13 +3,14 @@
     <!--右侧字母导航控件-->
     <declare-styleable name="IndexBar">
         <attr name="normalColor" format="color"/>
-        <attr name="selecColor" format="color"/>
+        <attr name="selectColor" format="color"/>
+        <attr name="selectCircleColor" format="color"/>
         <attr name="indexSize" format="dimension"/>
     </declare-styleable>
 
     <style name="dialog_date" parent="Base.Theme.AppCompat.Light.Dialog.FixedSize">
         <!--设置header部分显示的颜色-->
-        <item name="colorAccent">@color/text_red</item>
+        <item name="colorAccent">@color/tv_red</item>
     </style>
     <style name="DefaultButton">
         <item name="android:layout_width">188dp</item>

@@ -41,7 +41,7 @@ object TabUtils {
                 tv.apply {
                     textSize = 16f
                     normalColor = Color.GRAY
-                    selectedColor = ContextCompat.getColor(context,R.color.text_blue)
+                    selectedColor = ContextCompat.getColor(context,R.color.tv_blue)
                     text = tabs[index]
                     setOnClickListener {
                         helper.handlePageSelected(index)
@@ -57,7 +57,7 @@ object TabUtils {
                 indicator.apply {
                     yOffset = 30f
                     lineWidth = 60f
-                    setColors(ContextCompat.getColor(context, R.color.text_blue))
+                    setColors(ContextCompat.getColor(context, R.color.tv_blue))
                     roundRadius = 2f.px
                     mode = LinePagerIndicator.MODE_EXACTLY
                 }
@@ -87,7 +87,7 @@ object TabUtils {
                 val tv = SelectBigPagerTitleView(context)
                 tv.apply {
                     normalColor = Color.GRAY
-                    selectedColor = ContextCompat.getColor(context,R.color.text_blue)
+                    selectedColor = ContextCompat.getColor(context,R.color.tv_blue)
                     text = tabs[index]
                     setOnClickListener {
                         helper.handlePageSelected(index)
@@ -103,7 +103,7 @@ object TabUtils {
                 indicator.apply {
                     yOffset = 30f
                     lineWidth = 60f
-                    setColors(ContextCompat.getColor(context, R.color.text_blue))
+                    setColors(ContextCompat.getColor(context, R.color.tv_blue))
                     roundRadius = 2f.px
                     mode = LinePagerIndicator.MODE_EXACTLY
                 }

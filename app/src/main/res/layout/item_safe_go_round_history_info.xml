@@ -40,14 +40,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="描述           一切正常一切正常一切正常一切正常常"
-            android:textColor="@color/titleColor"
+            android:textColor="@color/tv_black"
             android:textSize="13sp" />
         <TextView
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="巡更时间      2020-5-23 12:00:21    "
-            android:textColor="@color/titleColor"
+            android:textColor="@color/tv_black"
             android:textSize="13sp" />
     <LinearLayout
         android:layout_marginTop="16dp"

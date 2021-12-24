@@ -91,9 +91,9 @@ class SignListActivity : BaseBindActivity<ActivitySignListBinding>() {
         //测试数据
         val calendars: HashMap<String?, com.haibin.calendarview.Calendar?> = HashMap()
         //标签颜色
-        val colorOrange = ContextCompat.getColor(this, R.color.text_orange)
-        val colorGrass = ContextCompat.getColor(this, R.color.text_grass)
-        val colorRed = ContextCompat.getColor(this, R.color.text_red)
+        val colorOrange = ContextCompat.getColor(this, R.color.tv_orange)
+        val colorGrass = ContextCompat.getColor(this, R.color.tv_grass)
+        val colorRed = ContextCompat.getColor(this, R.color.tv_red)
 
         //标签日期，颜色，文字
         val c = Calendar.getInstance()

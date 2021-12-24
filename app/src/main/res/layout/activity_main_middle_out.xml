@@ -57,7 +57,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/dp_6"
                         android:text="首页"
-                        android:textColor="@color/text_red"
+                        android:textColor="@color/tv_red"
                         android:textSize="@dimen/sp_12" />
                 </LinearLayout>
 
@@ -81,7 +81,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/dp_6"
                         android:text="服务"
-                        android:textColor="@color/text_gray"
+                        android:textColor="@color/tv_gray"
                         android:textSize="@dimen/sp_12" />
                 </LinearLayout>
 
@@ -105,7 +105,7 @@
                         android:layout_below="@+id/iv_tab1"
                         android:layout_centerHorizontal="true"
                         android:text="门禁"
-                        android:textColor="@color/text_gray"
+                        android:textColor="@color/tv_gray"
                         android:textSize="@dimen/sp_12" />
                 </LinearLayout>
 
@@ -203,7 +203,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="门禁"
-                android:textColor="@color/text_gray"
+                android:textColor="@color/tv_gray"
                 android:textSize="@dimen/sp_12" />
         </LinearLayout>
 
