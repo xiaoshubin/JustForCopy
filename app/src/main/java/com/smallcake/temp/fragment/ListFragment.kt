@@ -19,6 +19,7 @@ import com.jaygoo.widget.RangeSeekBar
 import com.jaygoo.widget.SeekBar
 import com.smallcake.smallutils.BitmapUtils
 import com.smallcake.smallutils.Captcha
+import com.smallcake.smallutils.SpannableStringUtils
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindFragment
@@ -78,6 +79,17 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
             bind.ball.setBgColor(Color.parseColor("#F5AD06"))
             bind.ball.setBottomColor(Color.parseColor("#FECE0A"))
         },3000)
+        //滚动的文本
+        bind.scrollTv.apply {
+            val spanStr = SpannableStringUtils.getBuilder("这是一段可以横向滚动的广告文本")
+                .append("J积分").setForegroundColor(Color.RED)
+                .append("的附近的肌肤的解放军的风景的房间的，最后的文字！")
+                .create()
+            setScrollText(spanStr)
+            setOnScrollCompleteListener {
+                Log.e(TAG, "我跑完拉！")
+            }
+        }
 
     }
 

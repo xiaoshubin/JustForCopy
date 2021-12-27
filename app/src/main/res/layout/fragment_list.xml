@@ -256,6 +256,12 @@
                android:layout_height="80dp"/>
        </LinearLayout>
         <View style="@style/h_line"/>
+        <com.smallcake.temp.weight.HorizontalScrollTextView
+            android:textColor="@color/tv_black"
+            android:id="@+id/scroll_tv"
+            android:text="这是一段可以横向滚动的广告文本"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
 
     </LinearLayout>
