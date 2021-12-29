@@ -1,9 +1,11 @@
 plugins {
     id "com.android.application"
+    id "org.greenrobot.greendao"
     id "kotlin-android"
     id "kotlin-kapt"
     id "koin"
     id "kotlin-parcelize"
+
 }
 
 static def releaseTime() {
@@ -38,6 +40,9 @@ android {
                 JPUSH_APPKEY : "你的Appkey", //JPush 上注册的包名对应的 Appkey.
                 JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
         ]
+    }
+    greendao {
+        schemaVersion 1 //当前数据库版本
     }
 
     buildTypes {
@@ -221,7 +226,9 @@ dependencies {
     //SVAG动画库
     implementation 'com.github.yyued:SVGAPlayer-Android:2.6.1'
     //Android内购订单
-    implementation 'com.android.billingclient:billing:1.2'
+    implementation 'com.android.billingclient:billing:4.0.0'
+    //GreenDao
+    implementation 'org.greenrobot:greendao:3.3.0'
 
 
 

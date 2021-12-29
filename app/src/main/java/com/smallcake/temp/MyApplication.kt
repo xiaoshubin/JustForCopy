@@ -1,5 +1,7 @@
 package com.smallcake.temp
 
+import GreenDao.DaoMaster
+import GreenDao.DaoSession
 import android.app.Application
 import android.content.Context
 import android.net.http.HttpResponseCache
@@ -30,6 +32,7 @@ import java.io.File
 class MyApplication : Application() {
     companion object{
        lateinit var instance:MyApplication
+       lateinit var daoSession : DaoSession
     }
 
     /**
@@ -85,7 +88,17 @@ class MyApplication : Application() {
 
         //百度地图
         SDKInitializer.initialize(this)
+        initDao()
 
+    }
+
+    /**
+     * 初始化GreenDao数据库
+     */
+    private fun initDao(){
+        val helper = DaoMaster.DevOpenHelper(this,"smallcake.db")//创建的数据库名。
+        val db = helper.writableDb
+        daoSession = DaoMaster(db).newSession()
     }
 
 

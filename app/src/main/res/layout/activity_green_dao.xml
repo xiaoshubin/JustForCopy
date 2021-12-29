@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.GreenDaoActivity">
+    <EditText
+        android:hint="请输入要增删改查的内容"
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <com.smallcake.smallutils.custom.AutoNewLineLayout
+        app:horizontalSpace="8dp"
+        app:vertivalSpace="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_add"
+            android:text="增"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_del"
+            android:text="删"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/btn_search"
+            android:text="查"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_search_m"
+            android:text="模糊查"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_search_all"
+            android:text="查全部"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_del_all"
+            android:text="删全部"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </com.smallcake.smallutils.custom.AutoNewLineLayout>
+    <com.smallcake.smallutils.custom.AutoNewLineLayout
+        android:id="@+id/layout_list"
+        app:horizontalSpace="8dp"
+        app:vertivalSpace="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:hint="点击上面要修改的项,并输入要修改的值 "
+            android:id="@+id/tv_edit_before"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_edit"
+            android:text="改"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
