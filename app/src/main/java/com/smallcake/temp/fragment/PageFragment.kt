@@ -20,6 +20,7 @@ import com.smallcake.temp.music.ExoMusicActivity
 import com.smallcake.temp.pay.GooglePayActivity
 import com.smallcake.temp.service.ServiceActivity
 import com.smallcake.temp.ui.*
+import com.smallcake.temp.video.VideoActivity
 
 class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
     private val mAdapter = PageBeanAdapter()
@@ -46,7 +47,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("ShapeView", ShapeViewActivity::class.java,"ShapeView,ShapeButton,ShapeTextView"),
             PageBean("倒计时列表", CountDownListActivity::class.java,"倒计时列表"),
             PageBean("下载", DownloadDataActivity::class.java,"下载apk"),
-            PageBean("视频相关", VideoActivity::class.java,"视频压缩，视频播放"),
+            PageBean("GSY视频播放", VideoActivity::class.java,"视频压缩，视频播放,GSYVideoPlayer"),
             PageBean("多布局列表", MoreLayoutListActivity::class.java,"多布局列表"),
             PageBean("相机", CameraCustomActivity::class.java,"自定义相机"),
             PageBean("PDF", PdfActivity::class.java,"PDF"),

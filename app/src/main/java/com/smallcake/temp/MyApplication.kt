@@ -1,7 +1,5 @@
 package com.smallcake.temp
 
-import GreenDao.DaoMaster
-import GreenDao.DaoSession
 import android.app.Application
 import android.content.Context
 import android.net.http.HttpResponseCache
@@ -14,6 +12,8 @@ import com.opensource.svgaplayer.SVGAParser
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
 import com.smallcake.smallutils.SmallUtils
+import com.smallcake.temp.bean.DaoMaster
+import com.smallcake.temp.bean.DaoSession
 import com.smallcake.temp.module.httpModule
 import com.smallcake.temp.utils.L
 import com.tencent.mmkv.MMKV

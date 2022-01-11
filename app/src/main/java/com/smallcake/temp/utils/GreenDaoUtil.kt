@@ -1,9 +1,8 @@
 package com.smallcake.temp.utils
 
-import GreenDao.ConstactBeanDao
-import com.amap.api.mapcore.util.eq
 import com.smallcake.temp.MyApplication
 import com.smallcake.temp.bean.ConstactBean
+import com.smallcake.temp.bean.ConstactBeanDao
 import org.greenrobot.greendao.query.QueryBuilder
 
 

@@ -31,6 +31,9 @@
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
         <activity
+            android:name=".video.ExoVideoActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.GreenDaoActivity"
             android:exported="false" />
         <activity
@@ -56,37 +59,37 @@
         <activity
             android:name=".ui.SvgaActivity"
             android:exported="false" />
-        <activity android:name=".coroutines.CoroutinesActivity" />
-        <activity android:name=".kotlinflow.KotlinFlowActivity" />
-        <activity android:name=".pay.GooglePayActivity" />
-        <activity android:name=".ui.SingleVideoPlayActivity" />
-        <activity android:name=".music.ExoMusicActivity" />
-        <activity android:name=".ui.MusicPlayActivity" />
-        <activity android:name=".chart.ChartActivity" />
+        <activity android:name=".coroutines.CoroutinesActivity"  android:exported="false"/>
+        <activity android:name=".kotlinflow.KotlinFlowActivity"  android:exported="false"/>
+        <activity android:name=".pay.GooglePayActivity"  android:exported="false"/>
+        <activity android:name=".ui.SingleVideoPlayActivity"  android:exported="false"/>
+        <activity android:name=".music.ExoMusicActivity"  android:exported="false"/>
+        <activity android:name=".ui.MusicPlayActivity"  android:exported="false"/>
+        <activity android:name=".chart.ChartActivity"  android:exported="false"/>
         <activity
             android:name=".ui.SignActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="签名"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"  android:exported="false"/>
         <activity android:name=".ui.PdfActivity" />
-        <activity android:name=".weight.CameraActivity" />
-        <activity android:name=".ui.CameraCustomActivity" />
-        <activity android:name=".ui.MoreLayoutListActivity" />
+        <activity android:name=".weight.CameraActivity"  android:exported="false"/>
+        <activity android:name=".ui.CameraCustomActivity"  android:exported="false"/>
+        <activity android:name=".ui.MoreLayoutListActivity"  android:exported="false"/>
         <activity
-            android:name=".ui.VideoActivity"
+            android:name=".video.VideoActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:screenOrientation="fullSensor" />
-        <activity android:name=".ui.DownloadDataActivity" />
-        <activity android:name=".ui.CountDownListActivity" />
-        <activity android:name=".ui.ShapeViewActivity" />
-        <activity android:name=".ui.CustomCaptureActivity" />
-        <activity android:name=".ui.TextViewActivity" />
-        <activity android:name=".ui.LoginActivity" />
-        <activity android:name=".ui.SafeGoRoundHistoryInfoActivity" />
-        <activity android:name=".ui.MainFragmentsActivity" />
-        <activity android:name=".ui.RecordActivity" />
-        <activity android:name=".TestActivity" />
+            android:screenOrientation="fullSensor"  android:exported="false"/>
+        <activity android:name=".ui.DownloadDataActivity"  android:exported="false"/>
+        <activity android:name=".ui.CountDownListActivity"  android:exported="false"/>
+        <activity android:name=".ui.ShapeViewActivity"  android:exported="false"/>
+        <activity android:name=".ui.CustomCaptureActivity"  android:exported="false"/>
+        <activity android:name=".ui.TextViewActivity"  android:exported="false"/>
+        <activity android:name=".ui.LoginActivity"  android:exported="false"/>
+        <activity android:name=".ui.SafeGoRoundHistoryInfoActivity"  android:exported="false"/>
+        <activity android:name=".ui.MainFragmentsActivity"  android:exported="false"/>
+        <activity android:name=".ui.RecordActivity"  android:exported="false"/>
+        <activity android:name=".TestActivity"  android:exported="false"/>
 
         <meta-data
             android:name="android.max_aspect"
@@ -108,11 +111,11 @@
                 android:resource="@xml/filepath_data" />
         </provider>
 
-        <activity android:name=".ui.SignListActivity" />
-        <activity android:name=".ui.ReportRepairActivity" />
-        <activity android:name=".map.LocationMapActivity" />
-        <activity android:name=".ui.MainMiddleOutActivity" />
-        <activity android:name=".ui.CitySelectActivity" />
+        <activity android:name=".ui.SignListActivity"  android:exported="false"/>
+        <activity android:name=".ui.ReportRepairActivity"  android:exported="false"/>
+        <activity android:name=".map.LocationMapActivity"  android:exported="false"/>
+        <activity android:name=".ui.MainMiddleOutActivity"  android:exported="false"/>
+        <activity android:name=".ui.CitySelectActivity"  android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -143,6 +146,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
+            android:exported="false"
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />

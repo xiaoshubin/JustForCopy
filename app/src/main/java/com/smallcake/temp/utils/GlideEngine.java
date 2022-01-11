@@ -22,7 +22,11 @@ import com.luck.picture.lib.tools.MediaUtils;
 import com.luck.picture.lib.widget.longimage.ImageSource;
 import com.luck.picture.lib.widget.longimage.ImageViewState;
 import com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView;
+import com.smallcake.smallutils.CameraUtils;
 import com.smallcake.temp.R;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 /**
  * 这个类是用于选择图片框架要传一个图片加载引擎，必传项

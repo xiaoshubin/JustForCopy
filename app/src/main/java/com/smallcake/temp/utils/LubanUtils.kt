@@ -11,7 +11,7 @@ class LubanUtils {
         Luban.with(SmallUtils.context)
             .load(filePath)
             .ignoreBy(100) // 忽略不压缩图片的大小
-            .setTargetDir(filePath) // 设置压缩后文件存储位置
+            .setTargetDir(SmallUtils.context?.externalCacheDir?.path) // 设置压缩后文件存储位置
             .setCompressListener(object : OnCompressListener {
                 //设置回调
                 override fun onStart() {}
