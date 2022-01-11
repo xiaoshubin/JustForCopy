@@ -197,7 +197,8 @@
         <!-- GooglePay 开始 -->
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
-            android:value="true" /> <!-- GooglePay 结束 -->
+            android:value="true" />
+        <!-- GooglePay 结束 -->
         <!-- RoomService 开始 -->
         <service android:name=".service.RoomService" />
     </application>
