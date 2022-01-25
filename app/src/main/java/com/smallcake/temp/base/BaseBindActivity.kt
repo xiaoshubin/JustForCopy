@@ -27,8 +27,8 @@ abstract class BaseBindActivity<VB:ViewBinding>: BaseActivity() {
         val bar = NavigationBar(this)
         bar.titleView.setTextColor(ContextCompat.getColor(this,R.color.tv_black))
         bar.setBackgroundColor(Color.WHITE,true)
-        bar.backImageView?.setImageResource(R.mipmap.ic_back)
-        bar.backImageView?.setOnClickListener{finish()}
+        bar.backImageView.setImageResource(R.mipmap.ic_back)
+        bar.backImageView.setOnClickListener{finish()}
         onCreate(savedInstanceState,bar)
         //调试器
         if (BuildConfig.DEBUG) EasyFloat.with(this)
@@ -46,5 +46,6 @@ abstract class BaseBindActivity<VB:ViewBinding>: BaseActivity() {
 
     }
     abstract fun onCreate(savedInstanceState: Bundle?,bar:NavigationBar)
+
 
 }

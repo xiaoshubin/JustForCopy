@@ -1,8 +1,11 @@
 package com.smallcake.temp.map
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.location.Location
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.Lifecycle
@@ -19,145 +22,196 @@ import com.baidu.mapapi.animation.Transformation
 import com.baidu.mapapi.map.*
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.search.geocode.*
+import com.hjq.permissions.OnPermissionCallback
+import com.hjq.permissions.Permission
+import com.hjq.permissions.XXPermissions
 import com.smallcake.smallutils.px
 import com.smallcake.temp.R
+import com.smallcake.temp.utils.showToast
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
+import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
+
+/**
+ *
+ * 需要给每个marker设置id,为了实现maker的点击事件
+ * 添加一个视图View到地图中
+ * @param mapView MapView
+ * @param latLng LatLng
+ * @param view View
+ * @return Marker
+ */
+fun MapView.addView(latLng:LatLng,view:View):Marker{
+    val bimapDesc = BitmapDescriptorFactory.fromView(view)
+    val markerOptions = MarkerOptions()
+        .position(latLng)
+        .icon(bimapDesc)
+    return map.addOverlay(markerOptions) as Marker
+}
+/**
+ * 添加一个marker
+ * @receiver MapView
+ * @param latLng LatLng
+ * @param icon 图片资源id
+ */
+fun MapView.addMarker(latLng:LatLng,icon:Int=R.mipmap.ic_location_red,id: String?=null):Marker{
+    val bimapDesc = BitmapDescriptorFactory.fromResource(icon)
+    val markerOptions = MarkerOptions()
+        .position(latLng) //Marker经纬度
+        .animateType(MarkerOptions.MarkerAnimateType.grow)
+        .icon(bimapDesc)
+    val marker = map.addOverlay(markerOptions) as Marker
+    marker.setId(id)
+    return marker
+}
+/**
+ * 移动到地图中心点，根据经纬度
+ * @receiver MapView
+ * @param latLng LatLng
+ */
+fun MapView.toCenter(latLng:LatLng){
+    map.animateMapStatus(MapStatusUpdateFactory.newLatLng(latLng))
+}
+/**
+ * 把一个marker从它本身位置移动到指定的新的经纬度
+ * @receiver Marker
+ * @param latLng LatLng
+ */
+fun Marker?.moveTo(latLng:LatLng){
+    if (this==null)return
+    val transformation = Transformation(this.position, latLng)
+    transformation.setDuration(1000)
+    this.setAnimation(transformation)
+    this.startAnimation()
+}
+/**
+ * 给Marker设置id
+ * @param id Int
+ */
+fun Marker?.setId(id:String?){
+    if (TextUtils.isEmpty(id))return
+    val bundle = Bundle()
+    bundle.putString("id",id)
+    this?.extraInfo = bundle
+}
+
+/**
+ * 百度定位信息转经纬度类
+ * @see BDLocation?
+ * @see LatLng?
+ */
+fun BDLocation?.toLatLng():LatLng{
+    if (this==null)return LatLng(0.0,0.0)
+    return LatLng(this.latitude,this.longitude)
+}
+
 
 /**
  * 百度地图帮助类
+一·项目配置
+*@see BaiduMapActivity
+二·使用帮助
+1.单次定位
+ * @see onceLocation
  * 注意：
- * 1.要有定位指示，需要开启我的定位，bind.bmapView.map.isMyLocationEnabled = true
- * 并在页面结束onDestroy时关闭bind.bmapView.map.isMyLocationEnabled = false
- * 拿到定位数据BDLocation后转换MyLocationData并设置 bind.bmapView.map.setMyLocationData(locData)
- *
+ * 开启地图的定位图层
+ * mBaiduMap.setMyLocationEnabled(true);
+ * 并在onDestory中关闭
+ * mBaiduMap.setMyLocationEnabled(false);
  *
  * 参考：
- * 1.定位：https://lbsyun.baidu.com/index.php?title=android-locsdk
+ * 1.官方定位：https://lbsyun.baidu.com/index.php?title=android-locsdk
  *
- * 问题1：
- * 只定位一次，加了服务并配置了定位间隔>1000ms
- * 原因：换个手机，重启
- *
- * 问题2：定位经纬度出现：4.9E-324
- * 原因：权限问题，so库错误或没有配置，申请AK时输入的sha错误
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
  *
  */
-object BmapHelper {
+object BmapHelper: KoinComponent {
     private  val TAG = "BmapHelper"
     /**
-     * 开始定位
+     * 申请定位相关权限
      * @param context Context
-     * @param BDLocation       百度定位数据
-     * @param MyLocationData   定位转换的数据
-     *
+     * @param block Function0<Unit>
      */
-    fun startLocation(context: Context,cb:(location: BDLocation?,locationData:MyLocationData)->Unit){
-        //通过LocationClient发起定位
-        val mLocationClient = LocationClient(context)
-        val option = LocationClientOption()
-        option.isOpenGps = true //打开gps
-        option.setCoorType("bd09ll") // 设置坐标类型
-        option.setScanSpan(0)//可选，默认0，即仅定位一次，设置发起连续定位请求的间隔需要大于等于1000ms才是有效的
-        option.isLocationNotify = true//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
-        option.locationMode = LocationClientOption.LocationMode.Hight_Accuracy//基础
-        option.setIgnoreKillProcess(true)//关闭后不杀死当前定位服务
-        option.setIsNeedAddress(true)
-        mLocationClient.locOption = option
-        //注册监听器
-        mLocationClient.registerLocationListener(object :BDAbstractLocationListener(){
-            override fun onReceiveLocation(location: BDLocation?) {
-                Log.e(TAG,"定位信息：[lat:${location?.latitude},lng:${location?.longitude}]")
-                if (location == null) return
-                val locData = MyLocationData.Builder()
-                    .accuracy(location.radius) // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(location.direction).latitude(location.latitude)
-                    .longitude(location.longitude).build()
-                cb.invoke(location,locData)
-            }
-        })
-        //开启地图定位图层
-        mLocationClient.start()
+    fun requestPermiss(context: Context,block:()->Unit){
+        XXPermissions.with(context)
+            .permission(listOf(Permission.ACCESS_COARSE_LOCATION, Permission.ACCESS_FINE_LOCATION))
+            .request(object : OnPermissionCallback {
+                override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
+                    if (all)block()
+                }
+
+                override fun onDenied(permissions: MutableList<String>?, never: Boolean) {
+                    super.onDenied(permissions, never)
+                    if (never){
+                        showToast("需要开启相关定位权限:$permissions")
+                        XXPermissions.startPermissionActivity(context,permissions)
+                    }
+                }
+            })
     }
 
     /**
-     * 根据经纬度，更新此坐标到地图中心点
-     * @param baiduMap BaiduMap
-     * @param latLng LatLng
+     * 单次定位，拿到结果后不再监听
      */
-    fun updateCenter(mapView: MapView, latLng:LatLng){
-        mapView.map.setMapStatus(MapStatusUpdateFactory.newLatLng(latLng))
+    fun onceLocation(context: Context,cb:(BDLocation)->Unit){
+        val mLocationClient :LocationClient by inject { parametersOf(context) }
+        mLocationClient.registerLocationListener(object :BDAbstractLocationListener(){
+            override fun onReceiveLocation(location: BDLocation?) {
+                mLocationClient.stop()
+                mLocationClient.unRegisterLocationListener(this)
+                if (location != null) cb.invoke(location)
+            }
+        })
+        mLocationClient.start()
+    }
+
+
+
+    /**
+     * 将定位信息转换为有方向的导航箭头信息
+     * 注意要使用此信息需要：
+     * 1.在onCreate中开启 bind.bmapView.map.isMyLocationEnabled = true
+     * 2.在onDestory中关闭 bind.bmapView.map.isMyLocationEnabled = false
+     * 3.在onCreate中配置显示的信息
+     * @see setMyLocationConfig
+     * @param location BDLocation? 定位结果
+     * @return MyLocationData?
+     */
+    private fun transMyLocationData(location: BDLocation?):MyLocationData?{
+        if (location == null) return null
+        return MyLocationData.Builder()
+            .accuracy(location.radius) // 此处设置开发者获取到的方向信息，顺时针0-360
+            .direction(location.direction).latitude(location.latitude)
+            .longitude(location.longitude).build()
+    }
+
+    /**
+     * 定位图层定位信息显示
+     * @param mapView MapView
+     * @param latLng LatLng
+     * mBaiduMap.setMyLocationEnabled(true);
+     * 并在onDestory中关闭
+     * mBaiduMap.setMyLocationEnabled(false);
+     */
+    fun toCenterMyLocation(mapView: MapView, location:BDLocation){
+        val myLocationData= transMyLocationData(location)
+        mapView.map.setMyLocationData(myLocationData)
     }
 
     /**
      * 设置定位配置，包含方向信息
+     * FOLLOWING:此模式会移动到当前定位信息点
      */
-    fun setConfig(mapView: MapView){
+    fun setMyLocationConfig(mapView: MapView){
         //定位图标
         val bitmapDescriptor= BitmapDescriptorFactory.fromResource(R.mipmap.ic_location_red)
         //NORMAL:方向固定旋转图标会一起旋转，COMPASS会显示一个指南针，放大后圈颜色
         val myLocationConfiguration = MyLocationConfiguration(
-            MyLocationConfiguration.LocationMode.FOLLOWING,true,bitmapDescriptor, 0,Color.RED)
+            MyLocationConfiguration.LocationMode.FOLLOWING,false,null, 0,Color.RED)
         mapView.map.setMyLocationConfiguration(myLocationConfiguration)
     }
 
-    /**
-     * 隐藏放大缩小按钮
-     * @param mMapView MapView
-     */
-    fun setZoomControlsGone(mMapView: MapView) {
-        mMapView.showZoomControls(false)
-    }
 
-    /**
-     * 添加一个标记Marker
-     * @param mapView MapView
-     * @param latLng LatLng
-     * @return Marker
-     */
-    fun addMarker(mapView: MapView,latLng:LatLng,icon:Int=R.mipmap.ic_location_red):Marker{
-        val bimapDesc = BitmapDescriptorFactory.fromResource(icon)
-        val markerOptions = MarkerOptions()
-            .position(latLng) //Marker经纬度
-            .animateType(MarkerOptions.MarkerAnimateType.grow)
-            .icon(bimapDesc)
-        return mapView.map.addOverlay(markerOptions) as Marker
-    }
-
-    /**
-     *
-     * 需要给每个marker设置id,为了实现maker的点击事件
-     *
-    val bundle = Bundle()
-    bundle.putInt("id",10086)
-    markerOptions.extraInfo(bundle)
-    //地图设置点击Marker事件
-    bind.bmapView.map.setOnMarkerClickListener {marker->
-    val bundle = marker.extraInfo
-    val id = bundle.getInt("id")
-    if (id==10086){
-    marker.remove()
-    }
-    false
-    }
-     * 添加一个视图View到地图中
-     * @param mapView MapView
-     * @param latLng LatLng
-     * @param view View
-     * @return Marker
-     */
-    fun addView(mapView: MapView,latLng:LatLng,view: View):Marker{
-        val bimapDesc = BitmapDescriptorFactory.fromView(view)
-        val markerOptions = MarkerOptions()
-            .position(latLng) //Marker经纬度
-            .icon(bimapDesc)
-        return mapView.map.addOverlay(markerOptions) as Marker
-    }
 
     /**
      * 创建动画
@@ -166,7 +220,7 @@ object BmapHelper {
      * marker.setAnimation(createAnim())
      * marker.startAnimation()
      */
-    fun createAnim(): Animation {
+    fun createAnim():Animation{
         val scaleAnimation = ScaleAnimation(1f, 1.2f, 1f)
         scaleAnimation.setDuration(1000) // 动画播放时间
         scaleAnimation.setRepeatCount(1000)
@@ -178,12 +232,12 @@ object BmapHelper {
      * 放大1.2倍动画
      * @return Animation
      */
-    fun scaleAnim1_2f(): Animation {
+    fun scaleAnim1_2f():Animation{
         val scaleAnimation = ScaleAnimation(1f, 1.2f)
         scaleAnimation.setDuration(300) // 动画播放时间
         return scaleAnimation
     }
-    fun scaleAnim1_2to1f(): Animation {
+    fun scaleAnim1_2to1f():Animation{
         val scaleAnimation = ScaleAnimation(1.2f, 1f)
         scaleAnimation.setDuration(300) // 动画播放时间
         return scaleAnimation
@@ -194,18 +248,19 @@ object BmapHelper {
      * 务必在Activity的onDestroy函数里，调用MapView和GeoCoder的销毁方法，否则会有内存泄露。
      * @param latLng
      */
-    fun reverseRequest(lifecycleOwner: LifecycleOwner, latLng: LatLng) {
+    fun reverseRequest(lifecycleOwner: LifecycleOwner,latLng: LatLng,cb:(ReverseGeoCodeResult)->Unit) {
         val reverseGeoCodeOption: ReverseGeoCodeOption = ReverseGeoCodeOption().location(latLng)
             .newVersion(1)
             .radius(100)
             .pageNum(1)
         val mGeoCoder = GeoCoder.newInstance()
-        mGeoCoder.setOnGetGeoCodeResultListener(object : OnGetGeoCoderResultListener {
+        mGeoCoder.setOnGetGeoCodeResultListener(object : OnGetGeoCoderResultListener{
             override fun onGetGeoCodeResult(result: GeoCodeResult?) {
                 Log.e(TAG,"result:$result")
             }
-            override fun onGetReverseGeoCodeResult(result: ReverseGeoCodeResult?) {
+            override fun onGetReverseGeoCodeResult(result: ReverseGeoCodeResult) {
                 Log.e(TAG,"ReverseResult:$result")
+                cb.invoke(result)
             }
         })
         mGeoCoder.reverseGeoCode(reverseGeoCodeOption)
@@ -216,43 +271,5 @@ object BmapHelper {
             }
         })
     }
-
-    /**
-     * 把一个标记从一个位置移动到另一个位置
-     * @param marker Marker
-     * @param latLng LatLng
-     */
-    fun transMove(marker: Marker,latLng: LatLng){
-        val transformation = Transformation(marker.position, latLng)
-        transformation.setDuration(1000)
-        marker.setAnimation(transformation)
-        marker.startAnimation()
-    }
-
-    /**
-     * 给Marker设置id
-     * @param marker Marker
-     * @param id Int
-     */
-    fun setMarkerId(marker: Marker,id:Int){
-        val bundle = Bundle()
-        bundle.putInt("id",id)
-        marker.extraInfo = bundle
-    }
-
-    /**
-     * 显示InfoWindow
-     * @param mapView MapView
-     * @param latLng LatLng
-     *
-     * val view = LayoutInflater.from(context).inflate(R.layout.item_event_marker,null)
-     * val infoWindow = BmapHelper.showInfoWindow(bind.bmapView,marker.position,view)
-     */
-    fun showInfoWindow(mapView: MapView,latLng: LatLng,view: View):InfoWindow{
-        val infoWindow = InfoWindow(view,latLng, 100.px)
-        mapView.map.showInfoWindow(infoWindow)
-        return infoWindow
-    }
-
 
 }

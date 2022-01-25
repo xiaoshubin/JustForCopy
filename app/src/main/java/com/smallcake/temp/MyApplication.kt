@@ -15,11 +15,13 @@ import com.smallcake.smallutils.SmallUtils
 import com.smallcake.temp.bean.DaoMaster
 import com.smallcake.temp.bean.DaoSession
 import com.smallcake.temp.module.httpModule
+import com.smallcake.temp.module.mapModule
 import com.smallcake.temp.utils.L
 import com.tencent.mmkv.MMKV
 import com.tencent.smtt.export.external.TbsCoreSettings
 import com.tencent.smtt.sdk.QbSdk
 import io.reactivex.android.schedulers.AndroidSchedulers
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.litepal.LitePal
 import java.io.File
@@ -50,7 +52,8 @@ class MyApplication : Application() {
         Logger.addLogAdapter(AndroidLogAdapter())
         //模块注入
         startKoin{
-            modules(httpModule)
+            androidContext(this@MyApplication)
+            modules(httpModule, mapModule)
         }
         //事件通知
         Apollo.init(AndroidSchedulers.mainThread(), this)

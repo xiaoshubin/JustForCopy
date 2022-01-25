@@ -1,31 +1,12 @@
 package com.smallcake.temp.map
 
-import android.graphics.Color
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
-import com.baidu.location.BDAbstractLocationListener
-import com.baidu.location.BDLocation
-import com.baidu.location.LocationClient
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityBaiduMapBinding
-import com.baidu.mapapi.map.MyLocationData
-import com.baidu.location.LocationClientOption
-import com.baidu.mapapi.map.BitmapDescriptor
-import com.baidu.mapapi.map.BitmapDescriptorFactory
-import com.baidu.mapapi.map.MyLocationConfiguration
-import com.luck.picture.lib.tools.BitmapUtils
-import com.smallcake.temp.R
-import com.baidu.mapapi.map.MapStatusUpdateFactory
-
-import com.baidu.mapapi.map.MapStatusUpdate
-import com.baidu.mapapi.model.LatLng
-import com.hjq.permissions.OnPermissionCallback
-import com.hjq.permissions.Permission
-import com.hjq.permissions.XXPermissions
-import com.smallcake.temp.MyApplication
 import com.smallcake.temp.utils.showToast
+import org.koin.core.component.KoinComponent
 
 
 /**
@@ -121,41 +102,34 @@ import com.smallcake.temp.utils.showToast
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
  */
-class BaiduMapActivity : BaseBindActivity<ActivityBaiduMapBinding>() {
+class BaiduMapActivity : BaseBindActivity<ActivityBaiduMapBinding>() , KoinComponent {
 
     private val TAG = "BaiduMapActivity"
 
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.setTitle("百度地图")
-//        bind.bmapView.onCreate(this,savedInstanceState)
+        bar.menuTextView.apply {
+            text = "重新定位"
+            setOnClickListener{
+                showToast("重新定位中...")
+                startLocation()
+            }
+        }
         //开启地图的定位图层
         bind.bmapView.map.isMyLocationEnabled = true
         //定位图标配置
-        BmapHelper.setConfig(bind.bmapView)
-
-        XXPermissions.with(this)
-            .permission(listOf(Permission.ACCESS_COARSE_LOCATION,Permission.ACCESS_FINE_LOCATION))
-            .request(object :OnPermissionCallback{
-                override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
-                    if (all)startLocation()
-                }
-
-                override fun onDenied(permissions: MutableList<String>?, never: Boolean) {
-                    super.onDenied(permissions, never)
-                    if (never){
-                        showToast("需要开启相关定位权限:$permissions")
-                        XXPermissions.startPermissionActivity(this@BaiduMapActivity,permissions)
-                    }
-                }
-            })
-
-
+        BmapHelper.setMyLocationConfig(bind.bmapView)
+        //申请权限并开始定位
+        BmapHelper.requestPermiss(this){
+            startLocation()
+        }
     }
-    fun startLocation(){
+    private fun startLocation(){
         //开始定位，并设置到中心点
-        BmapHelper.startLocation(this){ location: BDLocation?, locData: MyLocationData ->
-            bind.bmapView.map.setMyLocationData(locData)
-            BmapHelper.updateCenter(bind.bmapView, LatLng(locData.latitude,locData.longitude))
+        BmapHelper.onceLocation(this){location->
+            Log.e(TAG,"定位信息：$location")
+            BmapHelper.toCenterMyLocation(bind.bmapView,location)
+            bind.bmapView.toCenter(location.toLatLng())
         }
     }
 
@@ -163,13 +137,15 @@ class BaiduMapActivity : BaseBindActivity<ActivityBaiduMapBinding>() {
         super.onResume()
         bind.bmapView.onResume()
     }
+
     override fun onPause() {
         super.onPause()
         bind.bmapView.onPause()
     }
+
     override fun onDestroy() {
-        super.onDestroy()
         bind.bmapView.map.isMyLocationEnabled = false
         bind.bmapView.onDestroy()
+        super.onDestroy()
     }
 }
