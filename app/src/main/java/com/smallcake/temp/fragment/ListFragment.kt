@@ -89,6 +89,7 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
             setOnScrollCompleteListener {
                 Log.e(TAG, "我跑完拉！")
             }
+//            startScroll()
         }
 
     }

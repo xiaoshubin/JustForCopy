@@ -13,7 +13,7 @@
         <item name="colorAccent">@color/tv_red</item>
     </style>
     <style name="DefaultButton">
-        <item name="android:layout_width">188dp</item>
+        <item name="android:layout_width">144dp</item>
         <item name="android:layout_height">44dp</item>
         <item name="android:background">@drawable/btn_red_orange_bg</item>
         <item name="android:textColor">@color/white</item>

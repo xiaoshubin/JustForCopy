@@ -27,7 +27,6 @@ import com.smallcake.smallutils.SdUtils
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityVideoBinding
-import com.smallcake.temp.ui.SingleVideoPlayActivity
 import com.smallcake.temp.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -137,6 +136,7 @@ class VideoActivity : BaseBindActivity<ActivityVideoBinding>() {
         bind.btnPlaySingleVideo.setOnClickListener{
             SingleVideoPlayActivity.go(this@VideoActivity, url)
         }
+        bind.btnExo.setOnClickListener{goActivity(ExoVideoActivity::class.java)}
     }
 
     /**

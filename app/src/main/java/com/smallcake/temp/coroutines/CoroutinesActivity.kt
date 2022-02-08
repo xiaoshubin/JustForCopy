@@ -43,10 +43,9 @@ class CoroutinesActivity : BaseBindActivity<ActivityCoroutinesBinding>() {
 
 
         bind.btnGet.setOnClickListener{
-            viewModel.getMobileData("18324138218")
+            viewModel.getMobileData("18324138218",dialog)
         }
-        Handler().postDelayed({ replaceFragment(Fragment1(), R.id.container)},1000)
-        Handler().postDelayed({viewModel.getMobileData("18324138218")},3000)
+
 
         viewModel.mobileData.observe(this){
             bind.tvDesc.text = "主页面result:${it?.result}"

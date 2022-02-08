@@ -62,7 +62,7 @@
         <activity android:name=".coroutines.CoroutinesActivity"  android:exported="false"/>
         <activity android:name=".kotlinflow.KotlinFlowActivity"  android:exported="false"/>
         <activity android:name=".pay.GooglePayActivity"  android:exported="false"/>
-        <activity android:name=".ui.SingleVideoPlayActivity"  android:exported="false"/>
+        <activity android:name=".video.SingleVideoPlayActivity"  android:exported="false"/>
         <activity android:name=".music.ExoMusicActivity"  android:exported="false"/>
         <activity android:name=".ui.MusicPlayActivity"  android:exported="false"/>
         <activity android:name=".chart.ChartActivity"  android:exported="false"/>
@@ -118,8 +118,7 @@
         <activity android:name=".ui.CitySelectActivity"  android:exported="false"/>
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:launchMode="singleTask">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

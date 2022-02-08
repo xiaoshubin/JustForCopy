@@ -8,6 +8,9 @@
     android:layout_height="match_parent"
     tools:context=".video.VideoActivity">
     <com.smallcake.smallutils.custom.AutoNewLineLayout
+        android:padding="8dp"
+        app:horizontalSpace="8dp"
+        app:vertivalSpace="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatButton
@@ -18,11 +21,16 @@
             android:id="@+id/btn_compress"
             android:text="压缩视频"
             style="@style/DefaultButton"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_play_single_video"
+            android:text="播放单个视频"
+            style="@style/DefaultButton"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_exo"
+            android:text="Exo播放器"
+            style="@style/DefaultButton"/>
     </com.smallcake.smallutils.custom.AutoNewLineLayout>
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_play_single_video"
-        android:text="播放单个视频"
-        style="@style/DefaultButton"/>
+
     <TextView
         android:text="视频信息"
         android:id="@+id/tv_video_info"
