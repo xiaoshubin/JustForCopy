@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.amap.api.mapcore.util.it
 import com.amap.api.maps.AMap
 import com.amap.api.maps.model.LatLng
 import com.amap.api.maps.model.Marker
@@ -33,12 +34,11 @@ import com.smallcake.temp.utils.showToast
 1.【高德sdk引入】
 
     //高德定位功能
-    implementation 'com.amap.api:location:3.3.0'
+    implementation 'com.amap.api:location:5.6.2'
     //高德地图
-    implementation 'com.amap.api:3dmap:5.0.0'
+    implementation 'com.amap.api:3dmap:9.0.0'
     //高德检索
-    implementation 'com.amap.api:search:5.0.0'
-
+    implementation 'com.amap.api:search:8.1.0'
 
 
 2.【高德sdk密钥配置】
@@ -81,6 +81,7 @@ import com.smallcake.temp.utils.showToast
 解决方案二：不使用红米手机（测试不干）
 解决方案三：猜想黑屏是渲染导致，那么可以延迟处理其中一方，地图因为要跟随onCreate的创建而绑定，没法弄，于是考虑延迟300豪秒来设置特殊文本到文本控件中
 
+从地图8.1.0版本起对旧版本SDK不兼容，请务必确保调用SDK任何接口前先调用更新隐私合规updatePrivacyShow、updatePrivacyAgree两个接口
  *
  */
 class LocationMapActivity : BaseBindActivity<ActivityLocationMapBinding>() {
@@ -93,24 +94,18 @@ class LocationMapActivity : BaseBindActivity<ActivityLocationMapBinding>() {
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bind.mapView.onCreate(savedInstanceState)
         bar.setTitle("地址选择")
-
         XXPermissions.with(this)
             .permission(listOf(Permission.ACCESS_FINE_LOCATION, Permission.ACCESS_COARSE_LOCATION))
             .request{ _, all->
                 if (all) initView()
-
             }
 
-
-
-
-
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        bind.mapView.onSaveInstanceState(outState)
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//        bind.mapView.onSaveInstanceState(outState)
+//    }
 
     private fun initView() {
         bind.mapView.map.setOnMapClickListener {
@@ -119,8 +114,7 @@ class LocationMapActivity : BaseBindActivity<ActivityLocationMapBinding>() {
             AmapHelper.updateBigCenter(bind.mapView, it)
             getAddress(it)
         }
-
-        AmapLocation.with(this).onceLocation(true).listener {
+         AmapLocation.onceLocation(this){
             city = it.city
             latitude = it.latitude
             longitude = it.longitude
@@ -129,7 +123,7 @@ class LocationMapActivity : BaseBindActivity<ActivityLocationMapBinding>() {
             ldd("当前位置：$address")
             if (address.isNullOrEmpty()) {
                 showToast("定位失败，请确定开启了GPS和网络！")
-                return@listener
+               return@onceLocation
             }
             AmapHelper.addDragMark(
                 this,
@@ -170,7 +164,7 @@ class LocationMapActivity : BaseBindActivity<ActivityLocationMapBinding>() {
             }
             poiSearch(it.poiName)
 
-        }.start()
+        }
         bind.searchView.setButtonClick {
             KeyboardUtils.hintKeyboard(this@LocationMapActivity)
             poiSearch(it)

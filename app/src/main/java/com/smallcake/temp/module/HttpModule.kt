@@ -2,6 +2,8 @@ package com.smallcake.temp.module
 
 import android.app.Activity
 import android.content.Context
+import com.amap.api.location.AMapLocationClient
+import com.amap.api.location.AMapLocationClientOption
 import com.baidu.location.LocationClient
 import com.baidu.location.LocationClientOption
 import com.google.gson.Gson
@@ -16,7 +18,6 @@ import com.smallcake.temp.http.HttpLogInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.koin.android.ext.koin.androidContext
 import org.koin.core.component.KoinApiExtension
 import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
@@ -102,7 +103,7 @@ val httpModule = module {
 @OptIn(KoinApiExtension::class)
 val mapModule = module {
     /**
-     * 定位配置
+     * 百度定位配置
      */
     factory {
         val option = LocationClientOption()
@@ -116,12 +117,25 @@ val mapModule = module {
         option
     }
     /**
-     * 定位客服端
+     * 百度定位客服端
      */
     factory {(context: Context)->
         val mLocationClient = LocationClient(context)
         mLocationClient.locOption = get()
         mLocationClient
+    }
+    /**
+     * 百度定位客服端
+     */
+    factory {(context: Context)->
+        val option = AMapLocationClientOption()
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        option.locationMode = AMapLocationClientOption.AMapLocationMode.Hight_Accuracy
+        option.interval = 2000
+        option.isOnceLocation = true
+        val client = AMapLocationClient(context)
+        client.setLocationOption(option)
+        client
     }
 
 }

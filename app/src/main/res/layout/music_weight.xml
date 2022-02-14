@@ -36,7 +36,7 @@
             <ImageView
                 android:id="@+id/iv_close"
                 android:padding="12dp"
-                android:src="@drawable/picture_icon_close"
+                android:src="@mipmap/flash_close"
                 android:layout_width="40dp"
                 android:layout_height="match_parent" />
         </androidx.appcompat.widget.LinearLayoutCompat>

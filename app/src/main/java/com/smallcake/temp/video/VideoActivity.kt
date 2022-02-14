@@ -12,10 +12,10 @@ import coil.load
 import coil.request.videoFrameMillis
 import com.bumptech.glide.Glide
 import com.hw.videoprocessor.VideoProcessor
-import com.luck.picture.lib.PictureSelector
-import com.luck.picture.lib.config.PictureMimeType
+import com.luck.picture.lib.basic.PictureSelector
+import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.shuyu.gsyvideoplayer.GSYVideoManager
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack
@@ -88,7 +88,7 @@ class VideoActivity : BaseBindActivity<ActivityVideoBinding>() {
                     Debuger.printfError("***** onQuitFullscreen **** " + objects[1]) //当前非全屏player
                     orientationUtils.backToProtVideo()
                 }
-            }).setLockClickListener { view, lock ->
+            }).setLockClickListener { _, lock ->
                 orientationUtils.isEnable = !lock
             }.build(bind.videoPlayer)
     }
@@ -146,14 +146,13 @@ class VideoActivity : BaseBindActivity<ActivityVideoBinding>() {
      */
     private fun selectVideo(activity:Activity,cb:(String)->Unit){
         PictureSelector.create(activity)
-            .openGallery(PictureMimeType.ofVideo())
-            .imageEngine(GlideEngine.createGlideEngine())
-            .isWeChatStyle(true)
-            .videoMaxSecond(60)
-            .maxVideoSelectNum(1)
-            .isCamera(true) // 是否显示拍照按钮
+            .openGallery(SelectMimeType.ofVideo())
+            .setImageEngine(GlideEngine.createGlideEngine())
+            .setFilterVideoMaxSecond(60)
+            .setMaxVideoSelectNum(1)
+            .isDisplayCamera(true) // 是否显示拍照按钮
             .forResult(object : OnResultCallbackListener<LocalMedia> {
-                override fun onResult(result: List<LocalMedia>) {
+                override fun onResult(result: ArrayList<LocalMedia>) {
                     if (result.sizeNull()>0){
                         val media = result[0]
                         val realPath = media.realPath

@@ -1,106 +1,35 @@
-package com.smallcake.temp.map;
+package com.smallcake.temp.map
 
-import android.content.Context;
+import android.content.Context
+import com.amap.api.location.AMapLocationClient
+import com.amap.api.location.AMapLocationClientOption
+import com.amap.api.location.AMapLocationListener
+import org.koin.core.component.KoinComponent
+import org.koin.core.parameter.parametersOf
+import org.koin.core.component.inject
 
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
-
-public class AmapLocation {
-
-    private Context context;
-    private int interval = 2000;
-    private AMapLocationClient client;
-    private boolean onceLocation = true;
-    private AMapLocationClientOption option;//定位参数
-    private AMapLocationListener listener;
-    private static AmapLocation location;
-
-    private AmapLocation(Context context) {
-        this.context = context;
-        initClient();
-    }
-
-    private void initClient() {
-        client = new AMapLocationClient(context);
-        client.setLocationListener(listener);
-        option = new AMapLocationClientOption();
-        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-        option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        option.setInterval(interval);
-        option.setOnceLocation(onceLocation);
-    }
-
-    /**
-     * 设置定位间隔,单位毫秒,默认为2000ms
-     *
-     * @param interval
-     * @return
-     */
-    public AmapLocation interval(int interval) {
-        option.setInterval(interval);
-        return this;
-    }
-
+object AmapLocation : KoinComponent {
     /**
      * 定位一次
-     *
-     * @param onceLocation
-     * @return
+     * 从定位5.6.0版本起对旧版本SDK不兼容，
+     * 请务必确保调用SDK任何接口前先调用更新隐私合规updatePrivacyShow、updatePrivacyAgree两个接口，
+     * 否则可能导致编译不通过等异常情况
+     * AMapLocationClient.updatePrivacyShow(context,true,true)
+     * AMapLocationClient.updatePrivacyAgree(context,true)
      */
-    public AmapLocation onceLocation(boolean onceLocation) {
-        option.setOnceLocation(onceLocation);
-        return this;
+    fun onceLocation(context: Context,listener: AMapLocationListener) {
+//        val client : AMapLocationClient by inject { parametersOf(context) }
+        AMapLocationClient.updatePrivacyShow(context,true,true)
+        AMapLocationClient.updatePrivacyAgree(context,true)
+        val option = AMapLocationClientOption()
+        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        option.locationMode = AMapLocationClientOption.AMapLocationMode.Hight_Accuracy
+        option.interval = 2000
+        option.isOnceLocation = true
+        val client = AMapLocationClient(context)
+
+        client.setLocationOption(option)
+        client.setLocationListener(listener)
+        client.startLocation()
     }
-
-    /**
-     * 设置定位监听
-     *
-     * @param listener
-     * @return
-     */
-    public AmapLocation listener(AMapLocationListener listener) {
-        this.listener = listener;
-        return this;
-    }
-
-    /**
-     * 单列模式对象
-     *
-     * @param context
-     * @return
-     */
-    public static AmapLocation with(Context context) {
-        if (location == null) {
-            synchronized (AmapLocation.class) {
-                if (location == null) {
-                    location = new AmapLocation(context);
-                }
-            }
-        }
-        return location;
-    }
-
-
-    /**
-     * 开始定位
-     */
-    public AmapLocation start() {
-        stop();
-        initClient();
-        client.setLocationOption(option);
-        client.startLocation();
-        return this;
-    }
-
-    /**
-     * 停止定位
-     */
-    public AmapLocation stop() {
-        if (client != null) {
-            client.stopLocation();
-        }
-        return this;
-    }
-
 }

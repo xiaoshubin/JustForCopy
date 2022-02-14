@@ -158,17 +158,6 @@ public class AmapHelper {
     }
 
 
-
-
-    public static void setMyLocation(TextView tv){
-        AmapLocation.with(MyApplication.instance)
-                .onceLocation(true)
-                .listener(aMapLocation -> tv.setText(aMapLocation.getAddress()))
-                .start();
-    }
-
-
-
     /**
      * 是否安装高德地图
      *
@@ -211,8 +200,7 @@ public class AmapHelper {
 
     /**
      * 打开高德地图导航功能
-     *  默认以自己位置为起点
-     * @param context
+     * 默认以自己位置为起点
      * @param destinationLat  终点纬度
      * @param destinationLng  终点经度
      * @param destinationName 终点名称 必填

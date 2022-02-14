@@ -2,24 +2,23 @@ package com.smallcake.temp.coroutines
 
 import kotlinx.coroutines.*
 
-fun main() = runBlocking {
-    val job = launch {
-        try {
-            repeat(1000) { i ->
-                println("job: I'm sleeping $i ...")
-                delay(500L)
-            }
-        } finally {
-            withContext(NonCancellable) {
-                println("job: I'm running finally")
-                delay(1000L)
-                println("job: And I've just delayed for 1 sec because I'm non-cancellable")
-            }
-        }
-    }
-    delay(1300L) // 延迟一段时间
-    println("main: I'm tired of waiting!")
-    job.cancelAndJoin() // 取消该作业并等待它结束
-    println("main: Now I can quit.")
 
+// 不必关心代码逻辑，关心输出结果即可
+fun main() {
+    GlobalScope.launch(Dispatchers.IO) {
+        println("Coroutine started:${Thread.currentThread().name}")
+        delay(1000L)
+        println("Hello World!")
+    }
+
+    println("After launch:${Thread.currentThread().name}")
+    Thread.sleep(2000L)
 }
+
+/*
+输出结果：
+After launch:main
+Coroutine started:DefaultDispatcher-worker-1 @coroutine#1
+*/
+
+

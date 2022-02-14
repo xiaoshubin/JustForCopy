@@ -1,9 +1,7 @@
 package com.smallcake.temp.map
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.location.Location
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -15,7 +13,6 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.baidu.location.BDAbstractLocationListener
 import com.baidu.location.BDLocation
 import com.baidu.location.LocationClient
-import com.baidu.location.LocationClientOption
 import com.baidu.mapapi.animation.Animation
 import com.baidu.mapapi.animation.ScaleAnimation
 import com.baidu.mapapi.animation.Transformation
@@ -25,11 +22,10 @@ import com.baidu.mapapi.search.geocode.*
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
-import com.smallcake.smallutils.px
 import com.smallcake.temp.R
+import com.smallcake.temp.map.BmapHelper.onceLocation
 import com.smallcake.temp.utils.showToast
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 

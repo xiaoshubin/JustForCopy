@@ -37,12 +37,10 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_flash_light"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_vertical|end"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            app:srcCompat="@drawable/picture_ic_flash_off" />
+            app:srcCompat="@mipmap/flash_close" />
 
     </FrameLayout>
 
@@ -53,6 +51,6 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="150dp"
         android:padding="20dp"
-        app:srcCompat="@drawable/picture_ic_camera" />
+        app:srcCompat="@drawable/ps_ic_camera" />
 
 </FrameLayout>

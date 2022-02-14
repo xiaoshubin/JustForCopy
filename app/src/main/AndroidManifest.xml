@@ -31,65 +31,106 @@
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
         <activity
+            android:name=".ui.CameraXActivity"
+           />
+        <activity
             android:name=".video.ExoVideoActivity"
-            android:exported="false" />
+           />
         <activity
             android:name=".ui.GreenDaoActivity"
-            android:exported="false" />
+           />
         <activity
             android:name=".ui.P2PChatActivity"
-            android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.ContactActivity"
-            android:exported="false" />
+           />
         <activity
             android:name=".map.BaiduMapActivity"
-            android:exported="false" />
+           />
         <activity
             android:name=".ui.NinePatchActivity"
-            android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.BannerActivity"
-            android:exported="false" />
+           />
         <activity
             android:name=".service.ServiceActivity"
-            android:exported="false" />
+           />
         <activity
             android:name=".ui.SvgaActivity"
-            android:exported="false" />
-        <activity android:name=".coroutines.CoroutinesActivity"  android:exported="false"/>
-        <activity android:name=".kotlinflow.KotlinFlowActivity"  android:exported="false"/>
-        <activity android:name=".pay.GooglePayActivity"  android:exported="false"/>
-        <activity android:name=".video.SingleVideoPlayActivity"  android:exported="false"/>
-        <activity android:name=".music.ExoMusicActivity"  android:exported="false"/>
-        <activity android:name=".ui.MusicPlayActivity"  android:exported="false"/>
-        <activity android:name=".chart.ChartActivity"  android:exported="false"/>
+           />
+        <activity
+            android:name=".coroutines.CoroutinesActivity"
+           />
+        <activity
+            android:name=".kotlinflow.KotlinFlowActivity"
+           />
+        <activity
+            android:name=".pay.GooglePayActivity"
+           />
+        <activity
+            android:name=".video.SingleVideoPlayActivity"
+           />
+        <activity
+            android:name=".music.ExoMusicActivity"
+           />
+        <activity
+            android:name=".ui.MusicPlayActivity"
+           />
+        <activity
+            android:name=".chart.ChartActivity"
+           />
         <activity
             android:name=".ui.SignActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="签名"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"  android:exported="false"/>
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity android:name=".ui.PdfActivity" />
-        <activity android:name=".weight.CameraActivity"  android:exported="false"/>
-        <activity android:name=".ui.CameraCustomActivity"  android:exported="false"/>
-        <activity android:name=".ui.MoreLayoutListActivity"  android:exported="false"/>
+        <activity
+            android:name=".weight.CameraActivity"
+           />
+        <activity
+            android:name=".ui.CameraCustomActivity"
+           />
+        <activity
+            android:name=".ui.MoreLayoutListActivity"
+           />
         <activity
             android:name=".video.VideoActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:screenOrientation="fullSensor"  android:exported="false"/>
-        <activity android:name=".ui.DownloadDataActivity"  android:exported="false"/>
-        <activity android:name=".ui.CountDownListActivity"  android:exported="false"/>
-        <activity android:name=".ui.ShapeViewActivity"  android:exported="false"/>
-        <activity android:name=".ui.CustomCaptureActivity"  android:exported="false"/>
-        <activity android:name=".ui.TextViewActivity"  android:exported="false"/>
-        <activity android:name=".ui.LoginActivity"  android:exported="false"/>
-        <activity android:name=".ui.SafeGoRoundHistoryInfoActivity"  android:exported="false"/>
-        <activity android:name=".ui.MainFragmentsActivity"  android:exported="false"/>
-        <activity android:name=".ui.RecordActivity"  android:exported="false"/>
-        <activity android:name=".TestActivity"  android:exported="false"/>
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".ui.DownloadDataActivity"
+           />
+        <activity
+            android:name=".ui.CountDownListActivity"
+           />
+        <activity
+            android:name=".ui.ShapeViewActivity"
+           />
+        <activity
+            android:name=".ui.CustomCaptureActivity"
+           />
+        <activity
+            android:name=".ui.TextViewActivity"
+           />
+        <activity
+            android:name=".ui.LoginActivity"
+           />
+        <activity
+            android:name=".ui.SafeGoRoundHistoryInfoActivity"
+           />
+        <activity
+            android:name=".ui.MainFragmentsActivity"
+           />
+        <activity
+            android:name=".ui.RecordActivity"
+           />
+        <activity
+            android:name=".TestActivity"
+           />
 
         <meta-data
             android:name="android.max_aspect"
@@ -104,24 +145,33 @@
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepath_data" />
         </provider>
 
-        <activity android:name=".ui.SignListActivity"  android:exported="false"/>
-        <activity android:name=".ui.ReportRepairActivity"  android:exported="false"/>
-        <activity android:name=".map.LocationMapActivity"  android:exported="false"/>
-        <activity android:name=".ui.MainMiddleOutActivity"  android:exported="false"/>
-        <activity android:name=".ui.CitySelectActivity"  android:exported="false"/>
+        <activity
+            android:name=".ui.SignListActivity"
+           />
+        <activity
+            android:name=".ui.ReportRepairActivity"
+           />
+        <activity
+            android:name=".map.LocationMapActivity"
+           />
+        <activity
+            android:name=".ui.MainMiddleOutActivity"
+           />
+        <activity
+            android:name=".ui.CitySelectActivity"
+           />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- 高德地图【开始】 -->
@@ -145,7 +195,6 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:exported="false"
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
@@ -160,7 +209,8 @@
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
-        </activity> <!-- tbs优化服务：该Service仅在TBS内核首次Dex加载时触发并执行dex2oat任务，任务完成后自动结束 -->
+        </activity>
+        <!-- tbs优化服务：该Service仅在TBS内核首次Dex加载时触发并执行dex2oat任务，任务完成后自动结束 -->
         <service
             android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
             android:label="dexopt"
@@ -181,7 +231,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver> <!-- 极光推送 结束 -->
@@ -196,10 +245,23 @@
         <!-- GooglePay 开始 -->
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
-            android:value="true" />
-        <!-- GooglePay 结束 -->
+            android:value="true" /> <!-- GooglePay 结束 -->
         <!-- RoomService 开始 -->
         <service android:name=".service.RoomService" />
+
+        <activity
+            android:exported="true"
+            android:name="com.xuexiang.xqrcode.ui.CaptureActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
+            android:screenOrientation="portrait"
+            android:theme="@style/XQRCodeTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <intent-filter>
+                <action android:name="com.xuexiang.xqrcode.ui.captureactivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

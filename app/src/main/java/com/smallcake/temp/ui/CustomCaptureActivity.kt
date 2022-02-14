@@ -4,15 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
-import com.luck.picture.lib.PictureSelector
-import com.luck.picture.lib.config.PictureMimeType
+import com.luck.picture.lib.basic.PictureSelector
+import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.smallcake.smallutils.BitmapUtils.getBitmapPath
 import com.smallcake.smallutils.ToastUtil.Companion.showLong
 import com.smallcake.temp.R
@@ -82,7 +81,7 @@ class CustomCaptureActivity : CaptureActivity(), View.OnClickListener {
         }
     }
     private fun refreshFlashIcon() {
-        mIvFlashLight!!.setImageResource(if(mIsOpen)R.drawable.picture_ic_flash_on else R.drawable.picture_ic_flash_off)
+        mIvFlashLight!!.setImageResource(if(mIsOpen)R.mipmap.flash_close else R.mipmap.flash_open)
     }
 
     override fun onClick(v: View) {
@@ -95,41 +94,17 @@ class CustomCaptureActivity : CaptureActivity(), View.OnClickListener {
 
     private fun getPhoto(activity: AppCompatActivity) {
         PictureSelector.create(activity)
-            .openGallery(PictureMimeType.ofImage()) //全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
-            .imageEngine(GlideEngine.createGlideEngine()) // 外部传入图片加载引擎，必传项
-            .isWeChatStyle(true) // 是否开启微信图片选择风格
-            .maxSelectNum(1) // 最大图片选择数量
-            .imageSpanCount(3) // 每行显示个数
-            .isReturnEmpty(false) // 未选择数据时点击按钮是否可以返回
-            .compressQuality(80) // 图片压缩后输出质量 0~ 100
-            .cutOutQuality(90) // 裁剪输出质量 默认100
-            .minimumCompressSize(1000) // 小于多少kb的图片不压缩
-            //.isAndroidQTransform(true)// 是否需要处理Android Q 拷贝至应用沙盒的操作，只针对compress(false); && .isEnableCrop(false);不压缩不裁剪有效,默认处理
-            .isCompress(true) // 是否压缩
-            .isEnableCrop(false) // 是否裁剪
-            .isZoomAnim(true) // 图片列表点击 缩放效果 默认true
-            .synOrAsy(false) //同步true或异步false 压缩 默认同步
+            .openGallery(SelectMimeType.ofImage()) //全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+            .setImageEngine(GlideEngine.createGlideEngine()) // 外部传入图片加载引擎，必传项
+            .setMaxSelectNum(1)
+            .setImageSpanCount(3)// 每行显示个数
+            .isDirectReturnSingle(false) // 未选择数据时点击按钮是否可以返回
             .isPreviewImage(false) // 是否可预览图片
-            .isCamera(true) // 是否显示拍照按钮
-            .withAspectRatio(1, 1) // 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
-            .hideBottomControls(true) // 是否显示uCrop工具栏，默认不显示
-            .freeStyleCropEnabled(true) // 裁剪框是否可拖拽
-            .circleDimmedLayer(false) // 是否圆形裁剪
-            .showCropFrame(false) // 是否显示裁剪矩形边框 圆形裁剪时建议设为false
-            //.cropImageWideHigh(120,120)// 裁剪宽高比，设置如果大于图片本身宽高则无效
-            .rotateEnabled(false) // 裁剪是否可旋转图片
-            .scaleEnabled(false) // 裁剪是否可放大缩小图片
             .forResult(object : OnResultCallbackListener<LocalMedia> {
-                override fun onResult(result: List<LocalMedia>) {
+                override fun onResult(result: ArrayList<LocalMedia>) {
                     val media = result[0]
                     printMedia(media)
-                    val androidQToPath = media.androidQToPath
-                    var path: String? = ""
-                    path = if (TextUtils.isEmpty(androidQToPath)) {
-                        if (media.isCompressed) media.compressPath else media.realPath
-                    } else {
-                        androidQToPath
-                    }
+                    val path = if (media.isCompressed) media.compressPath else media.realPath
                     val bitmapPath = getBitmapPath(path)
                     XQRCode.analyzeQRCode(bitmapPath, object : AnalyzeCallback {
                         override fun onAnalyzeSuccess(bitmap: Bitmap, result: String) {
@@ -142,7 +117,6 @@ class CustomCaptureActivity : CaptureActivity(), View.OnClickListener {
                             setResult(RESULT_OK, resultIntent)
                             finish()
                         }
-
                         override fun onAnalyzeFailed() {}
                     })
                 }
@@ -151,6 +125,8 @@ class CustomCaptureActivity : CaptureActivity(), View.OnClickListener {
                     showLong("取消选择")
                     L.e("没有选择图片")
                 }
+
+
             })
     }
 
@@ -163,7 +139,6 @@ class CustomCaptureActivity : CaptureActivity(), View.OnClickListener {
         "\n裁剪:" + media.cutPath+
         "\n是否开启原图:" + media.isOriginal+
         "\n原图路径:" + media.originalPath+
-        "\nAndroid Q 特有Path:" + media.androidQToPath+
         "\n宽高: " + media.width + "x" + media.height+
         "\nSize: " + media.size)
     }

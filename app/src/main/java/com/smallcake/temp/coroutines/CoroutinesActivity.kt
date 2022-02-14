@@ -17,9 +17,14 @@ import kotlinx.coroutines.*
  * 参考：
  * Kotlin协程的简单用法：https://blog.csdn.net/yu540135101/article/details/113246177
  *
- * 协程包：
+ * 1.引入协程包：
 implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
 implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
+
+使用扩展1：
+如何打印对应的协程名字：需要配置-Dkotlinx.coroutines.debug
+Run->Edit Configurations点击进入VM options输入-Dkotlinx.coroutines.debug
+
     viewmodel-ktx：
 implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
  * 结构化的并发

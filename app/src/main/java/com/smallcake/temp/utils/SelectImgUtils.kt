@@ -14,10 +14,10 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
-import com.luck.picture.lib.PictureSelector
-import com.luck.picture.lib.config.PictureMimeType
+import com.luck.picture.lib.basic.PictureSelector
+import com.luck.picture.lib.config.SelectMimeType
 import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
+import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.smallcake.smallutils.Screen
 import com.smallcake.smallutils.px
 import com.smallcake.temp.R
@@ -130,25 +130,17 @@ object SelectImgUtils {
      */
     private fun getPhoto(activity: AppCompatActivity, mAdapter: ImgSelectAdapter) {
         PictureSelector.create(activity)
-            .openGallery(PictureMimeType.ofImage())
-            .imageEngine(GlideEngine.createGlideEngine())
-            .isWeChatStyle(true)
-            .maxSelectNum(imgMaxCount - mAdapter.data.filter { !it.isAdd }.sizeNull())
-            .imageSpanCount(3)
-            .isReturnEmpty(false)
-            .compressQuality(80)
-            .cutOutQuality(90)
-            .minimumCompressSize(100)
-            .isCamera(true) // 是否显示拍照按钮
+            .openGallery(SelectMimeType.ofImage())
+            .setImageEngine(GlideEngine.createGlideEngine())
+            .setMaxSelectNum(imgMaxCount - mAdapter.data.filter { !it.isAdd }.sizeNull())
+            .setImageSpanCount(3)
+            .isDisplayCamera(true)// 是否显示拍照按钮
             .isPreviewImage(false)//不能预览，避免本来想选中，结果查看了大图
             .forResult(object : OnResultCallbackListener<LocalMedia> {
-                override fun onResult(result: List<LocalMedia>) {
+                override fun onResult(result: ArrayList<LocalMedia>) {
                     for (media in result) {
                         printFileInfo(media)
-                        val androidQToPath: String? = media.androidQToPath//AndroidQ路径
-                        val filePath = if (androidQToPath.isNullOrEmpty()) {
-                            media.compressPath ?: media.realPath
-                        } else androidQToPath
+                        val filePath = media.compressPath ?: media.realPath
                         //添加到已经选择的图片末尾，不包括最后的添加图片位置
                         val list = mAdapter.data.filter { !it.isAdd }
                         mAdapter.addData(list.size, ImgSelectBean(filePath))
@@ -181,7 +173,6 @@ object SelectImgUtils {
                     "\n裁剪:" + media.cutPath +
                     "\n是否开启原图:" + media.isOriginal +
                     "\n原图路径:" + media.originalPath +
-                    "\nAndroid Q 特有Path:" + media.androidQToPath +
                     "\n宽高: " + media.width + "x" + media.height +
                     "\n图片大小: " + media.size
         )
