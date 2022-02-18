@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.webkit.JavascriptInterface
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import java.util.regex.Matcher
@@ -85,6 +86,25 @@ class WebUtils {
             return null
         }
         return imageSrcList.toTypedArray()
+    }
+    /**
+     * 避免白屏
+     */
+    fun whitePageRepair(webView: WebView){
+        webView.settings.apply {
+            javaScriptEnabled = true
+            javaScriptCanOpenWindowsAutomatically = true
+            cacheMode = WebSettings.LOAD_NO_CACHE
+            domStorageEnabled = true
+            databaseEnabled = true
+            setAppCacheEnabled(true)
+            allowFileAccess = true
+            savePassword = true
+            setSupportZoom(true)
+            builtInZoomControls = true
+            layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
+            useWideViewPort = true
+        }
     }
 }
 class MyWebViewClient : WebViewClient() {

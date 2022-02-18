@@ -3,8 +3,10 @@ package com.smallcake.temp.coroutines
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.amap.api.mapcore.util.it
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
@@ -12,6 +14,7 @@ import com.smallcake.temp.base.replaceFragment
 import com.smallcake.temp.databinding.ActivityCoroutinesBinding
 import com.smallcake.temp.http.sub
 import kotlinx.coroutines.*
+import kotlin.system.measureTimeMillis
 
 /**
  * 参考：
@@ -43,12 +46,15 @@ class CoroutinesActivity : BaseBindActivity<ActivityCoroutinesBinding>() {
     private val TAG = "CoroutinesActivity"
     internal val viewModel:LiveDataViewModule by viewModels()
 
+    private val scope = CoroutineScope(SupervisorJob()+Dispatchers.Main)
+
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.setTitle("协程")
 
 
         bind.btnGet.setOnClickListener{
-            viewModel.getMobileData("18324138218",dialog)
+//            viewModel.getMobileData("18324138218",dialog)
+            getWeatherAndPhone()
         }
 
 
@@ -69,6 +75,42 @@ class CoroutinesActivity : BaseBindActivity<ActivityCoroutinesBinding>() {
 
 
 
+    }
+
+    /**
+     * 协程中请求天气和手机号
+     */
+    private fun getWeatherAndPhone(){
+        scope.launch{
+            val stringBuffer = StringBuffer()
+            var job1Str=""
+            var job2Str=""
+            val time = measureTimeMillis {
+//                var job1Str=""
+//                var job2Str=""
+                val job1 = launch {
+                        job1Str = dataProvider.mobile.mobileGetSu("18324138218").result.toString()
+                }
+                val job2 = launch {
+                        job2Str = dataProvider.weather.querySu().result.toString()
+                }
+                job1.join()
+                job2.join()
+                stringBuffer.append("${job1Str}\n")
+                stringBuffer.append("${job2Str}\n")
+            }
+
+            Log.e(TAG,"time:${time} Str:${stringBuffer.toString()}")
+            bind.tvDesc.text = "time:${time} Str:${stringBuffer.toString()}"
+        }
+
+    }
+
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
     }
 }
 
