@@ -3,6 +3,8 @@ package com.smallcake.temp.weight;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
+import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -18,6 +20,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.annotation.ColorInt;
@@ -42,10 +45,19 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import com.smallcake.temp.R;
 
 /**
- * 自定义下拉刷新
- * 来至：https://www.jianshu.com/p/12de450a9cdf
+ * 帧动画：自定义下拉刷新
+ * 主要如下代码中设置针动画，
+ * @see R.drawable.ref_animation
+ *     private void createProgressView() {
+ *         mCircleView = new MyCircleImageView(getContext());
+ *         mCircleView.setBackgroundColor(Color.TRANSPARENT);
+ *         mCircleView.setImageDrawable(getResources().getDrawable(R.drawable.ref_animation));
+ *         mProgress = (AnimationDrawable) mCircleView.getDrawable();
+ *         mCircleView.setVisibility(View.GONE);
+ *         addView(mCircleView);
+ *     }
  */
-public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingParent3,
+public class FrameSwipeRefreshLayout extends ViewGroup implements NestedScrollingParent3,
         NestedScrollingParent2, NestedScrollingChild3, NestedScrollingChild2, NestedScrollingParent,
         NestedScrollingChild {
 
@@ -56,7 +68,7 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     @VisibleForTesting
     static final int CIRCLE_DIAMETER_LARGE = 56;
 
-    private static final String LOG_TAG = MySwipeRefreshLayout.class.getSimpleName();
+    private static final String LOG_TAG = FrameSwipeRefreshLayout.class.getSimpleName();
 
     private static final int MAX_ALPHA = 255;
     private static final int STARTING_PROGRESS_ALPHA = (int) (.3f * MAX_ALPHA);
@@ -118,7 +130,6 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     private static final int[] LAYOUT_ATTRS = new int[]{
             android.R.attr.enabled
     };
-
     MyCircleImageView mCircleView;
     private int mCircleViewIndex = -1;
 
@@ -132,7 +143,7 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     int mCustomSlingshotDistance;
 
-    LoadingDrawable mProgress;
+    AnimationDrawable mProgress;
 
     private Animation mScaleAnimation;
 
@@ -211,7 +222,7 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         final boolean mRefreshing;
 
         /**
-         * Constructor called from {@link MySwipeRefreshLayout#onSaveInstanceState()}
+         * Constructor called from {@link FrameSwipeRefreshLayout#onSaveInstanceState()}
          */
         SavedState(Parcelable superState, boolean refreshing) {
             super(superState);
@@ -370,7 +381,7 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
      *
      * @param context
      */
-    public MySwipeRefreshLayout(@NonNull Context context) {
+    public FrameSwipeRefreshLayout(@NonNull Context context) {
         this(context, null);
     }
 
@@ -380,7 +391,7 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
      * @param context
      * @param attrs
      */
-    public MySwipeRefreshLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public FrameSwipeRefreshLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
@@ -431,10 +442,8 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     private void createProgressView() {
         mCircleView = new MyCircleImageView(getContext());
         mCircleView.setBackgroundColor(Color.TRANSPARENT);
-        mProgress = new LoadingDrawable(getResources().getDrawable(R.drawable.ic_loading_sun), getResources().getDrawable(R.drawable.ic_loading_cloud));
-//        mProgress.setStyle(CircularProgressDrawable.DEFAULT);
-
-        mCircleView.setImageDrawable(mProgress);
+        mCircleView.setImageDrawable(getResources().getDrawable(R.drawable.ref_animation));
+        mProgress = (AnimationDrawable) mCircleView.getDrawable();
         mCircleView.setVisibility(View.GONE);
         addView(mCircleView);
     }
@@ -542,7 +551,7 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         };
         alpha.setDuration(ALPHA_ANIMATION_DURATION);
         // Clear out the previous animation listeners.
-        mCircleView.setAnimationListener(null);
+//        mCircleView.setAnimationListener(null);
         mCircleView.clearAnimation();
         mCircleView.startAnimation(alpha);
         return alpha;
@@ -717,7 +726,7 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     /**
-     * Set a callback to override {@link MySwipeRefreshLayout#canChildScrollUp()} method. Non-null
+     * Set a callback to override {@link FrameSwipeRefreshLayout#canChildScrollUp()} method. Non-null
      * callback will return the value provided by the callback and ignore all internal logic.
      *
      * @param callback Callback that should be called when canChildScrollUp() is called.
@@ -1164,12 +1173,18 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         }
 
         float rotation = (-0.25f + .4f * adjustedPercent + tensionPercent * 2) * .5f;
-        mProgress.setProgressRotation(rotation);
+        mProgress.start();
         setTargetOffsetTopAndBottom(targetY - mCurrentTargetOffsetTop);
+        // 增加以下代码即可
+//        if (targetY >= 0) {
+//            ((ViewGroup) mTarget).getChildAt(0).scrollTo(0, -targetY / 2);
+//        }
     }
 
     private void finishSpinner(float overscrollTop) {
-        ((ViewGroup) mTarget).getChildAt(0).scrollTo(0, 0);
+        // 返回原处
+//        ((ViewGroup) mTarget).getChildAt(0).scrollTo(0, 0);
+
         if (overscrollTop > mTotalDragDistance) {
             setRefreshing(true, true /* notify */);
         } else {
@@ -1188,7 +1203,6 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
                     public void onAnimationEnd(Animation animation) {
                         if (!mScale) {
                             startScaleDownAnimation(null);
-                            mProgress.stop();
                         }
                     }
 
@@ -1199,7 +1213,6 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
                 };
             }
             animateOffsetToStartPosition(mCurrentTargetOffsetTop, listener);
-//            mProgress.setArrowEnabled(false);
         }
     }
 
@@ -1401,18 +1414,18 @@ public class MySwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     /**
-     * Classes that wish to override {@link MySwipeRefreshLayout#canChildScrollUp()} method
+     * Classes that wish to override {@link FrameSwipeRefreshLayout#canChildScrollUp()} method
      * behavior should implement this interface.
      */
     public interface OnChildScrollUpCallback {
         /**
-         * Callback that will be called when {@link MySwipeRefreshLayout#canChildScrollUp()} method
+         * Callback that will be called when {@link FrameSwipeRefreshLayout#canChildScrollUp()} method
          * is called to allow the implementer to override its behavior.
          *
          * @param parent SwipeRefreshLayout that this callback is overriding.
          * @param child  The child view of SwipeRefreshLayout.
          * @return Whether it is possible for the child view of parent layout to scroll up.
          */
-        boolean canChildScrollUp(@NonNull MySwipeRefreshLayout parent, @Nullable View child);
+        boolean canChildScrollUp(@NonNull FrameSwipeRefreshLayout parent, @Nullable View child);
     }
 }

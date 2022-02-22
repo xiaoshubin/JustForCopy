@@ -7,17 +7,22 @@
     >
 <LinearLayout
     android:padding="16dp"
-    android:background="@color/white"
     android:gravity="center"
     android:layout_centerInParent="true"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <ProgressBar
+        android:visibility="gone"
         style="?android:attr/progressBarStyleSmall"
         android:id="@+id/bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/iv"
+        android:src="@drawable/loading_animation"
+        android:layout_width="60dp"
+        android:layout_height="60dp"/>
     <TextView
         android:layout_marginTop="8dp"
         android:id="@+id/tv_load_dialog"

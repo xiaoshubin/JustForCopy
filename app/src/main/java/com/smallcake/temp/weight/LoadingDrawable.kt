@@ -86,10 +86,6 @@ class LoadingDrawable(val sun: Drawable, val cloud: Drawable) : Drawable(), Anim
     }
 
     override fun isRunning(): Boolean {
-        scope?.let {
-            return it.isActive
-        } ?: run {
-            return false
-        }
+        scope?.let {return it.isActive} ?: return false
     }
 }

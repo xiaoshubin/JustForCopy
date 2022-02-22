@@ -62,7 +62,6 @@ class SafeGoRoundHistoryInfoActivity : BaseBindActivity<ActivitySafeGoRoundHisto
         }
     }
     private fun loadData() {
-
         bind.refreshLayout.isRefreshing = true
         Handler().postDelayed({
             val list = if (page > 3) ArrayList<TestBean>() else AdapterUtils.createTestDatas()
@@ -76,7 +75,7 @@ class SafeGoRoundHistoryInfoActivity : BaseBindActivity<ActivitySafeGoRoundHisto
                     }
                 }
             bind.refreshLayout.isRefreshing = false
-        }, 300)
+        }, 1000)
 
 
     }

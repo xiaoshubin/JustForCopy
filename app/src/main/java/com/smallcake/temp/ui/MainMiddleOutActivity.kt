@@ -19,8 +19,7 @@ class MainMiddleOutActivity : BaseBindActivity<ActivityMainMiddleOutBinding>() {
     }
 
     private fun onEvent() {
-
-
+        dialog.show()
     }
 
     private fun initView() {

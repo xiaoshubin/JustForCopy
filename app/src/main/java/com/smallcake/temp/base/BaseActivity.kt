@@ -12,8 +12,6 @@ import com.smallcake.temp.module.LoadDialog
 import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle
 import com.trello.rxlifecycle2.LifecycleProvider
 import org.koin.android.ext.android.get
-import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
 
 /**
  * Activity基类
@@ -21,12 +19,13 @@ import org.koin.core.parameter.parametersOf
 abstract class BaseActivity : AppCompatActivity() {
 
     protected val dataProvider: DataProvider = get()//注入数据提供者
-    protected val dialog: LoadDialog by inject { parametersOf(this) }//注入单例加载圈
+    protected lateinit var dialog: LoadDialog
     protected lateinit var provider:LifecycleProvider<Lifecycle.Event>//生命周期提供者
     private var mBinder: ApolloBinder? = null//事件通知者
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ActivityCollector.addActivity(this)
+        dialog = LoadDialog(this)
         mBinder = Apollo.bind(this)
         provider = AndroidLifecycle.createLifecycleProvider(this)
 
