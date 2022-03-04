@@ -1,33 +1,13 @@
 package com.smallcake.temp.utils
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
 import android.util.Log
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
-import com.amap.api.mapcore.util.fa
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.smallcake.smallutils.CameraUtils
-import com.smallcake.smallutils.SmallUtils
-import com.smallcake.smallutils.ToastUtil
-import com.smallcake.smallutils.fragment.InvisibleFragment
 import com.smallcake.temp.ui.CustomCaptureActivity
 import com.xuexiang.xqrcode.XQRCode
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * Date: 2020/1/14

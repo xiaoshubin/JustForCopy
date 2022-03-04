@@ -89,7 +89,7 @@
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity android:name=".ui.PdfActivity" />
         <activity
-            android:name=".weight.CameraActivity"
+            android:name=".ui.CameraActivity"
            />
         <activity
             android:name=".ui.CameraCustomActivity"

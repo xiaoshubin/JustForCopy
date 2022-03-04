@@ -1,7 +1,6 @@
 package com.smallcake.smallutils.fragment
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri

@@ -1,7 +1,6 @@
-package com.smallcake.temp.weight
+package com.smallcake.temp.ui
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -23,6 +22,8 @@ import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityCamreLayoutBinding
+import com.smallcake.temp.weight.CameraPreview
+import com.smallcake.temp.weight.OverCameraView
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -31,7 +32,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * @author 郭翰林
+ * @author
  */
 class CameraActivity : BaseBindActivity<ActivityCamreLayoutBinding>(), View.OnClickListener {
     /**

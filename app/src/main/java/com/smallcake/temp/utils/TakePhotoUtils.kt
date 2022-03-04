@@ -8,10 +8,10 @@ import androidx.fragment.app.FragmentActivity
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
-import com.smallcake.temp.weight.CameraActivity
+import com.smallcake.temp.ui.CameraActivity
 
 object TakePhotoUtils {
-    const val REQUEST_CAMERA = 1909
+
 
     private const val TAG ="CustomCameraInvisibleFragment"
     fun takePhoto(activity: FragmentActivity, cb:(String?) -> Unit, cameraFacing: Boolean=false){
@@ -30,15 +30,17 @@ object TakePhotoUtils {
 
 class CustomCameraInvisibleFragment : Fragment() {
     private var callback:((String?) -> Unit)?=null
+    private val REQUEST_CAMERA = 1909
     fun takePhotoNow(activity: FragmentActivity, cb:(String?) -> Unit,cameraFacing: Boolean=false) {
         callback=cb
+        //申请相机和存储权限
         XXPermissions.with(activity)
             .permission(arrayListOf(Permission.CAMERA, Permission.MANAGE_EXTERNAL_STORAGE))
             .request(object : OnPermissionCallback {
                 override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
                     if (!all)return
                     val intent = Intent(activity, CameraActivity::class.java)
-                    startActivityForResult(intent, TakePhotoUtils.REQUEST_CAMERA)
+                    startActivityForResult(intent, REQUEST_CAMERA)
                 }
 
                 override fun onDenied(permissions: MutableList<String>?, never: Boolean) {
@@ -49,7 +51,7 @@ class CustomCameraInvisibleFragment : Fragment() {
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode ==TakePhotoUtils.REQUEST_CAMERA) {
+        if (resultCode == Activity.RESULT_OK && requestCode ==REQUEST_CAMERA) {
             val picSavePath = data?.getStringExtra("imagePath")
             Log.i("图片地址","picSavePath:$picSavePath")
             callback?.invoke(picSavePath)
