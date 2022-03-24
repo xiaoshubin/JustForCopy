@@ -2,6 +2,7 @@ package com.smallcake.temp
 
 import android.os.Bundle
 import android.os.Handler
+import android.text.TextUtils
 import android.util.Log
 import com.amap.api.mapcore.util.dp
 import com.haibin.calendarview.YearRecyclerView
@@ -36,17 +37,14 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
     }
 
     private fun onEvent() {
-        val hashValue = AppUtils.getKeyHashValue(this)
-        Log.e(TAG,"hashValue:$hashValue")
+        goActivity(TestActivity::class.java)
     }
 
     private fun initView() {
         BottomNavUtils.tabBindViewPager(this,bind.tabLayout,bind.viewPager)
+
+
     }
-
-
-
-
 
 }
 
