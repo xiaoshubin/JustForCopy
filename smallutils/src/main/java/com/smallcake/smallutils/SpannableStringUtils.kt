@@ -13,8 +13,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
-import androidx.annotation.RequiresApi
-import com.smallcake.smallutils.SpannableStringUtils.Builder
 
 /**
  * Date: 2019/11/20
@@ -651,10 +649,19 @@ class DslSpannableStringBuilderImpl  {
                         ds.isUnderlineText = false
                     }}, start, lastIndex, flag)}
             }
+            //超连接
+            linkUrl?.let {
+                builder.setSpan(URLSpan(it), start, lastIndex, flag)
+                if (!isUnderLine) {builder.setSpan(object : UnderlineSpan() {
+                    override fun updateDrawState(ds: TextPaint) {
+                        ds.color = ds.linkColor
+                        ds.isUnderlineText = false
+                    }}, start, lastIndex, flag)}
+            }
 
             //前景色,背景色，圆角背景色，引用线颜色
-            foregroundColorSpan?.let {builder.setSpan(it, start, lastIndex, flag)}
-            backgroundColorSpan?.let {builder.setSpan(it, start, lastIndex, flag)}
+            textColor?.let {builder.setSpan(ForegroundColorSpan(it), start, lastIndex, flag)}
+            backgroundColor?.let {builder.setSpan(BackgroundColorSpan(it), start, lastIndex, flag)}
             radiusBgColorSpan?.let {builder.setSpan(it, start, lastIndex, flag)}
             quoteSpan?.let {builder.setSpan(it, start, lastIndex, flag)}
 
@@ -669,8 +676,8 @@ class DslSpannableStringBuilderImpl  {
             if (isBottomTag) builder.setSpan(SubscriptSpan(), start, lastIndex, flag)
 
             //缩小与放大
-            if (proportion != -1f) builder.setSpan(RelativeSizeSpan(proportion), start, lastIndex, flag)
-            if (xProportion != -1f) builder.setSpan(ScaleXSpan(xProportion), start, lastIndex, flag)
+            if (scale != -1f) builder.setSpan(RelativeSizeSpan(scale), start, lastIndex, flag)
+            if (scaleX != -1f) builder.setSpan(ScaleXSpan(scaleX), start, lastIndex, flag)
             //粗体，斜体，字体,对其方式,模糊
             if (isBold)builder.setSpan(StyleSpan(Typeface.BOLD), start, lastIndex, flag)
             if (isItalic)builder.setSpan(StyleSpan(Typeface.ITALIC), start, lastIndex, flag)
@@ -682,8 +689,7 @@ class DslSpannableStringBuilderImpl  {
             drawable?.let { builder.setSpan(ImageSpan(it), start, lastIndex, flag) }
             uri?.let { builder.setSpan(ImageSpan(SmallUtils.context!!,it), start, lastIndex, flag) }
             resourceId?.let { builder.setSpan(ImageSpan(SmallUtils.context!!,it), start, lastIndex, flag) }
-            //超连接
-            linkUrl?.let { builder.setSpan(URLSpan(it), start, lastIndex, flag) }
+
 
         }
     }
@@ -705,11 +711,13 @@ class DslSpannableStringBuilderImpl  {
      /**
       * 前景色：文本颜色
       */
-     var foregroundColorSpan: ForegroundColorSpan? = null
+     @ColorInt
+     var textColor:Int?=null
      /**
       * 文本背景颜色
       */
-     var backgroundColorSpan: BackgroundColorSpan? = null
+     @ColorInt
+     var backgroundColor: Int? = null
      /**
       * 圆角背景色
       */
@@ -754,12 +762,12 @@ class DslSpannableStringBuilderImpl  {
      /**
       * 整体缩放比例 0.5f（缩小到原来的一半） 2f（放大到原来的一倍）
       */
-      var proportion: Float =-1f
+      var scale: Float =-1f
      /**
       * X轴方向缩放比例 0.5f（缩小到原来的一半） 2f（放大到原来的一倍）
       * 效果：变扁
       */
-      var xProportion: Float =-1f
+      var scaleX: Float =-1f
 
      /**
       * 粗体
@@ -793,8 +801,11 @@ class DslSpannableStringBuilderImpl  {
 
      /**
       * 超连接(网址，电话)
-      * 类型一：网址，应该是以http开头的网址如：http://www.baidu.com
-      * 类型二：电话，应该是以tel开头的电话如：tel:13800138000
+      * 类型一：网址，应该是以http如：http://www.baidu.com
+      * 类型二：电话，应该是以tel开头：tel:13800138000
+      * 类型三：邮件，应该是以mailto开头：mailto:495303648@qq.com
+      * 类型四：短信，应该是以sms开头：sms:13800138000
+      * 类型五：地图，应该是以geo开头：geo:29.542356,106.568154 效果：会打开地图并在地图上显示一个商家位置
       */
      var linkUrl: String? = null
 
@@ -804,14 +815,12 @@ class DslSpannableStringBuilderImpl  {
       */
      var blurFilter:BlurMaskFilter?=null
 
-
-
-    fun setColor(@ColorInt color: Int) {
-        foregroundColorSpan = ForegroundColorSpan(color)
-    }
-    fun setBgColor(@ColorInt color: Int) {
-        backgroundColorSpan = BackgroundColorSpan(color)
-    }
+     /**
+      * 设置圆角背景
+      * @param color Int
+      * @param txtColor Int
+      * @param radius Int
+      */
     fun setRadiusBgColor(@ColorInt color: Int,@ColorInt txtColor: Int,radius: Int) {
         radiusBgColorSpan = RadiusBackgroundSpan(color,txtColor,radius)
     }
@@ -819,7 +828,7 @@ class DslSpannableStringBuilderImpl  {
         quoteSpan = QuoteSpan(color)
     }
      /**
-      *
+      * 设置引用线条
       * @param color Int        线条颜色
       * @param stripeWidth Int  线条宽度  （Android9及以上有效）
       * @param gapWidth Int     间隙宽度：线条和文本之间的间隙（Android9及以上有效）
@@ -871,7 +880,7 @@ class DslSpannableStringBuilderImpl  {
       * 尚存bug，其他地方存在相同的字体的话，相同字体出现在之前的话那么就不会模糊，出现在之后的话那会一起模糊
       * 推荐还是把所有字体都模糊这样使用
       * @param radius 模糊半径（需大于0）
-      * @param style  模糊样式
+      * @param style  模糊样式4种
       */
      fun setBlur(radius: Float, style: Blur?) {
          blurFilter = BlurMaskFilter(radius,style)
