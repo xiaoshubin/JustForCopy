@@ -236,6 +236,7 @@
             android:layout_height="wrap_content"/>
         <View style="@style/h_line"/>
        <LinearLayout
+           android:gravity="center"
            android:orientation="horizontal"
            android:layout_width="match_parent"
            android:layout_height="wrap_content">
@@ -254,6 +255,11 @@
            <com.smallcake.temp.weight.MaskBallView
                android:layout_width="80dp"
                android:layout_height="80dp"/>
+           <ProgressBar
+               android:indeterminateTint="@color/tv_blue"
+               style="?android:attr/progressBarStyleSmall"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
        </LinearLayout>
         <View style="@style/h_line"/>
         <com.smallcake.temp.weight.HorizontalScrollTextView
