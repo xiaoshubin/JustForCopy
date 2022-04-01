@@ -6,26 +6,17 @@ import kotlinx.coroutines.channels.Channel
 // 代码段14
 
 fun main() = runBlocking {
-    // 1，创建管道
-    val channel = Channel<Int>()
 
-    launch {
-        // 2，在一个单独的协程当中发送管道消息
-        (1..3).forEach {
-            channel.send(it) // 挂起函数
-            logX("Send: $it")
-        }
-        channel.close() // 变化在这里
+    fun complicatedexpression_r(){
+    var x=20
+        var y=30
+    var  b=false
+    b=x>50&&y>60||x>50&&y<-60||x<-50&&y>60||x<-50&&y<-60;
+        logX("==$b")
     }
 
-    launch {
-        // 3，在一个单独的协程当中接收管道消息
-        for (i in channel) {  // 挂起函数
-            logX("Receive: $i")
-        }
-    }
+    complicatedexpression_r()
 
-    logX("end")
 }
 
 /** * 控制台输出带协程信息的log */fun logX(any: Any?) {    println("""================================$any Thread:${Thread.currentThread().name}================================""".trimIndent())}

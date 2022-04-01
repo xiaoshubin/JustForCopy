@@ -6,16 +6,37 @@ import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityPdfBinding
 import com.smallcake.temp.utils.DownloadUtils
 import com.smallcake.temp.utils.L
+import com.tencent.smtt.export.external.TbsCoreSettings
 import me.jessyan.progressmanager.body.ProgressInfo
 import java.io.File
 
 
 /**
-
-//PDF查看器
-implementation 'es.voghdev.pdfviewpager:library:1.1.2'
+ * 1.引入控件sdk
 //腾讯tas
 implementation 'com.tencent.tbs:tbssdk:44085'
+//一行进度监听器
+implementation 'me.jessyan:progressmanager:1.5.0'
+2.引入两个自定义控件
+* @see DownloadUtils
+* @see com.smallcake.temp.weight.SuperFileView
+3.在MyApplication种初始化
+// 腾讯tbs优化:在调用TBS初始化、创建WebView之前进行如下配置
+val map = HashMap<String, Any>()
+map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
+map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
+QbSdk.initTbsSettings(map)
+QbSdk.initX5Environment(this,object :QbSdk.PreInitCallback{
+override fun onCoreInitFinished() {
+L.e("onCoreInitFinished")
+}
+override fun onViewInitFinished(b: Boolean) {
+L.e("onViewInitFinished:$b")
+}
+})
+
+注意：superFileView.onStopDisplay()释放应该放在页面结束或者pop关闭时
+
  腾讯tbs支持打开文件格式: doc、docx、ppt、pptx、xls、xlsx、pdf、txt、epub
  接入参考：https://www.jianshu.com/p/3f57d640b24d
  */
