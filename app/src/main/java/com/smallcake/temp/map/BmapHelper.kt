@@ -1,7 +1,9 @@
 package com.smallcake.temp.map
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -266,6 +268,30 @@ object BmapHelper: KoinComponent {
                 mGeoCoder.destroy()
             }
         })
+    }
+
+    /**
+     * @param coord_type     坐标类型  允许的值为bd09ll、bd09mc、gcj02、wgs84。
+     * bd09ll表示百度经纬度坐标，bd09mc表示百度墨卡托坐标，gcj02表示经过国测局加密的坐标，wgs84表示gps获取的坐标
+     * @param mode           导航类型导航模式 可选transit（公交）、 driving（驾车）、 walking（步行）和riding（骑行）.
+     * @param src            必选参数，格式为：appName  不传此参数，不保证服务
+     * @param context Context
+     * @param destinationLat String 目的地维度
+     * @param destinationLng String 目的地经度
+     * @param coord_type String
+     * @param mode String
+     * @param src String  例如 andr.baidu.openAPIdemo
+     * 参考
+     * https://lbsyun.baidu.com/index.php?title=uri/api/android
+     */
+    fun openBmapNavi(context: Context,destinationLat: Double,destinationLng: Double) {
+        val intent = Intent()
+        intent.data = Uri.parse(
+            "baidumap://map/direction?destination=" +
+                    destinationLat + "," + destinationLng + "&coord_type=bd09mc" +
+                    "&mode=driving" + "&src=andr.baidu.openAPIdemo"  + "#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end"
+        )
+        context.startActivity(intent)
     }
 
 }
