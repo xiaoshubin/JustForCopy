@@ -6,7 +6,7 @@ import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.Animatable
-import com.smallcake.temp.utils.L
+import android.util.Log
 import kotlinx.coroutines.*
 
 class LoadingDrawable(val sun: Drawable, val cloud: Drawable) : Drawable(), Animatable {
@@ -75,14 +75,14 @@ class LoadingDrawable(val sun: Drawable, val cloud: Drawable) : Drawable(), Anim
     }
 
     override fun start() {
-        L.e("start() -------------------> ")
+        Log.e("TAG","start() -------------------> ")
         startAnim()
     }
 
     override fun stop() {
         scope?.cancel()
         scope = null
-        L.e("ICancelable cancel ---------------------------> ")
+        Log.e("TAG","ICancelable cancel ---------------------------> ")
     }
 
     override fun isRunning(): Boolean {

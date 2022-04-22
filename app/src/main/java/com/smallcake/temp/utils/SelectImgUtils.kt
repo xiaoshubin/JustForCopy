@@ -1,8 +1,19 @@
 package com.smallcake.temp.utils
 
+import android.content.ContentResolver
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.os.FileUtils
 import android.text.TextUtils
+import android.util.Log
+import android.webkit.MimeTypeMap
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.utils.widget.ImageFilterView
@@ -22,6 +33,9 @@ import com.smallcake.smallutils.Screen
 import com.smallcake.smallutils.px
 import com.smallcake.temp.R
 import java.io.File
+import java.io.FileOutputStream
+import java.util.*
+import kotlin.random.Random.Default.nextInt
 
 /**
  * Date:2021/7/14 13:38
@@ -32,6 +46,7 @@ import java.io.File
  * 3.点击已选图片查看大图
  **/
 object SelectImgUtils {
+    private const val TAG = "SelectImgUtils"
     private var lineImgNum = 3 //单排排列的图片个数
     private var imgMaxCount = 9 //图片最大上传数量
     private var selectListener: ((List<String>?) -> Unit)? = null//选择图片后的结果
@@ -107,7 +122,7 @@ object SelectImgUtils {
                         if (all) {
                             getPhoto(activity, mAdapter)
                         } else {
-                            L.e("获取部分权限成功,但部分权限未正常授予")
+                            Log.e("TAG","获取部分权限成功,但部分权限未正常授予")
                         }
                     }
 
@@ -116,7 +131,7 @@ object SelectImgUtils {
                             // 如果是被永久拒绝就跳转到应用权限系统设置页面
                             XXPermissions.startPermissionActivity(activity, permissions)
                         } else {
-                            L.e("获取权限失败")
+                            Log.e("TAG","获取权限失败")
                         }
                     }
 
@@ -164,7 +179,7 @@ object SelectImgUtils {
      * @param media LocalMedia
      */
     private fun printFileInfo(media: LocalMedia) {
-        L.i(
+        Log.i(TAG,
             "是否压缩:" + media.isCompressed +
                     "\n压缩:" + media.compressPath +
                     "\n原图:" + media.path +
@@ -177,6 +192,62 @@ object SelectImgUtils {
                     "\n图片大小: " + media.size
         )
     }
+
+    /**
+     * 选择所有类型的文件，如pdf,doc,jpeg,png,gif,mp3,mp4,
+     * 具体看：
+     */
+    fun selectFile(activity:AppCompatActivity, cb: (String?) -> Unit){
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "*/*"
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        val startActivityLauncher = activity.registerForActivityResult(ActivityResultContracts.OpenDocument()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val file = uriToFileQ(activity,it!!)
+                Log.e("TAG","uri:${file}")
+                cb(file?.path)
+            }
+
+//            val data = it.data
+//            //是否正确返回
+//            if (it.resultCode == Activity.RESULT_OK){
+//                val uri = data?.data
+//
+//                Log.e("TAG","${it.resultCode} ==data:${uri?.path}")
+//                if (data==null){
+//                    cb(it)
+//                }else{
+//                    cb(null)
+//                }
+//            }else if (it.resultCode == Activity.RESULT_CANCELED){
+//                showToast("已取消")
+//            }
+
+        }
+        startActivityLauncher.launch(arrayOf("image/*","text/plain"))
+
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun uriToFileQ(context: Context, uri: Uri): File? =
+        if (uri.scheme == ContentResolver.SCHEME_FILE)
+            File(requireNotNull(uri.path))
+        else if (uri.scheme == ContentResolver.SCHEME_CONTENT) {
+            //把文件保存到沙盒
+            val contentResolver = context.contentResolver
+            val displayName = "${System.currentTimeMillis()}.${MimeTypeMap.getSingleton().getExtensionFromMimeType(contentResolver.getType(uri))}"
+            val ios = contentResolver.openInputStream(uri)
+            if (ios != null) {
+                File("${context.cacheDir.absolutePath}/$displayName")
+                    .apply {
+                        val fos = FileOutputStream(this)
+                        FileUtils.copy(ios, fos)
+                        fos.close()
+                        ios.close()
+                    }
+            } else null
+        } else null
 }
 
 

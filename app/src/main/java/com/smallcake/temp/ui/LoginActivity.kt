@@ -2,6 +2,7 @@ package com.smallcake.temp.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -11,7 +12,6 @@ import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityLoginBinding
 import com.smallcake.temp.utils.GoogleLoginProvider
-import com.smallcake.temp.utils.L
 
 /**
  * 快速集成各种第三方登录
@@ -30,7 +30,7 @@ import com.smallcake.temp.utils.L
  *
  */
 class LoginActivity : BaseBindActivity<ActivityLoginBinding>() {
-
+    private val TAG = "LoginActivity"
     private lateinit var gLogin: GoogleLoginProvider//google登录提供者
     private lateinit var callbackManager: CallbackManager//2.1facebook回调管理类
 
@@ -53,12 +53,12 @@ class LoginActivity : BaseBindActivity<ActivityLoginBinding>() {
             FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
                 val id = result?.accessToken?.userId?:""//此id就是唯一标示
-                L.d("FaceBook登录成功id:${id}\n同意：${result?.recentlyGrantedPermissions}\n拒绝：${result?.recentlyDeniedPermissions}")
+                Log.d(TAG,"FaceBook登录成功id:${id}\n同意：${result?.recentlyGrantedPermissions}\n拒绝：${result?.recentlyDeniedPermissions}")
                 // 拿到id，执行自己的login()操作
                 bind.tvDesc.text = "FaceBook登录成功id:${id}"
             }
-            override fun onCancel() {L.d("FaceBook登录取消")}
-            override fun onError(error: FacebookException?) {L.d("FaceBook登录异常：$error")}
+            override fun onCancel() {Log.d(TAG,"FaceBook登录取消")}
+            override fun onError(error: FacebookException?) {Log.d(TAG,"FaceBook登录异常：$error")}
         })
         bind.btnFacebookLogin.setOnClickListener{
             LoginManager.getInstance().logInWithReadPermissions(this@LoginActivity,listOf("public_profile","email"))

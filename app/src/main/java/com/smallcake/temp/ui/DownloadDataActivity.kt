@@ -2,6 +2,7 @@ package com.smallcake.temp.ui
 
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.util.Log
 import com.smallcake.smallutils.FormatUtils
 import com.smallcake.smallutils.SdUtils
 import com.smallcake.smallutils.text.NavigationBar
@@ -9,7 +10,6 @@ import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityDownloadDataBinding
 import com.smallcake.temp.utils.AppUtils
 import com.smallcake.temp.utils.DownloadUtils
-import com.smallcake.temp.utils.L
 import com.smallcake.temp.utils.showToast
 import me.jessyan.progressmanager.body.ProgressInfo
 
@@ -42,7 +42,7 @@ class DownloadDataActivity : BaseBindActivity<ActivityDownloadDataBinding>() {
                 DownloadUtils.OnDownloadListener {
                 override fun onDownloadSuccess(downloadPath:String) {
                     progressDialog.dismiss()
-                    L.e("已下载到${downloadPath}开始安装...")
+                    Log.e("TAG","已下载到${downloadPath}开始安装...")
                     showToast("已下载到${downloadPath}开始安装...")
                     AppUtils.installApk(this@DownloadDataActivity, downloadPath)
                 }

@@ -3,6 +3,7 @@ package com.smallcake.temp.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import com.hjq.permissions.OnPermissionCallback
@@ -10,10 +11,8 @@ import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
 import com.smallcake.smallutils.MediaUtils
 import com.smallcake.smallutils.text.NavigationBar
-import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityRecordBinding
-import com.smallcake.temp.utils.L
 import com.smallcake.temp.utils.showToast
 
 /**
@@ -74,7 +73,7 @@ class RecordActivity : BaseBindActivity<ActivityRecordBinding>() {
      * 开始录音
      */
     private fun onStartAudioRecord() {
-        L.e("开始录音")
+        Log.e("TAG","开始录音")
         cancelled = false
         bind.layoutRecording.visibility = View.VISIBLE
         bind.lineVoice.start()
@@ -85,13 +84,13 @@ class RecordActivity : BaseBindActivity<ActivityRecordBinding>() {
      * @param cancelled Any
      */
     private fun onEndAudioRecord(cancelled: Any) {
-        L.e("结束录音")
+        Log.e("TAG","结束录音")
         started = false
         bind.layoutRecording.visibility = View.GONE
         bind.lineVoice.stop()
         bind.lineVoice.clearAnimation()
         MediaUtils.stopRecord{
-            L.e("录音文件地址为：$it")
+            Log.e("TAG","录音文件地址为：$it")
             if (!TextUtils.isEmpty(it)){
                 voicePath = it
                 val voiceTime = MediaUtils.getAudioFileVoiceTime(it)
@@ -129,9 +128,9 @@ class RecordActivity : BaseBindActivity<ActivityRecordBinding>() {
         }
         cancelled = cancel
         if (cancel) {
-            L.e("手指松开，取消发送")
+            Log.e("TAG","手指松开，取消发送")
         } else {
-            L.e("手指上滑，取消发送")
+            Log.e("TAG","手指上滑，取消发送")
         }
     }
     fun checkPermission():Boolean {
@@ -147,7 +146,7 @@ class RecordActivity : BaseBindActivity<ActivityRecordBinding>() {
                             isAgreePermission =  true
                         } else {
                             isAgreePermission =  false
-                            L.e("获取部分权限成功,但部分权限未正常授予")
+                            Log.e("TAG","获取部分权限成功,但部分权限未正常授予")
                             showToast("获取部分权限成功,但部分权限未正常授予")
                         }
                     }
@@ -155,7 +154,7 @@ class RecordActivity : BaseBindActivity<ActivityRecordBinding>() {
                     override fun onDenied(permissions: MutableList<String>, never: Boolean) {
                         if (never) {
                             isAgreePermission =  false
-                            L.e("被永久拒绝授权，请手动授予权限")
+                            Log.e("TAG","被永久拒绝授权，请手动授予权限")
                             // 如果是被永久拒绝就跳转到应用权限系统设置页面
                             XXPermissions.startPermissionActivity(
                                 this@RecordActivity,

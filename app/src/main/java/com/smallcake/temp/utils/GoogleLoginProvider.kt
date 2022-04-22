@@ -79,7 +79,7 @@ class GoogleLoginProvider(val activity: AppCompatActivity) {
             @OnLifecycleEvent(Lifecycle.Event.ON_START)
             fun onStart(){
                 val account = GoogleSignIn.getLastSignedInAccount(activity)
-                L.e("google是否已经登录：${account?.account}")
+                Log.e("TAG","google是否已经登录：${account?.account}")
                 isLoginCb?.invoke(account)
             }
         })

@@ -1,26 +1,13 @@
 package com.smallcake.temp
 
 import android.os.Bundle
-import android.os.Handler
-import android.text.TextUtils
-import android.util.Log
-import com.amap.api.mapcore.util.dp
-import com.haibin.calendarview.YearRecyclerView
-import com.smallcake.smallutils.TimeUtils
-import com.smallcake.smallutils.dp
-import com.smallcake.smallutils.px
+import coil.load
 import com.smallcake.smallutils.text.NavigationBar
-import com.smallcake.smallutils.twoDecimals
 import com.smallcake.temp.base.BaseBindActivity
-import com.smallcake.temp.bean.Song
 import com.smallcake.temp.databinding.ActivityMainBinding
-import com.smallcake.temp.utils.AppUtils
 import com.smallcake.temp.utils.BottomNavUtils
-import com.smallcake.temp.utils.L
-import org.litepal.LitePal
-import org.litepal.extension.find
-import org.litepal.extension.findAll
-import java.util.*
+import com.smallcake.temp.utils.SelectImgUtils
+import java.io.File
 
 
 /**
@@ -37,7 +24,9 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
     }
 
     private fun onEvent() {
-        goActivity(TestActivity::class.java)
+        SelectImgUtils.selectFile(this){
+            bind.iv.load(File(it))
+        }
     }
 
     private fun initView() {

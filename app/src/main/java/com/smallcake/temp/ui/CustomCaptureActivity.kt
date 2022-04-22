@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
@@ -16,7 +17,6 @@ import com.smallcake.smallutils.BitmapUtils.getBitmapPath
 import com.smallcake.smallutils.ToastUtil.Companion.showLong
 import com.smallcake.temp.R
 import com.smallcake.temp.utils.GlideEngine
-import com.smallcake.temp.utils.L
 import com.xuexiang.xqrcode.XQRCode
 import com.xuexiang.xqrcode.ui.CaptureActivity
 import com.xuexiang.xqrcode.util.QRCodeAnalyzeUtils.AnalyzeCallback
@@ -108,7 +108,7 @@ class CustomCaptureActivity : CaptureActivity(), View.OnClickListener {
                     val bitmapPath = getBitmapPath(path)
                     XQRCode.analyzeQRCode(bitmapPath, object : AnalyzeCallback {
                         override fun onAnalyzeSuccess(bitmap: Bitmap, result: String) {
-                            L.e("解析结果：$result")
+                            Log.e("TAG","解析结果：$result")
                             val resultIntent = Intent()
                             val bundle = Bundle()
                             bundle.putInt(XQRCode.RESULT_TYPE, XQRCode.RESULT_SUCCESS)
@@ -123,7 +123,7 @@ class CustomCaptureActivity : CaptureActivity(), View.OnClickListener {
 
                 override fun onCancel() {
                     showLong("取消选择")
-                    L.e("没有选择图片")
+                    Log.e("TAG","没有选择图片")
                 }
 
 
@@ -131,7 +131,7 @@ class CustomCaptureActivity : CaptureActivity(), View.OnClickListener {
     }
 
     private fun printMedia(media: LocalMedia) {
-        L.e("是否压缩:" + media.isCompressed+
+        Log.e("TAG","是否压缩:" + media.isCompressed+
         "\n压缩:" + media.compressPath+
         "\n原图:" + media.path+
         "\n绝对路径:" + media.realPath+

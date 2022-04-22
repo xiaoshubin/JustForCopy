@@ -7,7 +7,6 @@ import android.graphics.Paint
 import android.text.TextUtils
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.MonthView
-import com.smallcake.temp.utils.L
 
 /**
  * Date: 2020/8/21

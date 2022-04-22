@@ -1,6 +1,7 @@
 package com.smallcake.temp.ui
 
 import android.os.Bundle
+import android.util.Log
 import com.smallcake.smallutils.TimeUtils
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.base.BaseBindActivity
@@ -27,7 +28,7 @@ class ReportRepairActivity : BaseBindActivity<ActivityReportRepairBinding>() {
         bind.btnReport.setOnClickListener{
             ldd("要上传的图片：${imgs.sizeNull()}")
             imgs?.forEachIndexed{i,path->
-                L.d("$i =="+path)
+                Log.d("ReportRepairActivity","$i =="+path)
             }
         }
         bind.tvStartTime.setOnClickListener{

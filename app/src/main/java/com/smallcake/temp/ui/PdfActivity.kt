@@ -1,11 +1,11 @@
 package com.smallcake.temp.ui
 
 import android.os.Bundle
+import android.util.Log
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityPdfBinding
 import com.smallcake.temp.utils.DownloadUtils
-import com.smallcake.temp.utils.L
 import com.tencent.smtt.export.external.TbsCoreSettings
 import me.jessyan.progressmanager.body.ProgressInfo
 import java.io.File
@@ -48,12 +48,12 @@ class PdfActivity : BaseBindActivity<ActivityPdfBinding>() {
         bar.setTitle("腾讯TBS查看器")
         DownloadUtils.download(mUrl,object :DownloadUtils.OnDownloadListener{
             override fun onDownloadSuccess(downloadPath:String) {
-                L.e("下载成功的路径：$downloadPath")
+                Log.e("TAG","下载成功的路径：$downloadPath")
                 bind.superFileView.displayFile(File(downloadPath))
             }
 
             override fun onDownloading(progress: ProgressInfo?) {
-                L.e("进度："+progress?.percent+"%")
+                Log.e("TAG","进度："+progress?.percent+"%")
             }
             override fun onDownloadFailed() {
             }

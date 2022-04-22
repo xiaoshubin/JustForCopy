@@ -9,10 +9,10 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.appcompat.widget.AppCompatTextView
-import com.smallcake.temp.utils.L
 
 /**
  * 参考：https://github.com/timqi/CollapsibleTextView
@@ -116,7 +116,7 @@ class ExpandTextView : AppCompatTextView {
             val maxWidth: Int =
                 maxLineCount * (measuredWidth - paddingLeft - paddingRight)
             while (paint.measureText(note.substring(0, end) + suffix) > maxWidth) end--
-            L.e("lineEnd=$lineEnd newEnd=$newEnd end=$end")
+            Log.e("TAG","lineEnd=$lineEnd newEnd=$newEnd end=$end")
             note = note.substring(0, end)
         }
         val str = SpannableString(note +(if (expandState)suffix else(ellipsizeText+suffix)))

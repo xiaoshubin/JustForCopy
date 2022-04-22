@@ -1,19 +1,14 @@
 package com.smallcake.temp.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.opensource.svgaplayer.SVGACache
 import com.opensource.svgaplayer.SVGAImageView
 import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.MyApplication
-import com.smallcake.temp.R
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivitySvgaBinding
-import com.smallcake.temp.utils.L
-import java.io.File
 
 /**
  * svga动画演示
@@ -69,7 +64,7 @@ class SvgaActivity : BaseBindActivity<ActivitySvgaBinding>() {
     private fun showSvga(svgUrl:String){
         MyApplication.instance.getSVGAParser().decodeFromURL(java.net.URL(svgUrl),object : SVGAParser.ParseCompletion{
             override fun onComplete(videoItem: SVGAVideoEntity) {
-                L.e("svga 完成")
+                Log.e("TAG","svga 完成")
                 bind.svgaView.apply {
                     setVideoItem(videoItem)
                     stepToFrame(0, true)
@@ -79,7 +74,7 @@ class SvgaActivity : BaseBindActivity<ActivitySvgaBinding>() {
                 }
             }
             override fun onError() {
-                L.e("svga 异常")
+                Log.e("TAG","svga 异常")
             }
         })
     }

@@ -3,6 +3,7 @@ package com.smallcake.temp
 import android.app.Application
 import android.content.Context
 import android.net.http.HttpResponseCache
+import android.util.Log
 import androidx.multidex.MultiDex
 import com.baidu.mapapi.SDKInitializer
 import com.facebook.FacebookSdk
@@ -16,7 +17,6 @@ import com.smallcake.temp.bean.DaoMaster
 import com.smallcake.temp.bean.DaoSession
 import com.smallcake.temp.module.httpModule
 import com.smallcake.temp.module.mapModule
-import com.smallcake.temp.utils.L
 import com.tencent.mmkv.MMKV
 import com.tencent.smtt.export.external.TbsCoreSettings
 import com.tencent.smtt.sdk.QbSdk
@@ -72,11 +72,11 @@ class MyApplication : Application() {
         QbSdk.initTbsSettings(map)
         QbSdk.initX5Environment(this,object :QbSdk.PreInitCallback{
             override fun onCoreInitFinished() {
-                L.e("onCoreInitFinished")
+                Log.e("TAG","onCoreInitFinished")
             }
 
             override fun onViewInitFinished(b: Boolean) {
-                L.e("onViewInitFinished:$b")
+                Log.e("TAG","onViewInitFinished:$b")
             }
 
         })
