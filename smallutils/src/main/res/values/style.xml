@@ -8,15 +8,15 @@
     <!-- 圆环进度控件-->
     <declare-styleable name="CirclePercentView">
         <!--圆弧背景色-->
-        <attr name="circleBgColor" format="reference" />
+        <attr name="circleBgColor" format="color" />
         <!--圆弧进度条颜色-->
-        <attr name="circleProgressColor" format="reference" />
+        <attr name="circleProgressColor" format="color" />
         <!--圆弧宽度-->
         <attr name="circleRadious" format="integer" />
         <!--渐变开始颜色-->
-        <attr name="circleStartColor" format="reference" />
+        <attr name="circleStartColor" format="color" />
         <!--渐变结束颜色-->
-        <attr name="circleEndColor" format="reference" />
+        <attr name="circleEndColor" format="color" />
         <!--是否渐变-->
         <attr name="circleIsGradient" format="boolean" />
     </declare-styleable>

@@ -24,9 +24,9 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
     }
 
     private fun onEvent() {
-        SelectImgUtils.selectFile(this){
-            bind.iv.load(File(it))
-        }
+//        SelectImgUtils.selectFile(this){
+//            bind.iv.load(File(it))
+//        }
     }
 
     private fun initView() {

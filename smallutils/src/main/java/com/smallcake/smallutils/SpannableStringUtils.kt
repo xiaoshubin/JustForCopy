@@ -605,7 +605,7 @@ class RadiusBackgroundSpan(@param:ColorInt private val mColor: Int, @param:Color
     ) {
         paint.color = mColor //设置背景颜色
         paint.isAntiAlias = true // 设置画笔的锯齿效果
-        val oval = RectF(x, y + paint.ascent(), x + mSize, y + paint.descent())
+        val oval = RectF(x-8, y + paint.ascent()-8, x + mSize+8, y + paint.descent()+8)
         //设置文字背景矩形，x为span其实左上角相对整个TextView的x值，y为span左上角相对整个View的y值。paint.ascent()获得文字上边缘，paint.descent()获得文字下边缘
         canvas.drawRoundRect(oval,mRadius.toFloat(),mRadius.toFloat(), paint) //绘制圆角矩形，第二个参数是x半径，第三个参数是y半径
         paint.color = mTxtColor //恢复画笔的文字颜色
@@ -685,10 +685,10 @@ class DslSpannableStringBuilderImpl  {
             align?.let { builder.setSpan(AlignmentSpan.Standard(it), start, lastIndex, flag) }
             blurFilter?.let { builder.setSpan(MaskFilterSpan(it), start, lastIndex, flag) }
             //图片
-            bitmap?.let { builder.setSpan(ImageSpan(it), start, lastIndex, flag) }
+            bitmap?.let { builder.setSpan(SmallUtils.context?.let { it1 -> ImageSpan(it1,it) }, start, lastIndex, flag) }
             drawable?.let { builder.setSpan(ImageSpan(it), start, lastIndex, flag) }
-            uri?.let { builder.setSpan(ImageSpan(SmallUtils.context!!,it), start, lastIndex, flag) }
-            resourceId?.let { builder.setSpan(ImageSpan(SmallUtils.context!!,it), start, lastIndex, flag) }
+            uri?.let { builder.setSpan(SmallUtils.context?.let { it1 -> ImageSpan(it1,it) }, start, lastIndex, flag) }
+            resourceId?.let { builder.setSpan(SmallUtils.context?.let { it1 -> ImageSpan(it1,it) }, start, lastIndex, flag) }
 
 
         }
@@ -792,6 +792,8 @@ class DslSpannableStringBuilderImpl  {
      /**
       * 添加图片
       * 缺点：图片的大小无法控制
+      * 注意：会直接替换addText的文字，所以应该在要添加的图片的文字前添加一个空的图片占位
+      * 例如：addText("图片"){resourceId = R.mipmap.ic_start_time_clock}
       */
      var bitmap: Bitmap? = null
      var drawable: Drawable? = null
