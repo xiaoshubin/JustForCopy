@@ -79,6 +79,7 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
             bind.ball.setBgColor(Color.parseColor("#F5AD06"))
             bind.ball.setBottomColor(Color.parseColor("#FECE0A"))
         },3000)
+        bind.speedChart.setProgress(50f)
         //滚动的文本
         bind.scrollTv.apply {
             val spanStr = SpannableStringUtils.getBuilder("这是一段可以横向滚动的广告文本")
