@@ -808,6 +808,13 @@ class DslSpannableStringBuilderImpl  {
       * 类型三：邮件，应该是以mailto开头：mailto:495303648@qq.com
       * 类型四：短信，应该是以sms开头：sms:13800138000
       * 类型五：地图，应该是以geo开头：geo:29.542356,106.568154 效果：会打开地图并在地图上显示一个商家位置
+      *
+      * 注意要使其生效，需要如下使用,要传入true
+      * textView.buildSpannableString (true){
+      *      addText("去百度"){
+      *          linkUrl = “http://www.baidu.com”
+      *      }
+      * }
       */
      var linkUrl: String? = null
 
@@ -842,6 +849,15 @@ class DslSpannableStringBuilderImpl  {
              QuoteSpan(color)
          }
     }
+     /**
+      * 点击事件
+      * 注意要使其生效，需要如下使用,要传入true
+      * textView.buildSpannableString (true){
+      *      addText("点击我"){
+      *          onClick {  }
+      *      }
+      * }
+      */
     fun onClick( onClick: (View) -> Unit) {
         onClickSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
@@ -891,12 +907,12 @@ class DslSpannableStringBuilderImpl  {
 }
 
 //为TextView添加富文本扩展函数
-fun TextView.buildSpannableString(init:DslSpannableStringBuilderImpl.()->Unit){
+fun TextView.buildSpannableString(onClickEnable:Boolean=false,init:DslSpannableStringBuilderImpl.()->Unit){
     //具体实现类
     val spanStringBuilderImpl = DslSpannableStringBuilderImpl()
     spanStringBuilderImpl.init()
     //此方法在需要响应用户事件时使用
-    movementMethod = LinkMovementMethod.getInstance()
+    if (onClickEnable)movementMethod = LinkMovementMethod.getInstance()
     //通过实现类返回SpannableStringBuilder
     text = spanStringBuilderImpl.build()
 }
