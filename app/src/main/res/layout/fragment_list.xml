@@ -47,6 +47,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <CheckBox
+                android:button="@drawable/check_box"
+                android:drawablePadding="32dp"
+                android:checked="true"
+                android:textColor="@color/tv_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="自定义图标"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <CheckBox
                 android:drawablePadding="32dp"
                 android:button="@null"
                 android:drawableRight="?android:attr/listChoiceIndicatorSingle"
