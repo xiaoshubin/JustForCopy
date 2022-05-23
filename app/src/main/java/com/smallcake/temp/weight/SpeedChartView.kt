@@ -9,6 +9,15 @@ import com.smallcake.smallutils.px
 
 /**
  * 一个速度表的自定义View
+ * 默认是底部缺口120，也就是240度的速度表
+ *
+ * 1.xml中
+<com.demo.smallutils.SpeedChartView
+android:id="@+id/speed_chart"
+android:layout_width="160dp"
+android:layout_height="160dp"/>
+2.设置进度
+speedChartView.setProgress(80f)
  */
 class SpeedChartView : View {
 
@@ -56,19 +65,21 @@ class SpeedChartView : View {
 
     @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-        //画弧背景
+        //1.画弧背景
+        paint.clearShadowLayer()
+        paint.strokeWidth = arcWith
+        paint.color= Color.parseColor("#F2F2F2")
         val rect = RectF(arcWith/2+shadowSize, arcWith/2+shadowSize, width.toFloat()-arcWith/2-shadowSize, height.toFloat()-arcWith/2-shadowSize)
         canvas.drawArc(rect,startAngle, sweepAngle, false, paint)
-        //阴影
+        //2.画阴影弧进度
         paint.setShadowLayer(arcWith/4,0f,0f,Color.parseColor("#2962B5"))
-        //画弧
         val currentSweepAngle = sweepAngle*(progress/100f)
         paint.color= Color.parseColor("#2962B5")
         canvas.drawArc(rect,startAngle, currentSweepAngle, false, paint)
-        //画刻度
+        //3.画刻度
         paint.setShadowLayer(dashSize/4,0f,0f,Color.parseColor("#2962B5"))
         paint.strokeWidth = dashSize
+        //移动和旋转画布
         canvas.translate(width/2f,height/2f)
         canvas.rotate(90+gapAngle/2f-divAngle/2)
         for (i in 0..kdNum+1){
