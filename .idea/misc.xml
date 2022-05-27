@@ -33,6 +33,7 @@
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_p2p_chat.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_pdf.xml" value="0.87875" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_record.xml" value="0.25" />
+        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_report_repair.xml" value="0.8291666666666667" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_safe_go_round_history.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_service.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_shape_view.xml" value="0.25" />
@@ -56,6 +57,7 @@
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/pop_time_start_end_select.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/smallcake_utils_loading_dialog.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.38229166666666664" />
+        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/smallutils/src/main/res/layout/android_navigation_bar.xml" value="0.87875" />
       </map>
     </option>
   </component>

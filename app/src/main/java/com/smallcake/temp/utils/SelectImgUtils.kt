@@ -150,7 +150,8 @@ object SelectImgUtils {
             .setMaxSelectNum(imgMaxCount - mAdapter.data.filter { !it.isAdd }.sizeNull())
             .setImageSpanCount(3)
             .isDisplayCamera(true)// 是否显示拍照按钮
-            .isPreviewImage(false)//不能预览，避免本来想选中，结果查看了大图
+            .isPreviewImage(false)//不能预览，避免本来想选中，
+            .setCompressEngine(LuBanCompressEngine())
             .forResult(object : OnResultCallbackListener<LocalMedia> {
                 override fun onResult(result: ArrayList<LocalMedia>) {
                     for (media in result) {

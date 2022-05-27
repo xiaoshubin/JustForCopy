@@ -160,7 +160,8 @@ dependencies {
 //    //日历控件
 //    implementation 'com.haibin:calendarview:3.6.9'
 //    //资源图片，视频选择器
-    implementation 'io.github.lucksiege:pictureselector:v3.0.4'
+    implementation 'io.github.lucksiege:pictureselector:v3.0.7'
+    implementation 'io.github.lucksiege:compress:v3.0.7'
 //    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.0'
 //    implementation "androidx.camera:camera-view:1.0.0-alpha19"//解决在使用androidx的时候，可能会出现androidx.camera.view.CameraView找不到
 //    //悬浮球
