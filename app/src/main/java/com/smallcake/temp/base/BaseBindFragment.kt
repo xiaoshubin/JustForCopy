@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.viewbinding.ViewBinding
-import com.dylanc.viewbinding.inflateBindingWithGeneric
+import com.dylanc.viewbinding.base.ViewBindingUtil
 
 
 /**
@@ -41,7 +41,7 @@ abstract class BaseBindFragment<VB : ViewBinding>: Fragment() {
     val bind:VB get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = inflateBindingWithGeneric(layoutInflater)
+        _binding = ViewBindingUtil.inflateWithGeneric(this,layoutInflater)
         return bind.root
     }
 

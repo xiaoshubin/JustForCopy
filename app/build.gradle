@@ -87,10 +87,10 @@ dependencies {
     //内存泄漏检测
 //    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.6"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.core:core-ktx:1.6.0"
+    implementation "androidx.core:core-ktx:1.7.0"
     implementation "androidx.activity:activity-ktx:1.2.3"
     implementation "androidx.fragment:fragment-ktx:1.3.5"
-    implementation "androidx.appcompat:appcompat:1.4.0"
+    implementation "androidx.appcompat:appcompat:1.4.1"
     implementation "com.google.android.material:material:1.4.0"
     implementation "androidx.constraintlayout:constraintlayout:2.1.3"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
@@ -112,7 +112,8 @@ dependencies {
     implementation "io.coil-kt:coil-svg:1.2.2" //支持SVG
     implementation "io.coil-kt:coil-video:1.2.2" //支持Video
     //ViewBinding基类
-    implementation "com.dylanc:viewbinding-ktx:1.0.1"
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.1.0'
+    implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.1.0'
     //权限管理
     implementation "com.hjq:xxpermissions:9.8"
     // Koin for Android
@@ -120,9 +121,9 @@ dependencies {
     implementation "org.koin:koin-android:$koin_version"
     //网络请求框架
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation "com.squareup.okhttp3:okhttp:4.9.0"//okhttp
-    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"//拦截器
-    implementation "com.google.code.gson:gson:2.8.6"//gson转换
+    implementation "com.squareup.okhttp3:okhttp:4.9.3"//okhttp
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"//拦截器
+    implementation "com.google.code.gson:gson:2.8.9"//gson转换
     implementation "com.squareup.retrofit2:converter-gson:2.6.0"//对象转换
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"//Rxjava转换
     //Rxjava2
@@ -133,7 +134,6 @@ dependencies {
     //生命周期绑定
     implementation "com.trello.rxlifecycle2:rxlifecycle-android-lifecycle:$rxjava_version"
     implementation "com.trello.rxlifecycle2:rxlifecycle-kotlin:$rxjava_version"
-//    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
     //Apollo的核心库,事件通知
     implementation 'com.github.lsxiao.Apollo:core:1.0.2'
     implementation project(path: ':smallutils')
@@ -141,20 +141,15 @@ dependencies {
 
     kapt "com.github.lsxiao.Apollo:processor:1.0.2"//kotlin版本的
     //RecyclerView适配器
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.6'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7'
     //mmkv用于替代SharedPreferences
-    implementation 'com.tencent:mmkv-static:1.2.7'
+    implementation 'com.tencent:mmkv-static:1.2.12'
     //可定制Tabs
     implementation 'com.github.hackware1993:MagicIndicator:1.7.0'
 
     /**
      * ------------------------------------------下面为一些常用可选的第三方库---------------------------------------------------
      */
-
-//    //沉浸式基础依赖包，必须要依赖
-//    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
-//    // kotlin扩展（可选）
-//    implementation 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
 //    //鲁班压缩，压缩图片
 //    implementation 'top.zibin:Luban:1.1.8'
 //    //日历控件
@@ -162,15 +157,11 @@ dependencies {
 //    //资源图片，视频选择器
     implementation 'io.github.lucksiege:pictureselector:v3.0.7'
     implementation 'io.github.lucksiege:compress:v3.0.7'
-//    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.6.0'
-//    implementation "androidx.camera:camera-view:1.0.0-alpha19"//解决在使用androidx的时候，可能会出现androidx.camera.view.CameraView找不到
 //    //悬浮球
     implementation 'com.github.princekin-f:EasyFloat:1.3.4'
 //    //一行进度监听器
     implementation 'me.jessyan:progressmanager:1.5.0'
-//
-//    //漂亮的Toast
-//    implementation 'com.github.GrenderG:Toasty:1.5.0'
+
 
 
     //高德定位功能
@@ -208,7 +199,7 @@ dependencies {
     implementation 'com.google.zxing:core:3.3.3'
     implementation 'com.github.xuexiangjys:XQRCode:1.1.0'
     //https://github.com/getActivity/ShapeView
-    implementation 'com.github.getActivity:ShapeView:5.0'
+    implementation 'com.github.getActivity:ShapeView:8.2'
     //腾讯云
     implementation ('com.qcloud.cos:cos-android:5.7.1') {
         //关闭beacon 上报功能

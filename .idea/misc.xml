@@ -3,21 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/JustForCopy/app/src/main/res/drawable/recording_bg.xml" value="0.26979166666666665" />
         <entry key="..\:/Android/JustForCopy/app/src/main/res/layout/activity_camre_layout.xml" value="0.25364583333333335" />
+        <entry key="..\:/Android/JustForCopy/app/src/main/res/layout/activity_sign.xml" value="0.25364583333333335" />
+        <entry key="..\:/Android/JustForCopy/app/src/main/res/layout/activity_video.xml" value="0.25364583333333335" />
+        <entry key="..\:/Android/JustForCopy/app/src/main/res/layout/fragment_list.xml" value="0.25364583333333335" />
+        <entry key="..\:/Android/JustForCopy/app/src/main/res/layout/smallcake_utils_loading_dialog.xml" value="0.25364583333333335" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable-v24/progress_bar_drawable.xml" value="0.38229166666666664" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable-v24/ref_animation.xml" value="0.2605" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/check_box.xml" value="0.3345" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/left_white_msg_bg.xml" value="0.38229166666666664" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/loading_animation.xml" value="0.276" />
-        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/recording_bg.xml" value="0.248" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/ref_animation.xml" value="0.2605" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/right_blue_msg_bg.xml" value="0.1" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/white_round6_bg.xml" value="0.38229166666666664" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_baidu_map.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_banner.xml" value="0.36614583333333334" />
-        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_camera_custom.xml" value="0.36614583333333334" />
-        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_camera_xactivity.xml" value="0.67" />
-        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_camre_layout.xml" value="0.30055579307396324" />
+        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_camera_xactivity.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_city_select.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_contact.xml" value="0.3605128205128205" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_coroutines.xml" value="0.3605128205128205" />
@@ -37,7 +39,6 @@
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_safe_go_round_history.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_service.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_shape_view.xml" value="0.25" />
-        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_single_video_play.xml" value="0.87875" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_svga.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_test.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_video.xml" value="0.36614583333333334" />
@@ -52,7 +53,6 @@
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/item_contact.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/item_img_selecter.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/item_nine_patch.xml" value="0.36614583333333334" />
-        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/item_poi.xml" value="0.87875" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/music_weight.xml" value="0.1" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/pop_time_start_end_select.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/smallcake_utils_loading_dialog.xml" value="0.36614583333333334" />
@@ -61,7 +61,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

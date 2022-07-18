@@ -230,16 +230,6 @@
             app:rsb_progress_drawable="@drawable/progress"
             />
 
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:layout_marginBottom="8dp"
-            android:progressDrawable="@drawable/progress_bar_drawable"
-            android:max="100"
-            android:progress="40"
-            android:layout_marginTop="8dp"
-            android:id="@+id/progress_bar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
         <View style="@style/h_line"/>
         <ImageView
             android:id="@+id/iv_auth_code"

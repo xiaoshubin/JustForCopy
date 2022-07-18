@@ -6,7 +6,7 @@ import android.view.Gravity
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
-import com.dylanc.viewbinding.inflateBindingWithGeneric
+import com.dylanc.viewbinding.base.ViewBindingUtil
 import com.lxj.xpopup.XPopup
 import com.lzf.easyfloat.EasyFloat
 import com.lzf.easyfloat.enums.SidePattern
@@ -21,7 +21,7 @@ abstract class BaseBindActivity<VB:ViewBinding>: BaseActivity() {
     lateinit var bind: VB
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bind = inflateBindingWithGeneric(layoutInflater)
+        bind = ViewBindingUtil.inflateWithGeneric(this,layoutInflater)
         setContentView(bind.root)
         //导航栏设置
         val bar = NavigationBar(this)
