@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.text.TextUtils
 import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
@@ -105,6 +106,26 @@ class WebUtils {
             layoutAlgorithm = WebSettings.LayoutAlgorithm.NARROW_COLUMNS
             useWideViewPort = true
         }
+    }
+
+    /**
+     * 清除富文本中得图片信息，用于列表数据显示
+     * @param content String
+     * @return String
+     */
+    fun clearImgTag(content:String):String{
+        var contentNew=content
+        if (!TextUtils.isEmpty(content) && content.indexOf("<img") !== -1) {
+            val regEx_img = "<img.*src\\s*=\\s*(.*?)[^>]*?>"
+            val p_image: Pattern = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE)
+            val m_image: Matcher = p_image.matcher(content)
+            //循环去掉img标签
+            while (m_image.find()) {
+                val group = m_image.group()
+                contentNew = contentNew.replace(group, "")
+            }
+        }
+        return contentNew
     }
 }
 class MyWebViewClient : WebViewClient() {

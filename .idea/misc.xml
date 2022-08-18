@@ -14,12 +14,14 @@
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/check_box.xml" value="0.3345" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/left_white_msg_bg.xml" value="0.38229166666666664" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/loading_animation.xml" value="0.276" />
+        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/recording_bg.xml" value="0.2955" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/ref_animation.xml" value="0.2605" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/right_blue_msg_bg.xml" value="0.1" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/white_round6_bg.xml" value="0.38229166666666664" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_baidu_map.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_banner.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_camera_xactivity.xml" value="0.36614583333333334" />
+        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_chart.xml" value="0.8333333333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_city_select.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_contact.xml" value="0.3605128205128205" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_coroutines.xml" value="0.3605128205128205" />
@@ -31,6 +33,7 @@
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_location_map.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_main_fragments.xml" value="0.36614583333333334" />
+        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_more_layout_list.xml" value="0.7979166666666667" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_nine_patch.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_p2p_chat.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_pdf.xml" value="0.87875" />
