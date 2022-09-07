@@ -18,7 +18,7 @@ import java.util.regex.Pattern
  * Author:SmallCake
  * Desc: WebView工具类
  **/
-class WebUtils {
+object WebUtils {
     private val TAG = "WebUtils"
     /**
      * 图片自适应屏幕宽度
