@@ -273,7 +273,34 @@
             android:text="这是一段可以横向滚动的广告文本"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
+        <com.google.android.material.tabs.TabLayout
+            app:tabMode="auto"
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/transparent"
+            app:tabIndicatorHeight="0dp">
+            <com.google.android.material.tabs.TabItem
+                android:text="全部"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <com.google.android.material.tabs.TabItem
+                android:text="待选择"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <com.google.android.material.tabs.TabItem
+                android:text="已接单"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <com.google.android.material.tabs.TabItem
+                android:text="已完成"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <com.google.android.material.tabs.TabItem
+                android:text="已取消"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.tabs.TabLayout>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

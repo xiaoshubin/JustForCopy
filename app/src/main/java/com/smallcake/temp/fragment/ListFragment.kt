@@ -9,8 +9,12 @@ import android.graphics.drawable.NinePatchDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.get
 import androidx.lifecycle.lifecycleScope
 import coil.request.CachePolicy
 import coil.request.ImageRequest
@@ -92,7 +96,27 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
             }
 //            startScroll()
         }
+        //自定义TabLayout
+        initTab()
 
+    }
+
+    /**
+     * 1.自定义布局文件
+     * @see tab_text.xml
+     * 2.自定义文本颜色选中和未选中
+     * @see @drawable/tab_text_selector
+     * 3.自定义文本背景选中和未选中
+     * @see @drawable/tab_bg_selector
+     */
+    private fun initTab() {
+        val childCount = (bind.tabLayout[0] as ViewGroup).childCount
+        for (i in 0 until childCount){
+            val tab = bind.tabLayout.getTabAt(i)
+            val view  = LayoutInflater.from(context).inflate(R.layout.tab_text,null)
+            view.findViewById<TextView>(R.id.tv).text = tab?.text
+            tab?.customView = view
+        }
     }
 
 

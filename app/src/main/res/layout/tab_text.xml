@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:textSize="12sp"
+        android:gravity="center"
+        android:id="@+id/tv"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingRight="12dp"
+        android:paddingLeft="12dp"
+        android:background="@drawable/tab_bg_selector"
+        android:textColor="@drawable/tab_text_selector"
+        android:text="全部"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</androidx.appcompat.widget.LinearLayoutCompat>
