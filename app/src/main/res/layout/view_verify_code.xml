@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <com.hjq.shape.view.ShapeTextView
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:text="0"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            app:shape_radius="10dp"
+            app:shape_solidColor="#0F0F22"
+            android:id="@+id/tv0"
+            android:layout_width="40dp"
+            android:layout_height="50dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.hjq.shape.view.ShapeTextView
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:text="0"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            app:shape_radius="10dp"
+            app:shape_solidColor="#0F0F22"
+            android:id="@+id/tv1"
+            android:layout_width="40dp"
+            android:layout_height="50dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.hjq.shape.view.ShapeTextView
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:text="0"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            app:shape_radius="10dp"
+            app:shape_solidColor="#0F0F22"
+            android:id="@+id/tv2"
+            android:layout_width="40dp"
+            android:layout_height="50dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.hjq.shape.view.ShapeTextView
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:text="0"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            app:shape_radius="10dp"
+            app:shape_solidColor="#0F0F22"
+            android:id="@+id/tv3"
+            android:layout_width="40dp"
+            android:layout_height="50dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.hjq.shape.view.ShapeTextView
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:text="0"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            app:shape_radius="10dp"
+            app:shape_solidColor="#0F0F22"
+            android:id="@+id/tv4"
+            android:layout_width="40dp"
+            android:layout_height="50dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.hjq.shape.view.ShapeTextView
+            android:textStyle="bold"
+            android:gravity="center"
+            tools:text="0"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            app:shape_radius="10dp"
+            app:shape_solidColor="#0F0F22"
+            android:id="@+id/tv5"
+            android:layout_width="40dp"
+            android:layout_height="50dp" />
+
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/transparent"
+        android:textColor="@color/transparent"
+        android:longClickable="false"
+        android:maxLength="6"
+        android:inputType="number" />
+</RelativeLayout>
