@@ -42,7 +42,7 @@
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_report_repair.xml" value="0.8291666666666667" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_safe_go_round_history.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_service.xml" value="0.36614583333333334" />
-        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_shape_view.xml" value="0.25" />
+        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_shape_view.xml" value="0.17370657335666084" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_svga.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_test.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_video.xml" value="0.36614583333333334" />
@@ -57,6 +57,8 @@
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/item_contact.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/item_img_selecter.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/item_nine_patch.xml" value="0.36614583333333334" />
+        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/item_poi.xml" value="0.87875" />
+        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/layout_search_view.xml" value="0.87875" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/music_weight.xml" value="0.1" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/pop_time_start_end_select.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/smallcake_utils_loading_dialog.xml" value="0.36614583333333334" />

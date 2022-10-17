@@ -2,17 +2,17 @@ package com.smallcake.smallutils
 
 import android.app.Activity
 import android.content.Context
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.MediaPlayer
-import android.media.MediaRecorder
+import android.graphics.Bitmap
+import android.media.*
 import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import android.view.SurfaceHolder
 import android.widget.MediaController
 import android.widget.VideoView
 import java.io.File
 import java.io.IOException
+import java.util.*
 
 
 object MediaUtils{
@@ -161,5 +161,59 @@ object MediaUtils{
         mediaPlayer.reset()
         mediaPlayer.release()
         return (mediaPlayerDuration/1000).toInt()
+    }
+    fun createVideoThumbnail(filePath: String, kind: Int): Bitmap? {
+        var bitmap: Bitmap? = null
+        val retriever = MediaMetadataRetriever()
+        try {
+            if (filePath.startsWith("http://")
+                || filePath.startsWith("https://")
+                || filePath.startsWith("widevine://")
+            ) {
+                retriever.setDataSource(filePath, Hashtable<String, String>())
+            } else {
+                retriever.setDataSource(filePath)
+            }
+            bitmap = retriever.getFrameAtTime(
+                0,
+                MediaMetadataRetriever.OPTION_CLOSEST_SYNC
+            ) //retriever.getFrameAtTime(-1);
+        } catch (ex: IllegalArgumentException) {
+            // Assume this is a corrupt video file
+            ex.printStackTrace()
+        } catch (ex: java.lang.RuntimeException) {
+            // Assume this is a corrupt video file.
+            ex.printStackTrace()
+        } finally {
+            try {
+                retriever.release()
+            } catch (ex: java.lang.RuntimeException) {
+                // Ignore failures while cleaning up.
+                ex.printStackTrace()
+            }
+        }
+        if (bitmap == null) {
+            return null
+        }
+        if (kind == MediaStore.Images.Thumbnails.MINI_KIND) { //压缩图片 开始处
+            // Scale down the bitmap if it's too large.
+            val width = bitmap.width
+            val height = bitmap.height
+            val max = Math.max(width, height)
+            if (max > 512) {
+                val scale = 512f / max
+                val w = Math.round(scale * width)
+                val h = Math.round(scale * height)
+                bitmap = Bitmap.createScaledBitmap(bitmap, w, h, true)
+            } //压缩图片 结束处
+        } else if (kind == MediaStore.Images.Thumbnails.MICRO_KIND) {
+            bitmap = ThumbnailUtils.extractThumbnail(
+                bitmap,
+                96,
+                96,
+                ThumbnailUtils.OPTIONS_RECYCLE_INPUT
+            )
+        }
+        return bitmap
     }
 }
