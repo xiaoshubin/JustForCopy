@@ -30,6 +30,7 @@ import com.smallcake.temp.base.BaseBindFragment
 import com.smallcake.temp.databinding.FragmentListBinding
 import com.smallcake.temp.utils.NinePatchBuilder
 import com.smallcake.temp.utils.PopShowUtils
+import com.smallcake.temp.utils.TabUtils
 import com.smallcake.temp.utils.showToast
 import com.willy.ratingbar.BaseRatingBar
 import kotlinx.coroutines.Dispatchers
@@ -110,12 +111,8 @@ class ListFragment: BaseBindFragment<FragmentListBinding>() {
      * @see @drawable/tab_bg_selector
      */
     private fun initTab() {
-        val childCount = (bind.tabLayout[0] as ViewGroup).childCount
-        for (i in 0 until childCount){
-            val tab = bind.tabLayout.getTabAt(i)
-            val view  = LayoutInflater.from(context).inflate(R.layout.tab_text,null)
-            view.findViewById<TextView>(R.id.tv).text = tab?.text
-            tab?.customView = view
+        TabUtils.initTabCreate(bind.tabLayout,listOf("服务内容","费用说明","用户评价")){
+            showToast("选择了Tab$it")
         }
     }
 

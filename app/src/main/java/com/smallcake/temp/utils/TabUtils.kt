@@ -2,7 +2,12 @@ package com.smallcake.temp.utils
 
 import android.content.Context
 import android.graphics.Color
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.google.android.material.tabs.TabLayout
 import com.smallcake.smallutils.px
 import com.smallcake.temp.R
 import com.smallcake.temp.weight.SelectBigPagerTitleView
@@ -113,6 +118,35 @@ object TabUtils {
         }
         magicIndicator.navigator = commonNavigator
 
+    }
+
+    /**
+     * 动态创建Tab
+     * TabUtils.initTabCreate(bind.tabLayout,listOf("服务内容","费用说明","用户评价")){}
+     */
+    fun initTabCreate(tabLayout: TabLayout, list:List<String>, cb:(Int)->Unit){
+        tabLayout.removeAllTabs()
+        list.forEachIndexed {i,it->
+            val tab = tabLayout.newTab()
+            val view  = LayoutInflater.from(tabLayout.context).inflate(R.layout.tab_text,null)
+            view.findViewById<TextView>(R.id.tv).text = it
+            tab.customView = view
+            tabLayout.addTab(tab)
+            val iv = tab.customView?.findViewById<ImageView>(R.id.iv)
+            iv?.visibility = if (i==0) View.VISIBLE else View.INVISIBLE
+        }
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                cb(tab.position)
+                val iv = tab.customView?.findViewById<ImageView>(R.id.iv)
+                iv?.visibility = View.VISIBLE
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                val iv = tab.customView?.findViewById<ImageView>(R.id.iv)
+                iv?.visibility = View.INVISIBLE
+            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
     }
 
 }
