@@ -53,7 +53,7 @@ class LuBanCompressEngine:CompressEngine {
             .setCompressListener(object : OnCompressListener {
                 override fun onStart() {}
                 override fun onSuccess(index: Int, compressFile: File) {
-                    Log.e("压缩后的图片大小：","${FileUtils.getFileSize(compressFile)}")
+                    if(compressFile.exists() && !TextUtils.isEmpty(compressFile.absolutePath))Log.e("压缩后的图片大小：","${FileUtils.getFileSize(compressFile)}")
                     // 压缩完构造LocalMedia对象
                     val media = list[index]
                     if (compressFile.exists() && !TextUtils.isEmpty(compressFile.absolutePath)) {

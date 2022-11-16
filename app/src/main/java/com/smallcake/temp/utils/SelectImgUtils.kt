@@ -11,7 +11,6 @@ import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +34,6 @@ import com.smallcake.temp.R
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
-import kotlin.random.Random.Default.nextInt
 
 /**
  * Date:2021/7/14 13:38
@@ -47,25 +45,22 @@ import kotlin.random.Random.Default.nextInt
  **/
 object SelectImgUtils {
     private const val TAG = "SelectImgUtils"
-    private var lineImgNum = 3 //单排排列的图片个数
-    private var imgMaxCount = 9 //图片最大上传数量
-    private var selectListener: ((List<String>?) -> Unit)? = null//选择图片后的结果
 
     /**
      * 绑定一个RecyclerView用于显示图片选择
      * @param activity AppCompatActivity
      * @param recyclerView RecyclerView
      * @param maxCount Int 图片数量，默认九张
+     * @param lineImgNum Int 每一排显示的图片数据
      * @param cb Function1<MutableList<ImgSelectBean>?, Unit>
      */
     fun bindRecyclerView(
         activity: AppCompatActivity,
         recyclerView: RecyclerView,
         maxCount: Int = 9,
-        cb: (List<String>?) -> Unit
+        lineImgNum: Int=3,
+        cb: (List<ImgSelectBean>?) -> Unit
     ) {
-        selectListener = cb
-        imgMaxCount = maxCount
         //清理数据，避免重复显示
         val mAdapter = ImgSelectAdapter(lineImgNum)
         mAdapter.addData(ImgSelectBean(isAdd = true))
@@ -80,13 +75,12 @@ object SelectImgUtils {
             setOnItemChildClickListener { adapter, view, position ->
                 val item = adapter.getItem(position) as ImgSelectBean
                 when (view.id) {
-                    R.id.iv_add -> checkPermission(activity, mAdapter)
+                    R.id.iv_add -> checkPermission(activity, mAdapter,maxCount,cb)
                     R.id.iv_show -> PopShowUtils.showBigPic(view as ImageView, File(item.path))
                     R.id.iv_del -> {
                         removeAt(position)
                         val list = mAdapter.data.filter { !it.isAdd }
-                        val listStr = list.map { it.path }
-                        selectListener?.invoke(listStr)
+                        cb.invoke(list)
                         if (!haveAddImg(mAdapter)) mAdapter.addData(ImgSelectBean(isAdd = true))
                     }
                 }
@@ -110,17 +104,22 @@ object SelectImgUtils {
      * 权限检测，要拍照和选择图片需要用到
      * @param activity AppCompatActivity
      */
-    private fun checkPermission(activity: AppCompatActivity, mAdapter: ImgSelectAdapter) {
+    private fun checkPermission(
+        activity: AppCompatActivity,
+        mAdapter: ImgSelectAdapter,
+        maxCount: Int,
+        cb: (List<ImgSelectBean>?) -> Unit
+    ) {
         val permissions = arrayOf(Permission.MANAGE_EXTERNAL_STORAGE, Permission.CAMERA)
         if (XXPermissions.isGrantedPermission(activity, permissions)) {
-            getPhoto(activity, mAdapter)
+            getPhoto(activity, mAdapter,maxCount,cb)
         } else {
             XXPermissions.with(activity)
                 .permission(permissions)
                 .request(object : OnPermissionCallback {
                     override fun onGranted(permissions: MutableList<String>, all: Boolean) {
                         if (all) {
-                            getPhoto(activity, mAdapter)
+                            getPhoto(activity, mAdapter, maxCount, cb)
                         } else {
                             Log.e("TAG","获取部分权限成功,但部分权限未正常授予")
                         }
@@ -143,11 +142,16 @@ object SelectImgUtils {
      * 根据适配器选择图片数量，确定还能选择的图片数量
      * @param activity AppCompatActivity
      */
-    private fun getPhoto(activity: AppCompatActivity, mAdapter: ImgSelectAdapter) {
+    private fun getPhoto(
+        activity: AppCompatActivity,
+        mAdapter: ImgSelectAdapter,
+        maxCount: Int,
+        cb: (List<ImgSelectBean>?) -> Unit
+    ) {
         PictureSelector.create(activity)
             .openGallery(SelectMimeType.ofImage())
             .setImageEngine(GlideEngine.createGlideEngine())
-            .setMaxSelectNum(imgMaxCount - mAdapter.data.filter { !it.isAdd }.sizeNull())
+            .setMaxSelectNum(maxCount - mAdapter.data.filter { !it.isAdd }.sizeNull())
             .setImageSpanCount(3)
             .isDisplayCamera(true)// 是否显示拍照按钮
             .isPreviewImage(false)//不能预览，避免本来想选中，
@@ -156,17 +160,15 @@ object SelectImgUtils {
                 override fun onResult(result: ArrayList<LocalMedia>) {
                     for (media in result) {
                         printFileInfo(media)
-                        val filePath = media.compressPath ?: media.realPath
+                        val filePath = if (media.isCompressed)media.compressPath else media.realPath
                         //添加到已经选择的图片末尾，不包括最后的添加图片位置
                         val list = mAdapter.data.filter { !it.isAdd }
                         mAdapter.addData(list.size, ImgSelectBean(filePath))
-
                     }
                     //添加图片完毕后，回调给页面选择的图片结果，如果已经选择了最大图片数，移除最后的添加图片
                     val list = mAdapter.data.filter { !it.isAdd }
-                    val listStr = list.map { it.path }
-                    selectListener?.invoke(listStr)
-                    if (list.sizeNull() == imgMaxCount) mAdapter.removeAt(list.size)
+                    cb.invoke(list)
+                    if (list.sizeNull() == maxCount) mAdapter.removeAt(list.size)
                 }
 
                 override fun onCancel() {
@@ -283,6 +285,5 @@ private class ImgSelectAdapter(lineImgNum: Int) : BaseQuickAdapter<ImgSelectBean
  * 图片选择类
  * @property path String 选择图片后的文件路径
  * @property isAdd Boolean 是否是添加图片
- * @constructor
  */
 data class ImgSelectBean(val path: String = "", var isAdd: Boolean = false)

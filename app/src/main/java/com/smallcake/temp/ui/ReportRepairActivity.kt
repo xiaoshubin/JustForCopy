@@ -17,7 +17,7 @@ import com.smallcake.temp.utils.sizeNull
  *
  */
 class ReportRepairActivity : BaseBindActivity<ActivityReportRepairBinding>() {
-    private var imgs: List<String>?=null
+    private var imgs: List<ImgSelectBean>?=null
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
         bar.setTitle("报事报修")
         initView()
