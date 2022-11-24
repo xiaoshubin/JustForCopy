@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.hjq.permissions.Permission
+import com.hjq.permissions.XXPermissions
 import com.smallcake.smallutils.SystemUtils
 import com.smallcake.temp.base.BaseBindFragment
 import com.smallcake.temp.databinding.FragmentMineBinding
@@ -21,9 +23,19 @@ class MineFragment: BaseBindFragment<FragmentMineBinding>() {
     @SuppressLint("SetTextI18n")
     private fun onEvent() {
         bind.tvScan.setOnClickListener{
-            ZxingUtils.scanQRCode(requireActivity() as AppCompatActivity){scanSuccess,str->
-                showToast("是否扫码成功$scanSuccess 扫码结果：$str")
-            }
+            XXPermissions.with(this)
+                .permission(arrayListOf(Permission.CAMERA,Permission.MANAGE_EXTERNAL_STORAGE) )
+                .request { _, all ->
+                    if (all){
+                        ZxingUtils.scanQRCode(requireActivity() as AppCompatActivity){scanSuccess,str->
+                            showToast("是否扫码成功$scanSuccess 扫码结果：$str")
+                        }
+                    }else{
+                        //相机用于扫描二维码，存储用于读取手机相册图片识别二维码
+                        showToast("需要相机和存储权限")
+                    }
+                }
+
         }
         bind.tvScan.text = "系统版本号:${SystemUtils.systemVersion}" +
                 "\n手机型号:${SystemUtils.model}" +

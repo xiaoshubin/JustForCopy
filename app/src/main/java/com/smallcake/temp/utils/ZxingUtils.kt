@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.smallcake.temp.ui.CustomCaptureActivity
 import com.xuexiang.xqrcode.XQRCode
-import com.xuexiang.xqrcode.ui.CaptureActivity
 
 /**
  * Date: 2020/1/14
@@ -75,7 +74,7 @@ class ScanInvisibleFragment : Fragment() {
 
     fun startScan(activity: FragmentActivity, cb:(Boolean,String?) -> Unit) {
         callback = cb
-        val intent = Intent(activity, CaptureActivity::class.java)
+        val intent = Intent(activity, CustomCaptureActivity::class.java)
         this.startActivityForResult(intent, 78778)
     }
 

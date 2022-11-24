@@ -17,6 +17,7 @@ import com.smallcake.smallutils.BitmapUtils.getBitmapPath
 import com.smallcake.smallutils.ToastUtil.Companion.showLong
 import com.smallcake.temp.R
 import com.smallcake.temp.utils.GlideEngine
+import com.smallcake.temp.utils.showToast
 import com.xuexiang.xqrcode.XQRCode
 import com.xuexiang.xqrcode.ui.CaptureActivity
 import com.xuexiang.xqrcode.util.QRCodeAnalyzeUtils.AnalyzeCallback
@@ -106,6 +107,7 @@ class CustomCaptureActivity : CaptureActivity(), View.OnClickListener {
                     printMedia(media)
                     val path = if (media.isCompressed) media.compressPath else media.realPath
                     val bitmapPath = getBitmapPath(path)
+//                    XQRCode.getAnalyzeQRCodeResult(path)
                     XQRCode.analyzeQRCode(bitmapPath, object : AnalyzeCallback {
                         override fun onAnalyzeSuccess(bitmap: Bitmap, result: String) {
                             Log.e("TAG","解析结果：$result")
@@ -117,7 +119,9 @@ class CustomCaptureActivity : CaptureActivity(), View.OnClickListener {
                             setResult(RESULT_OK, resultIntent)
                             finish()
                         }
-                        override fun onAnalyzeFailed() {}
+                        override fun onAnalyzeFailed() {
+                            showToast("解析失败")
+                        }
                     })
                 }
 

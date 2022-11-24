@@ -15,6 +15,8 @@
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- Google Play 内购权限 -->
@@ -111,8 +113,13 @@
             android:name=".ui.ShapeViewActivity"
            />
         <activity
+            android:hardwareAccelerated="true"
+            android:exported="true"
             android:name=".ui.CustomCaptureActivity"
-           />
+            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
+            android:screenOrientation="portrait"
+            android:theme="@style/XQRCodeTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ui.TextViewActivity"
            />

@@ -36,6 +36,7 @@
             android:textSize="21sp" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:padding="12dp"
             android:id="@+id/iv_flash_light"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -49,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="80dp"
         android:padding="20dp"
         app:srcCompat="@drawable/ps_ic_camera" />
 
