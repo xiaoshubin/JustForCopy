@@ -135,7 +135,7 @@ class RecordActivity : BaseBindActivity<ActivityRecordBinding>() {
     }
     fun checkPermission():Boolean {
         var isAgreePermission = false
-        if (XXPermissions.isGrantedPermission(this, Permission.RECORD_AUDIO)) {
+        if (XXPermissions.isGranted(this, Permission.RECORD_AUDIO)) {
             isAgreePermission =  true
         } else {
             XXPermissions.with(this)

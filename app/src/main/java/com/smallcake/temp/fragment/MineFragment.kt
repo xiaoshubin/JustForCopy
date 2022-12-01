@@ -27,8 +27,8 @@ class MineFragment: BaseBindFragment<FragmentMineBinding>() {
                 .permission(arrayListOf(Permission.CAMERA,Permission.MANAGE_EXTERNAL_STORAGE) )
                 .request { _, all ->
                     if (all){
-                        ZxingUtils.scanQRCode(requireActivity() as AppCompatActivity){scanSuccess,str->
-                            showToast("是否扫码成功$scanSuccess 扫码结果：$str")
+                        ZxingUtils.scanQRCode(requireActivity() as AppCompatActivity){str->
+                            showToast("扫码结果：$str")
                         }
                     }else{
                         //相机用于扫描二维码，存储用于读取手机相册图片识别二维码

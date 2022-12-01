@@ -113,14 +113,6 @@
             android:name=".ui.ShapeViewActivity"
            />
         <activity
-            android:hardwareAccelerated="true"
-            android:exported="true"
-            android:name=".ui.CustomCaptureActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:screenOrientation="portrait"
-            android:theme="@style/XQRCodeTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
             android:name=".ui.TextViewActivity"
            />
         <activity
@@ -255,19 +247,6 @@
             android:value="true" /> <!-- GooglePay 结束 -->
         <!-- RoomService 开始 -->
         <service android:name=".service.RoomService" />
-
-        <activity
-            android:exported="true"
-            android:name="com.xuexiang.xqrcode.ui.CaptureActivity"
-            android:configChanges="screenSize|keyboardHidden|orientation|keyboard"
-            android:screenOrientation="portrait"
-            android:theme="@style/XQRCodeTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-            <intent-filter>
-                <action android:name="com.xuexiang.xqrcode.ui.captureactivity" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
     </application>
 

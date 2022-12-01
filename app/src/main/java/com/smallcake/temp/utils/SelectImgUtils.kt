@@ -111,7 +111,7 @@ object SelectImgUtils {
         cb: (List<ImgSelectBean>?) -> Unit
     ) {
         val permissions = arrayOf(Permission.MANAGE_EXTERNAL_STORAGE, Permission.CAMERA)
-        if (XXPermissions.isGrantedPermission(activity, permissions)) {
+        if (XXPermissions.isGranted(activity, permissions)) {
             getPhoto(activity, mAdapter,maxCount,cb)
         } else {
             XXPermissions.with(activity)

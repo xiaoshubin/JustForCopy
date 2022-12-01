@@ -47,7 +47,7 @@ class SignActivity : BaseBindActivity<ActivitySignBinding>() {
     }
 
     fun checkPermission() {
-        if (XXPermissions.isGrantedPermission(this, Permission.MANAGE_EXTERNAL_STORAGE)) {
+        if (XXPermissions.isGranted(this, Permission.MANAGE_EXTERNAL_STORAGE)) {
             Log.e("TAG","有读写权限,直接操作")
             saveImg()
         } else {

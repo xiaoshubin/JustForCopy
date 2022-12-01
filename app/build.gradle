@@ -115,7 +115,7 @@ dependencies {
     implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-ktx:2.1.0'
     implementation 'com.github.DylanCaiCoding.ViewBindingKTX:viewbinding-base:2.1.0'
     //权限管理
-    implementation "com.hjq:xxpermissions:9.8"
+    implementation 'com.github.getActivity:XXPermissions:16.2'
     // Koin for Android
     implementation "org.koin:koin-core:$koin_version"
     implementation "org.koin:koin-android:$koin_version"
@@ -197,7 +197,7 @@ dependencies {
     implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
     //zxing二维码生成扫描
     implementation 'com.google.zxing:core:3.3.3'
-    implementation 'com.github.xuexiangjys:XQRCode:1.1.1'
+    implementation 'com.github.maning0303:MNZXingCode:V2.1.9'
     //https://github.com/getActivity/ShapeView
     implementation 'com.github.getActivity:ShapeView:8.2'
     //腾讯云

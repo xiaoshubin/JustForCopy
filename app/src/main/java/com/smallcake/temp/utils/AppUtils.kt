@@ -79,7 +79,7 @@ object AppUtils {
      * 8.0以下默认开启了
      */
     private fun isOpenInstallPackages(activity: Activity):Boolean{
-        return XXPermissions.isGrantedPermission(activity,Permission.REQUEST_INSTALL_PACKAGES)
+        return XXPermissions.isGranted(activity,Permission.REQUEST_INSTALL_PACKAGES)
     }
 
     /**
