@@ -64,6 +64,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("聊天界面", P2PChatActivity::class.java,"聊天界面"),
             PageBean("联系人", ContactActivity::class.java,"联系人"),
             PageBean("GreenDao", GreenDaoActivity::class.java,"数据存储，GreenDao"),
+            PageBean("无限极列表选择器", ListSelectActivity::class.java,"无限极列表选择器"),
         )
         mAdapter.setList(list)
         mAdapter.setOnItemClickListener{ adapter: BaseQuickAdapter<*, *>, view: View, position: Int ->
