@@ -1,16 +1,23 @@
 package com.smallcake.temp.base
 
+import android.app.Fragment
+import android.app.FragmentManager
+import android.app.FragmentTransaction
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Lifecycle
 import androidx.viewbinding.ViewBinding
 import com.dylanc.viewbinding.base.ViewBindingUtil
+import com.trello.lifecycle2.android.lifecycle.AndroidLifecycle
+import com.trello.rxlifecycle2.LifecycleProvider
 
 
 /**
@@ -39,9 +46,10 @@ fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: Int) {
 abstract class BaseBindFragment<VB : ViewBinding>: Fragment() {
     private var _binding: VB? = null
     val bind:VB get() = _binding!!
-
+    protected lateinit var provider: LifecycleProvider<Lifecycle.Event>//生命周期提供者
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ViewBindingUtil.inflateWithGeneric(this,layoutInflater)
+        provider = AndroidLifecycle.createLifecycleProvider(this)
         return bind.root
     }
 
