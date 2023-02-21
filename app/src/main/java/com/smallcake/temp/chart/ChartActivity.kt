@@ -62,6 +62,81 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
         initRadarChart()
         initLineChart()
         initPieChart()
+        initBarChart()
+    }
+    private fun initBarChart() {
+        bind.barChart.apply {
+            setDrawBorders(false)
+            animateY(1000)
+            setDrawBarShadow(false)
+            setDrawValueAboveBar(true)
+            description.isEnabled = false
+            setMaxVisibleValueCount(60)
+            setPinchZoom(false)
+            setDrawGridBackground(false)
+            setTouchEnabled(false)
+            xAxis.apply {
+                mAxisMinimum=-0.5f
+//                setCenterAxisLabels(true)//将X轴的值显示在中央
+                setDrawAxisLine(false)
+                setDrawLimitLinesBehindData(false)
+                //是否绘制垂直竖线
+                setDrawGridLines(false)
+                position = XAxis.XAxisPosition.BOTTOM
+                granularity = 1f
+                valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        val i = value.toInt()
+                        return "部门${i+1}"
+                    }
+                }
+            }
+
+            axisLeft.apply {
+                setDrawAxisLine(false)
+                setDrawZeroLine(false)
+                setLabelCount(5, false)
+                valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        return value.toInt().toString()
+                    }
+                }
+//                setPosition(YAxisLabelPosition.OUTSIDE_CHART)
+//                spaceTop = 15f
+                axisMinimum = 0f // this replaces setStartAtZero(true)
+            }
+            axisRight.isEnabled=false
+            legend.apply {
+                verticalAlignment = Legend.LegendVerticalAlignment.TOP
+                horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+                orientation = Legend.LegendOrientation.HORIZONTAL
+                setDrawInside(false)
+                form = Legend.LegendForm.SQUARE
+                formSize = 9f
+                textSize = 11f
+                xEntrySpace = 4f
+            }
+
+        }
+        setBarChartData()
+    }
+    private fun setBarChartData() {
+        val values1: ArrayList<BarEntry> = ArrayList()
+        val values2: ArrayList<BarEntry> = ArrayList()
+        for (i in 0..4) {
+            values1.add(BarEntry(i.toFloat(), (Math.random() * 100f).toFloat() ))
+            values2.add(BarEntry(i.toFloat(), (Math.random() * 100f).toFloat() ))
+        }
+        val set1 = BarDataSet(values1, "检查次数")
+        set1.color = Color.rgb(104, 241, 175)
+        val set2 = BarDataSet(values2, "隐患数")
+        set2.color = Color.rgb(164, 228, 251)
+        val data = BarData(set1, set2)
+        bind.barChart.data = data
+        bind.barChart.xAxis.axisMaximum = data.xMax+0.5f
+        bind.barChart.barData.barWidth=0.4f
+        bind.barChart.groupBars(-0.5f, 0.2f, 0f)
+        bind.barChart.invalidate()
     }
 
     private fun initPieChart() {
