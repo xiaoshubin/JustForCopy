@@ -202,7 +202,7 @@ object EditTextUtils {
             }else{
                 ivEye.setImageResource(icEyeOpen)
                 isShowPass =true
-                etPass.inputType = InputType.TYPE_CLASS_TEXT
+                etPass.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             }
             // 使光标始终在最后位置
             setLastLoca(etPass)
