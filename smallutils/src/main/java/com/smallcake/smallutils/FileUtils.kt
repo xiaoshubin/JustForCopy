@@ -3,6 +3,7 @@ package com.smallcake.smallutils
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.provider.DocumentsContract
 import com.smallcake.smallutils.ToastUtil.Companion.showShort
 import java.io.File
 import java.io.FileInputStream
@@ -67,19 +68,28 @@ object FileUtils {
                 .isDirectory()
         ) true else folder.getParentFile().mkdirs()
     }
-
     /**
+     * 调用系统文件管理器
      * 打开指定路径目录
-     * @param path
+     * document/primary:后面写死对应的根目录路径
+     * 注意只能是根目录下的一级路径
+     * 固定格式：content://com.android.externalstorage.documents/document/primary
+     * 然如果再想得到下一级文件夹还需要%2f既 :Android%2fdata
+     *
+     * 例如：想打开/storage/emulated/0/Android/data/com.cxsr.zfdd/cache/04f700dcb0634d6e959887f02e10789d.pdf文件夹
+     * 可以先去掉/storage/emulated/0/根目录前缀，在把后缀文件名称去掉，最后替换其中的/为%2f
+    val path = "/storage/emulated/0/Android/data/com.cxsr.zfdd/cache/04f700dcb0634d6e959887f02e10789d.pdf"
+    val newPath = path.replace("/storage/emulated/0/","")//去前缀
+    val parentPath = File(newPath).parent//去后缀
+    val lastPath = parentPath.replace("/","%2f")//改分割符
+    val uri =Uri.parse("content://com.android.externalstorage.documents/document/primary:$lastPath")
+     *
      */
     fun openFilePath(context: Context, path: String?) {
-        //getUrl()获取文件目录，例如返回值为/storage/sdcard1/MIUI/music/mp3_hd/单色冰淇凌_单色凌.mp3
-        val file = File(path)
-        //获取父目录
-        val parentFlie = File(file.getParent())
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.setDataAndType(Uri.fromFile(parentFlie), "*/*")
+        val uri =Uri.parse("content://com.android.externalstorage.documents/document/primary:Download")
+//        val uri =Uri.parse("content://com.android.externalstorage.documents/document/primary:%2fAndroid%2fdata%2f")
+        val intent =  Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
         context.startActivity(intent)
     }
 
