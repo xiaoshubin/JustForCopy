@@ -10,6 +10,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".chart.ChartActivity">
+    <com.smallcake.temp.chart.LdChartView
+        android:id="@+id/ld_chart"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_200"/>
     <com.github.mikephil.charting.charts.RadarChart
         android:background="#59FF0000"
         android:id="@+id/radar_chart"

@@ -8,6 +8,7 @@ import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
 import com.smallcake.smallutils.SystemUtils
 import com.smallcake.temp.base.BaseBindFragment
+import com.smallcake.temp.chart.LdChartView
 import com.smallcake.temp.databinding.FragmentMineBinding
 import com.smallcake.temp.utils.ZxingUtils
 import com.smallcake.temp.utils.showToast
@@ -47,6 +48,7 @@ class MineFragment: BaseBindFragment<FragmentMineBinding>() {
                 "\n手机主板名：${SystemUtils.deviceBoard}"+
                 "\n设备名：${SystemUtils.deviceName}"+
                 "\nfingerprit：${SystemUtils.fingerprit}"
+
     }
 
 

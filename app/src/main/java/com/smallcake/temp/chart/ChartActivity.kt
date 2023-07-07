@@ -59,6 +59,14 @@ class ChartActivity : BaseBindActivity<ActivityChartBinding>() {
     }
 
     private fun initView() {
+        //自定义View，雷达图
+        bind.ldChart.setData(listOf(
+            LdChartView.LdTxtValue("诚信",86.30f),
+            LdChartView.LdTxtValue("师资力量",64.78f),
+            LdChartView.LdTxtValue("学员评价",31.58f),
+            LdChartView.LdTxtValue("投诉",70.24f),
+            LdChartView.LdTxtValue("违规",20.36f),
+        ))
         initRadarChart()
         initLineChart()
         initPieChart()

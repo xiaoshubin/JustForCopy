@@ -17,7 +17,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <com.smallcake.temp.chart.LdChartView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_200"/>
 </androidx.appcompat.widget.LinearLayoutCompat>
