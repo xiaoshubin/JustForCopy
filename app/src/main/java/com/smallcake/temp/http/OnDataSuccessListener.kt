@@ -1,5 +1,8 @@
 package com.smallcake.temp.http
 
+import com.baidu.mapapi.NetworkUtil
+import com.shuyu.gsyvideoplayer.utils.NetworkUtils
+import com.smallcake.temp.MyApplication
 import com.smallcake.temp.module.LoadDialog
 import com.smallcake.temp.utils.lee
 import com.smallcake.temp.utils.showToast
@@ -8,6 +11,7 @@ import retrofit2.HttpException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import kotlin.coroutines.coroutineContext
 
 interface OnErrorCallback {
     fun onErrMsg(msg: String)
@@ -22,6 +26,13 @@ abstract class OnDataSuccessListener<T> constructor(dialog: LoadDialog? = null) 
 
     override fun onStart() {
         super.onStart()
+        if (!NetworkUtil.isNetworkAvailable(MyApplication.instance)){
+            showToast("请检查你的网络链接")
+            if (!isDisposed){
+                dispose()
+            }
+            return
+        }
         showLoading()
     }
 

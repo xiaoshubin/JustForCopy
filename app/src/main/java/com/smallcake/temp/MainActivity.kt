@@ -5,6 +5,7 @@ import coil.load
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityMainBinding
+import com.smallcake.temp.http.sub
 import com.smallcake.temp.utils.BottomNavUtils
 import com.smallcake.temp.utils.SelectImgUtils
 import java.io.File
@@ -27,6 +28,9 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
 //        SelectImgUtils.selectFile(this){
 //            bind.iv.load(File(it))
 //        }
+        dataProvider.mobile.mobileGet("18324138218").sub({
+
+        })
     }
 
     private fun initView() {
