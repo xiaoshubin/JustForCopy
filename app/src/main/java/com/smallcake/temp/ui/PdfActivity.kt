@@ -1,68 +1,53 @@
 package com.smallcake.temp.ui
 
 import android.os.Bundle
-import android.util.Log
+import android.webkit.WebViewClient
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityPdfBinding
-import com.smallcake.temp.utils.DownloadUtils
-import com.tencent.smtt.export.external.TbsCoreSettings
-import me.jessyan.progressmanager.body.ProgressInfo
-import java.io.File
+import com.smallcake.temp.utils.TabUtils
 
 
 /**
- * 1.引入控件sdk
-//腾讯tas
-implementation 'com.tencent.tbs:tbssdk:44085'
-//一行进度监听器
-implementation 'me.jessyan:progressmanager:1.5.0'
-2.引入两个自定义控件
-* @see DownloadUtils
-* @see com.smallcake.temp.weight.SuperFileView
-3.在MyApplication种初始化
-// 腾讯tbs优化:在调用TBS初始化、创建WebView之前进行如下配置
-val map = HashMap<String, Any>()
-map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
-map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
-QbSdk.initTbsSettings(map)
-QbSdk.initX5Environment(this,object :QbSdk.PreInitCallback{
-override fun onCoreInitFinished() {
-L.e("onCoreInitFinished")
-}
-override fun onViewInitFinished(b: Boolean) {
-L.e("onViewInitFinished:$b")
-}
-})
-
-注意：superFileView.onStopDisplay()释放应该放在页面结束或者pop关闭时
-
  腾讯tbs支持打开文件格式: doc、docx、ppt、pptx、xls、xlsx、pdf、txt、epub
  接入参考：https://www.jianshu.com/p/3f57d640b24d
+ 由于2023年4月腾讯已下架文档浏览功能，改为付费。故去掉tbs，改用ofd网址方式浏览
+
  */
 class PdfActivity : BaseBindActivity<ActivityPdfBinding>() {
-    private val mUrl = "http://testing.cloudjoytech.com.cn:50011/upload/2021-09/04f700dcb0634d6e959887f02e10789d.pdf"
-    private val wordUrl = "http://testing.cloudjoytech.com.cn:50011//upload/2021-09/a760e230757b4203879d6fe994c74d2e.docx"
+    private val mUrl = "https://ofd.xdocin.com/demo/fapiao.ofd"
+    private val url1 = "https://view.xdocin.com/demo/view.docx"
+    private val url2 = "http://www.doe.zju.edu.cn/_upload/article/files/a0/22/595bdc2b4ca28f90f51ca3b3ffc5/45c3e922-550f-45a2-8602-64b9c202b33e.pdf"
 
     override fun onCreate(savedInstanceState: Bundle?, bar: NavigationBar) {
-        bar.setTitle("腾讯TBS查看器")
-        DownloadUtils.download(mUrl,object :DownloadUtils.OnDownloadListener{
-            override fun onDownloadSuccess(downloadPath:String) {
-                Log.e("TAG","下载成功的路径：$downloadPath")
-                bind.superFileView.displayFile(File(downloadPath))
+        bar.setTitle("文档浏览器")
+        TabUtils.initTabCreate(bind.tabLayout, listOf("ofd","docx","pdf")){index->
+            when(index){
+                0->loadUrl(mUrl)
+                1->loadUrl(url1)
+                2->loadUrl(url2)
             }
+        }
+        bind.webView.settings.apply {
+            javaScriptEnabled=true
+            domStorageEnabled=true
+        }
+        bind.webView.webViewClient = WebViewClient()
+        loadUrl(mUrl)
 
-            override fun onDownloading(progress: ProgressInfo?) {
-                Log.e("TAG","进度："+progress?.percent+"%")
-            }
-            override fun onDownloadFailed() {
-            }
 
-        })
+    }
+    private fun loadUrl(url:String){
+        val isOfd = url.endsWith(".ofd")
+        if (isOfd){
+            val urlAll = "https://ofd.xdocin.com/view?src=${url}"
+            bind.webView.loadUrl(urlAll)
+            return
+        }else{
+            val urlAll = "https://view.xdocin.com/view?src=${url}"
+            bind.webView.loadUrl(urlAll)
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        bind.superFileView.onStopDisplay()
-    }
+
 }

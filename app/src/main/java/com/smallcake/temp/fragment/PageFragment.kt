@@ -50,7 +50,7 @@ class PageFragment: BaseBindFragment<FragmentRecyclerviewBinding>() {
             PageBean("GSY视频播放", VideoActivity::class.java,"视频压缩，视频播放,GSYVideoPlayer"),
             PageBean("多布局列表", MoreLayoutListActivity::class.java,"多布局列表"),
             PageBean("相机", CameraCustomActivity::class.java,"自定义相机"),
-            PageBean("PDF", PdfActivity::class.java,"PDF"),
+            PageBean("文档浏览器", PdfActivity::class.java,"PDF,Word,Exacl"),
             PageBean("手写签名", SignActivity::class.java,"手写签名"),
             PageBean("雷达图", ChartActivity::class.java,"雷达图，曲线图，饼状图"),
             PageBean("音乐播放", ExoMusicActivity::class.java,"音乐播放"),

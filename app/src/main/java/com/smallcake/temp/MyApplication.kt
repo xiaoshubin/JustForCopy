@@ -3,7 +3,6 @@ package com.smallcake.temp
 import android.app.Application
 import android.content.Context
 import android.net.http.HttpResponseCache
-import android.util.Log
 import androidx.multidex.MultiDex
 import com.baidu.mapapi.SDKInitializer
 import com.facebook.FacebookSdk
@@ -18,8 +17,6 @@ import com.smallcake.temp.bean.DaoSession
 import com.smallcake.temp.module.httpModule
 import com.smallcake.temp.module.mapModule
 import com.tencent.mmkv.MMKV
-import com.tencent.smtt.export.external.TbsCoreSettings
-import com.tencent.smtt.sdk.QbSdk
 import io.reactivex.android.schedulers.AndroidSchedulers
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -65,21 +62,6 @@ class MyApplication : Application() {
         AppEventsLogger.activateApp(this)
         FacebookSdk.setAutoLogAppEventsEnabled(true)
         FacebookSdk.setIsDebugEnabled(true)
-        // 腾讯tbs优化:在调用TBS初始化、创建WebView之前进行如下配置
-        val map = HashMap<String, Any>()
-        map[TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER] = true
-        map[TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE] = true
-        QbSdk.initTbsSettings(map)
-        QbSdk.initX5Environment(this,object :QbSdk.PreInitCallback{
-            override fun onCoreInitFinished() {
-                Log.e("TAG","onCoreInitFinished")
-            }
-
-            override fun onViewInitFinished(b: Boolean) {
-                Log.e("TAG","onViewInitFinished:$b")
-            }
-
-        })
         //数据库
         LitePal.initialize(this)
 
