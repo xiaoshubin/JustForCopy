@@ -23,6 +23,7 @@
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/drawable/white_round6_bg.xml" value="0.38229166666666664" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_baidu_map.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_banner.xml" value="0.36614583333333334" />
+        <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_camera_custom.xml" value="0.87875" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_camera_xactivity.xml" value="0.36614583333333334" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_camre_layout.xml" value="0.87875" />
         <entry key="..\:/SmallCake/AndroidProject/JustForCopy/app/src/main/res/layout/activity_chart.xml" value="0.6988071570576541" />
@@ -83,7 +84,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

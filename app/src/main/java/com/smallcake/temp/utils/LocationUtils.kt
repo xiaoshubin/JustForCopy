@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import android.location.*
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
@@ -42,12 +43,11 @@ import java.util.*
  **/
 object LocationUtils {
     private const val TAG = "LocationUtils"
-
     /**
      * 获取定位Location信息
      * @param activity 上下文
      */
-    fun getLocationInfo(activity: Activity, listener: (location:Location)->Unit?) {
+    fun getLocationInfo(activity: Activity, listener: (location:Location)->Unit) {
         //1.获取定位服务
         val locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         //2.获取当前位置信息中
@@ -55,34 +55,20 @@ object LocationUtils {
         if (gpsIsOpen) {
             startLocation(activity, locationManager, listener)
         } else {
-            AlertDialog.Builder(activity)
-                .setTitle("GPS服务")
-                .setMessage("请打开GPS！")
-                .setPositiveButton("去开启") { dialog, which -> openLocationSet(activity) }
-                .setNegativeButton("取消", null)
-                .show()
+//            AlertDialog.Builder(activity)
+//                .setTitle("GPS服务")
+//                .setMessage("请打开GPS！")
+//                .setPositiveButton("去开启") { dialog, which -> openLocationSet(activity) }
+//                .setNegativeButton("取消", null)
+//                .show()
         }
     }
 
-    /**
-     * 是否打开Gps
-     */
-    fun isOpenGps(activity: Activity):Boolean {
+    fun isOpenGps(activity: Activity): Boolean {
         //1.获取定位服务
         val locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        //2.获取当前位置信息中
-        val gpsIsOpen = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) //GPS定位是否打开
-        return if (gpsIsOpen) {
-            true
-        } else {
-            AlertDialog.Builder(activity)
-                .setTitle("GPS服务")
-                .setMessage("请打开GPS！")
-                .setPositiveButton("去开启") { dialog, which -> openLocationSet(activity) }
-                .setNegativeButton("取消", null)
-                .show()
-            false
-        }
+        //2.是否打开了Gps
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
     /**
@@ -110,7 +96,7 @@ object LocationUtils {
         return loacationManager.getBestProvider(criteria, true)
     }
 
-    private fun openLocationSet(activity: Activity) {
+    fun openLocationSet(activity: Activity) {
         val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
         activity.startActivityForResult(intent, 0)
     }
@@ -142,12 +128,13 @@ object LocationUtils {
             })
     }
 
+
     /**
      * 6.0动态申请权限
      */
     private fun requestPermission(activity: Activity) {
         XXPermissions.with(activity)
-            .permission(Permission.ACCESS_FINE_LOCATION)
+            .permission(Permission.ACCESS_FINE_LOCATION,Permission.ACCESS_COARSE_LOCATION)
             .request(object : OnPermissionCallback {
                 override fun onGranted(permissions: MutableList<String>?, all: Boolean) {
                     if (all){
@@ -155,6 +142,7 @@ object LocationUtils {
                     }
                 }
                 override fun onDenied(permissions: MutableList<String>?, never: Boolean) {
+                    super.onDenied(permissions, never)
                     if (never) {
                         // 如果是被永久拒绝就跳转到应用权限系统设置页面
                         XXPermissions.startPermissionActivity(activity, permissions)
@@ -165,20 +153,140 @@ object LocationUtils {
             })
     }
 
+
     /**
-     * 地理编码
-     * @param activity 上下文
-     * @param addrName 地址名称
-     * @return
+     * 根据定位坐标，获取定位地址结果
+     * @param activity Activity
+     * @param location Location
      */
-    fun getLoactionAddr(activity: Activity?, addrName: String?): Address? {
-        val geoCoder = Geocoder(activity, Locale.getDefault())
+    fun getAddress(activity: Activity,location: Location,cb:(Address?)->Unit){
+        val geocoder = Geocoder(activity,Locale.getDefault())
         try {
-            val addresses: List<Address>? = geoCoder.getFromLocationName(addrName, 5)
-            return if (addresses == null || addresses.isEmpty()) null else addresses[0]
-        } catch (e: IOException) {
+            Thread{
+                val t1 = System.currentTimeMillis()
+                val listAddress = geocoder.getFromLocation(location.latitude, location.longitude,1)
+                if (listAddress.sizeNull()>0) {
+                    val t2 = System.currentTimeMillis()
+                    Log.d(TAG,"${t2-t1}ms后的定位地址：${listAddress?.get(0)}")
+                    activity.runOnUiThread{cb(listAddress?.get(0) )}
+                }
+            }.start()
+        } catch (e: IOException ) {
             e.printStackTrace()
         }
-        return null
     }
+    fun getAddress(activity: Activity, cb:(Address)->Unit){
+        getLocationInfo(activity){
+            getAddress(activity,cb)
+        }
+    }
+
+    /**
+     * 去百度地图还是高德地图
+     * @param context Context
+     * @param cb Function1<Date, Unit>
+     */
+    fun showToBaiduOrGaoDe(context: Context, lat:Double, lng:Double, keyword:String?) {
+        XPopup.Builder(context)
+            .asCenterList("选择地图", arrayOf("百度地图", "高德地图")) { i, s ->
+                when(i){
+                    0-> openBmapNavi(context, lat, lng, keyword ?: "")
+                    1-> openAmapNavi(context, lat, lng, keyword)
+                }
+            }.show()
+    }
+    /**
+     * @param coord_type     坐标类型  允许的值为bd09ll、bd09mc、gcj02、wgs84。
+     * bd09ll表示百度经纬度坐标，bd09mc表示百度墨卡托坐标，gcj02表示经过国测局加密的坐标，wgs84表示gps获取的坐标
+     * @param mode           导航类型导航模式 可选transit（公交）、 driving（驾车）、 walking（步行）和riding（骑行）.
+     * @param src            必选参数，格式为：appName  不传此参数，不保证服务
+     * @param context Context
+     * @param destinationLat String 目的地维度
+     * @param destinationLng String 目的地经度
+     * @param coord_type String
+     * @param mode String
+     * @param name String  目的地名称
+     * 参考
+     * https://lbsyun.baidu.com/index.php?title=uri/api/android
+     */
+    fun openBmapNavi(
+        context: Context,
+        destinationLat: Double,
+        destinationLng: Double,
+        name: String
+    ) {
+        try {
+            val intent = Intent()
+            val location = "$destinationLat,$destinationLng"
+            val uri = Uri.parse("baidumap://map/direction?destination=name:$name|latlng:$location&mode=driving&coord_type=wgs84&src=andr.baidu.openAPIdemo")
+            intent.data = uri
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            showToast("未安装百度地图")
+        }
+    }
+    /**
+     * 打开高德地图导航
+     * @param context Context
+     * @param lat Double
+     * @param lng Double
+     * @param destinationName String?
+     */
+    fun openAmapNavi(context: Context, lat: Double, lng: Double, destinationName: String?) {
+        try {
+            val uriString: String?
+            val builder = StringBuilder("amapuri://route/plan?sourceApplication=maxuslife")
+            builder.append("&dlat=").append(lat)
+                .append("&dlon=").append(lng)
+                .append("&dname=").append(destinationName)
+                .append("&dev=0")
+                .append("&t=0")
+            uriString = builder.toString()
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setPackage("com.autonavi.minimap")
+            intent.data = Uri.parse(uriString)
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            showToast("未安装高德地图")
+        }
+    }
+
+    /**
+     * 1.使用高德搜索功能必须引入对应架包，
+     * //高德定位功能
+     * implementation 'com.amap.api:location:5.6.2'
+     * //高德检索
+     * implementation 'com.amap.api:search:8.1.0'
+     *
+     * 2.并申请KEY并在AndroidManifest.xml中配置
+     * <meta-data
+     *   android:name="com.amap.api.v2.apikey"
+     *   android:value="你申请的Key"/>
+     *
+     * 3.确保调用SDK任何接口前先调用更新隐私合规updatePrivacyShow、updatePrivacyAgree两个接口并且参数值都为true
+     *  AMapLocationClient.updatePrivacyShow(this, true, true)
+     *  AMapLocationClient.updatePrivacyAgree(this, true)
+     *
+     * 最后才是使用：
+     * 获取高德地图位置信息
+     * RegeocodeAddress.city 市
+     * RegeocodeAddress.formatAddress 具体地址
+     */
+//    fun getAddressByAmap(activity: AppCompatActivity, lat: Double, lon:Double,cb: (RegeocodeAddress) -> Unit){
+//        val gs =  GeocodeSearch(activity)
+//        gs.setOnGeocodeSearchListener(object :GeocodeSearch.OnGeocodeSearchListener{
+//            override fun onRegeocodeSearched(result: RegeocodeResult?, p1: Int) {
+//                result?.apply {
+//                    activity.runOnUiThread{cb(result.regeocodeAddress)}
+//                }
+//            }
+//            override fun onGeocodeSearched(p0: GeocodeResult?, p1: Int) {
+//            }
+//        })
+//        //逆地理编码查询条件：逆地理编码查询的地理坐标点、查询范围、坐标类型。
+//        val latLonPoint = LatLonPoint(lat, lon)
+//        val query = RegeocodeQuery(latLonPoint, 500f, GeocodeSearch.GPS)
+//        //异步查询
+//        gs.getFromLocationAsyn(query)
+//    }
 }
