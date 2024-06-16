@@ -5,10 +5,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import com.amap.api.mapcore.util.it
 import com.smallcake.smallutils.px
-import com.smallcake.temp.chart.LdChartView.Companion.datas
-import com.tencent.smtt.sdk.WebSettings
 import kotlin.math.cos
 import kotlin.math.sin
 

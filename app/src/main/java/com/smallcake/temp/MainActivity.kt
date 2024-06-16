@@ -6,6 +6,7 @@ import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.base.BaseBindActivity
 import com.smallcake.temp.databinding.ActivityMainBinding
 import com.smallcake.temp.http.sub
+import com.smallcake.temp.ui.AlbumActivity
 import com.smallcake.temp.utils.BottomNavUtils
 import com.smallcake.temp.utils.SelectImgUtils
 import java.io.File
@@ -22,6 +23,7 @@ class MainActivity : BaseBindActivity<ActivityMainBinding>() {
         bar.hide()
         initView()
         onEvent()
+        goActivity(AlbumActivity::class.java)
     }
 
     private fun onEvent() {

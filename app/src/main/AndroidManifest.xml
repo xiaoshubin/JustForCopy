@@ -33,6 +33,9 @@
         android:theme="@style/Theme.TempAndroid"
         tools:targetApi="n">
         <activity
+            android:name=".ui.AlbumActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.ListSelectActivity"
             android:exported="false" />
         <activity android:name=".ui.CameraXActivity" />
