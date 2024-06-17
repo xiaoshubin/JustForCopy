@@ -3,6 +3,8 @@ package com.smallcake.temp.adapter
 import android.util.Log
 import android.widget.CheckBox
 import androidx.annotation.Keep
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import com.chad.library.adapter.base.BaseNodeAdapter
 import com.chad.library.adapter.base.entity.node.BaseExpandNode
 import com.chad.library.adapter.base.entity.node.BaseNode
@@ -18,9 +20,11 @@ import com.smallcake.temp.R
  * @Description
  */
  class AlbumAdapter :BaseNodeAdapter() {
+    private var mDiffer:AsyncListDiffer<BaseNode>
     init {
         addFullSpanNodeProvider(HeaderProvider())
         addNodeProvider(ChildProvider())
+        mDiffer = AsyncListDiffer<BaseNode>(this,EventCallback())
     }
 
     override fun getItemType(data: List<BaseNode>, position: Int): Int {
@@ -31,6 +35,39 @@ import com.smallcake.temp.R
             else -> -1
         }
     }
+
+
+    fun addDiffList(list: List<RootNode>?) {
+        mDiffer.submitList(list)
+    }
+    fun addDiffNode(item: BaseNode) {
+        val mList = ArrayList<BaseNode>()
+        mList.addAll(mDiffer.currentList)
+        mList.add(item)
+        mDiffer.submitList(mList)
+    }
+    fun removeData(item:BaseNode){
+        val mList = ArrayList<BaseNode>()
+        mList.addAll(mDiffer.currentList)
+        mList.remove(item)
+        mDiffer.submitList(mList)
+    }
+    fun clear(){
+        mDiffer.submitList(null)
+    }
+
+}
+
+class EventCallback :DiffUtil.ItemCallback<BaseNode>(){
+    override fun areItemsTheSame(oldItem: BaseNode, newItem: BaseNode): Boolean {
+        return oldItem.hashCode() == newItem.hashCode()
+        return false
+    }
+
+    override fun areContentsTheSame(oldItem: BaseNode, newItem: BaseNode): Boolean {
+        return false
+    }
+
 }
 
 class HeaderProvider :BaseNodeProvider() {

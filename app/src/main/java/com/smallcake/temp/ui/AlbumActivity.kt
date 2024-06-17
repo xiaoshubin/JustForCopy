@@ -3,13 +3,11 @@ package com.smallcake.temp.ui
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
-import com.amap.api.mapcore.util.it
 import com.chad.library.adapter.base.entity.node.BaseNode
 import com.smallcake.smallutils.custom.GridItemDecoration
 import com.smallcake.smallutils.text.NavigationBar
 import com.smallcake.temp.adapter.AlbumAdapter
 import com.smallcake.temp.adapter.ChildNode
-import com.smallcake.temp.adapter.ChildProvider
 import com.smallcake.temp.adapter.RefreshCheck
 import com.smallcake.temp.adapter.RootNode
 import com.smallcake.temp.base.BaseBindActivity
@@ -73,6 +71,6 @@ class AlbumActivity : BaseBindActivity<ActivityAlbumBinding>() {
             RootNode("2024年6月6日", childs),
             RootNode("2024年6月3日", arrayListOf(ChildNode(), ChildNode()))
         )
-        mAdapter.setList(list)
+        mAdapter.addDiffList(list)
     }
 }
